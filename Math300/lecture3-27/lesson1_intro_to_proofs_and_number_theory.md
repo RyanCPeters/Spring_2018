@@ -36,15 +36,15 @@ Definitions
 - Integers
   + `Z = {...,-3,-2,-1,0,1,2,3,...}`
 - Rationals
-  + `Q = {x|x = p/q, p,qE sigma, q!=0}`
+  + `Q = {x|x = p/q, p,q∋ Z, q!=0}`
   + where `|` == "such that"
-  + where `xE y` == `x` is an element of the set `y`
+  + where `x∋ y` == `x` is an element of the set `y`
 - Real
   + R = points on the line from -inf to inf
       = numbers with a (possibly infinite) decimal expansion
       = union of rational numbers & irrational numbers
 - Complex
-  + ¢ = {z|z=a+bi, a,bE R, i^2 = -1}
+  + ¢ = {z|z=a+bi, a,b∋ R, i^2 = -1}
 
 A basic building of any proof is the statement (proposition).
 A statement is a claim that is objectively true, or false.
