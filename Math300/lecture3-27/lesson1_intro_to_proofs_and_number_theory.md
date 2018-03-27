@@ -23,13 +23,13 @@ Definitions
   + An argument based on logic which conclusively demonstrates the truth or falsehood of a statement.
   + in principle, all proofs of the theorems emerge from axioms (fundamental building blocks) that are accepted to be true.
 
-####To prove something, we need to work with :
+#### To prove something, we need to work with :
 - axioms
 - definitions
 - logic
 - mathematical concepts such as numbers, sets, relations, and functions
 
-####Some important sets(collections) of numbers include:
+#### Some important sets(collections) of numbers include:
 
 - Natural numbers 
   + `N = {1,2,3,4,5,6,....}`
