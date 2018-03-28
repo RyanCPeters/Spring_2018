@@ -125,12 +125,12 @@ We also introduce the following definitions:
   + since `(2rs+s+r)∈ Z`, `mn` is odd.
   + do the little square, aka tombstone, and optionally do the Q.E.D.
   
-This was an example of what's called a _**direct proof**_
+##### This was an example of what's called a _**direct proof**_
 
 - Begin with the hypothesis: (`m` and `n` are odd).
 - apply definitions, axioms, & previously proven results in sequence to show that the conclusion (`mn` is odd) is always true.
 
-Sometimes direct proofs aren't convenient.
+##### Sometimes direct proofs aren't convenient.
 
 Example; it is easy to prove the following directly:
 - "if `n` is even, then `n^2` is also even" (try it!)
