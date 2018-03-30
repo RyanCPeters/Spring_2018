@@ -1,7 +1,12 @@
 import java.util.Random;
 
 public class Main {
-
+    
+    /**
+     * This function is used in evaluating if the graph traversal properly handled the different contiguous ones
+     * @param colorArray
+     * @param show_output
+     */
     static void vetColorArray(String[][] colorArray, boolean show_output){
         if(show_output) {
             for (String[] row : colorArray) {
@@ -22,8 +27,7 @@ public class Main {
         System.out.println(ConColor.RESET);
     }
     
-    public static void main(String[] args) {
-    
+    static void testContiguousOnes(){
         String[] colors = {
             "RED",
             "BLUE",
@@ -71,9 +75,9 @@ public class Main {
                 {1,  0,  0,  0,  0,  0,  0,  0,  0,  1,  0,  1,  1,  0,  0,  0,  0,  0,  1,  0,  1,  0}
             };
     
-        
+    
         String[][] colorArray1, colorArray2, colorArray3, colorArray4, colorArray5, colorArray6;
-        
+    
         colorArray1 = new String[3][4];
         int number_of_sections = ContiguousOnes.countContiguous(arr,4,3, colorArray1, false, true);
         System.out.println();
@@ -82,7 +86,7 @@ public class Main {
         System.out.println();
         System.out.println();
         System.out.println(ConColor.RESET + "The number of sections is: " + number_of_sections);
-        
+    
         colorArray2 = new String[3][4];
         number_of_sections = ContiguousOnes.countContiguous(arr,4,3, colorArray2, true, true);
         System.out.println();
@@ -114,7 +118,7 @@ public class Main {
             "\n1 0 0 0 0 1 1 1 1 1 0 0 0 0 1 1 0 0 0 0 0 1"+
             "\n1 1 1 1 0 0 1 0 1 1 0 0 0 1 1 0 0 1 0 0 0 1"+
             "\n1 0 0 0 0 0 0 0 0 1 0 1 1 0 0 0 0 0 1 0 1 0\n");
-        
+    
         colorArray3 = new String[20][22];
         number_of_sections = ContiguousOnes.countContiguous(x,22,20, colorArray3, false, true);
         System.out.println();
@@ -151,7 +155,7 @@ public class Main {
             System.out.println();
             System.out.println();
             System.out.println(ConColor.RESET + "The number of sections is: " + number_of_sections);
-    
+        
             colorArray6 = new String[rows][cols];
             number_of_sections = ContiguousOnes.countContiguous(y, cols, rows, colorArray6, true, false);
             System.out.println();
@@ -160,7 +164,7 @@ public class Main {
             System.out.println();
             System.out.println();
             System.out.println(ConColor.RESET + "The number of sections is: " + number_of_sections);
-    
+        
             System.out.println("\n\nlets try to print these arrays");
             for (int row = 0; row < cols; ++row) {
                 for (int col = 0; col < rows; ++col) {
@@ -172,10 +176,13 @@ public class Main {
                 }
                 System.out.println();
             }
-    
-            System.out.println(ConColor.RESET);
-    
-        }
         
+            System.out.println(ConColor.RESET);
+        
+        }
+    }
+    
+    public static void main(String[] args) {
+        testContiguousOnes();
     }
 }
