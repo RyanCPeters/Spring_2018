@@ -29,11 +29,11 @@ public class Main {
     
     static void testContiguousOnes(){
         String[] colors = {
-            "RED",
-            "BLUE",
-            "GREEN",
-            "PURPLE",
-            "YELLOW",
+            "rd",
+            "blu",
+            "grn",
+            "prpl",
+            "ylo",
             "CYAN",
             "RED_BOLD_BRIGHT",
             "BLUE_BOLD_BRIGHT",
