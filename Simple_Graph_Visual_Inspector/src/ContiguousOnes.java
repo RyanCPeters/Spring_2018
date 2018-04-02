@@ -10,13 +10,13 @@ public class ContiguousOnes {
   
   /**
    * Index # : Color
-   *    0 : Red
-   *    1 : Blue
+   *    0 : rd
+   *    1 : blu
    *    2 : Green
    *    3 : Magenta
    *    4 : Yellow
-   *    5 : Cyan
-   *    6 : BLACKOUT the text
+   *    5 : cyan
+   *    6 : blkOUT the text
    */
   public static final String Colors[] = {
       ConColor.rd,
@@ -25,13 +25,13 @@ public class ContiguousOnes {
       ConColor.prpl,
       ConColor.ylo,
       ConColor.cyan,
-      ConColor.RED_BOLD_BRIGHT,
-      ConColor.BLUE_BOLD_BRIGHT,
-      ConColor.GREEN_BOLD_BRIGHT,
-      ConColor.PURPLE_BOLD_BRIGHT,
-      ConColor.YELLOW_BOLD_BRIGHT,
-      ConColor.CYAN_BOLD_BRIGHT,
-      ConColor.BLACK_BRIGHT,
+      ConColor.rd_bld_brt,
+      ConColor.blu_bld_brt,
+      ConColor.grn_bld_brt,
+      ConColor.prpl_bld_brt,
+      ConColor.ylo_bld_brt,
+      ConColor.cyan_bld_brt,
+      ConColor.blk_brt,
       ConColor.RESET
   };
   static final int numberOfColors = 12;
@@ -62,7 +62,7 @@ public class ContiguousOnes {
         if(dirsToFollow[dir]){
           recursiveDFS(checked,arr,x,y,rows,cols,colorArr,colorNumber);
         }else{
-          colorArr[x][y] = ConColor.BLACK_BRIGHT + arr[x][y];
+          colorArr[x][y] = ConColor.blk_brt + arr[x][y];
           checked[x][y] = true;
         }
       }
@@ -102,7 +102,7 @@ public class ContiguousOnes {
   
   static int countContiguous(int[][] arr, int rows, int cols, String[][] colorArray, boolean use_recursion, boolean show_output){
     int count = 0;
-    boolean useWhiteBG = false;
+    boolean usewhtBG = false;
     boolean  checkedArr[][] = new boolean[cols][rows];
   
     int colorNumber = 0;
@@ -118,7 +118,7 @@ public class ContiguousOnes {
             
             colorNumber = (++colorNumber)%numberOfColors;
           }else {
-            colorArray[x][y] = ConColor.BLACK_BRIGHT + arr[x][y];
+            colorArray[x][y] = ConColor.blk_brt + arr[x][y];
           }
         }
       }
@@ -143,67 +143,67 @@ class ConColor {
   public static final String ylo = "\033[0;33m";  // ylo
   public static final String blu = "\033[0;34m";    // blu
   public static final String prpl = "\033[0;35m";  // prpl
-  public static final String cyan = "\033[0;36m";    // CYAN
-  public static final String WHITE = "\033[0;37m";   // WHITE
+  public static final String cyan = "\033[0;36m";    // cyan
+  public static final String wht = "\033[0;37m";   // wht
   
   // Bold
-  public static final String BLACK_BOLD = "\033[1;30m";  // blk
-  public static final String RED_BOLD = "\033[1;31m";    // rd
-  public static final String GREEN_BOLD = "\033[1;32m";  // grn
-  public static final String YELLOW_BOLD = "\033[1;33m"; // ylo
-  public static final String BLUE_BOLD = "\033[1;34m";   // blu
-  public static final String PURPLE_BOLD = "\033[1;35m"; // prpl
-  public static final String CYAN_BOLD = "\033[1;36m";   // CYAN
-  public static final String WHITE_BOLD = "\033[1;37m";  // WHITE
+  public static final String blk_bld = "\033[1;30m";  // blk
+  public static final String rd_bld = "\033[1;31m";    // rd
+  public static final String grn_bld = "\033[1;32m";  // grn
+  public static final String ylo_bld = "\033[1;33m"; // ylo
+  public static final String blu_bld = "\033[1;34m";   // blu
+  public static final String prpl_bld = "\033[1;35m"; // prpl
+  public static final String cyan_bld = "\033[1;36m";   // cyan
+  public static final String wht_bld = "\033[1;37m";  // wht
   
   // Underline
-  public static final String BLACK_UNDERLINED = "\033[4;30m";  // blk
-  public static final String RED_UNDERLINED = "\033[4;31m";    // rd
-  public static final String GREEN_UNDERLINED = "\033[4;32m";  // grn
-  public static final String YELLOW_UNDERLINED = "\033[4;33m"; // ylo
-  public static final String BLUE_UNDERLINED = "\033[4;34m";   // blu
-  public static final String PURPLE_UNDERLINED = "\033[4;35m"; // prpl
-  public static final String CYAN_UNDERLINED = "\033[4;36m";   // CYAN
-  public static final String WHITE_UNDERLINED = "\033[4;37m";  // WHITE
+  public static final String blk_ul = "\033[4;30m";  // blk
+  public static final String rd_ul = "\033[4;31m";    // rd
+  public static final String grn_ul = "\033[4;32m";  // grn
+  public static final String ylo_ul = "\033[4;33m"; // ylo
+  public static final String blu_ul = "\033[4;34m";   // blu
+  public static final String prpl_ul = "\033[4;35m"; // prpl
+  public static final String cyan_ul = "\033[4;36m";   // cyan
+  public static final String wht_ul = "\033[4;37m";  // wht
   
   // Background
-  public static final String BLACK_BACKGROUND = "\033[40m";  // blk
-  public static final String RED_BACKGROUND = "\033[41m";    // rd
-  public static final String GREEN_BACKGROUND = "\033[42m";  // grn
-  public static final String YELLOW_BACKGROUND = "\033[43m"; // ylo
-  public static final String BLUE_BACKGROUND = "\033[44m";   // blu
-  public static final String PURPLE_BACKGROUND = "\033[45m"; // prpl
-  public static final String CYAN_BACKGROUND = "\033[46m";   // CYAN
-  public static final String WHITE_BACKGROUND = "\033[47m";  // WHITE
+  public static final String blk_bg = "\033[40m";  // blk
+  public static final String rd_bg = "\033[41m";    // rd
+  public static final String grn_bg = "\033[42m";  // grn
+  public static final String ylo_bg = "\033[43m"; // ylo
+  public static final String blu_bg = "\033[44m";   // blu
+  public static final String prpl_bg = "\033[45m"; // prpl
+  public static final String cyan_bg = "\033[46m";   // cyan
+  public static final String wht_bg = "\033[47m";  // wht
   
   // High Intensity
-  public static final String BLACK_BRIGHT = "\033[0;90m";  // blk
-  public static final String RED_BRIGHT = "\033[0;91m";    // rd
-  public static final String GREEN_BRIGHT = "\033[0;92m";  // grn
-  public static final String YELLOW_BRIGHT = "\033[0;93m"; // ylo
-  public static final String BLUE_BRIGHT = "\033[0;94m";   // blu
-  public static final String PURPLE_BRIGHT = "\033[0;95m"; // prpl
-  public static final String CYAN_BRIGHT = "\033[0;96m";   // CYAN
-  public static final String WHITE_BRIGHT = "\033[0;97m";  // WHITE
+  public static final String blk_brt = "\033[0;90m";  // blk
+  public static final String rd_brt = "\033[0;91m";    // rd
+  public static final String grn_brt = "\033[0;92m";  // grn
+  public static final String ylo_brt = "\033[0;93m"; // ylo
+  public static final String blu_brt = "\033[0;94m";   // blu
+  public static final String prpl_brt = "\033[0;95m"; // prpl
+  public static final String cyan_brt = "\033[0;96m";   // cyan
+  public static final String wht_brt = "\033[0;97m";  // wht
   
   // Bold High Intensity
-  public static final String BLACK_BOLD_BRIGHT = "\033[1;90m"; // blk
-  public static final String RED_BOLD_BRIGHT = "\033[1;91m";   // rd
-  public static final String GREEN_BOLD_BRIGHT = "\033[1;92m"; // grn
-  public static final String YELLOW_BOLD_BRIGHT = "\033[1;93m";// ylo
-  public static final String BLUE_BOLD_BRIGHT = "\033[1;94m";  // blu
-  public static final String PURPLE_BOLD_BRIGHT = "\033[1;95m";// prpl
-  public static final String CYAN_BOLD_BRIGHT = "\033[1;96m";  // CYAN
-  public static final String WHITE_BOLD_BRIGHT = "\033[1;97m"; // WHITE
+  public static final String blk_bld_brt = "\033[1;90m"; // blk
+  public static final String rd_bld_brt = "\033[1;91m";   // rd
+  public static final String grn_bld_brt = "\033[1;92m"; // grn
+  public static final String ylo_bld_brt = "\033[1;93m";// ylo
+  public static final String blu_bld_brt = "\033[1;94m";  // blu
+  public static final String prpl_bld_brt = "\033[1;95m";// prpl
+  public static final String cyan_bld_brt = "\033[1;96m";  // cyan
+  public static final String wht_bld_brt = "\033[1;97m"; // wht
   
   // High Intensity backgrounds
-  public static final String BLACK_BACKGROUND_BRIGHT = "\033[0;100m";// blk
-  public static final String RED_BACKGROUND_BRIGHT = "\033[0;101m";// rd
-  public static final String GREEN_BACKGROUND_BRIGHT = "\033[0;102m";// grn
-  public static final String YELLOW_BACKGROUND_BRIGHT = "\033[0;103m";// ylo
-  public static final String BLUE_BACKGROUND_BRIGHT = "\033[0;104m";// blu
-  public static final String PURPLE_BACKGROUND_BRIGHT = "\033[0;105m"; // prpl
-  public static final String CYAN_BACKGROUND_BRIGHT = "\033[0;106m";  // CYAN
-  public static final String WHITE_BACKGROUND_BRIGHT = "\033[0;107m";   // WHITE
+  public static final String blk_bg_brt = "\033[0;100m";// blk
+  public static final String rd_bg_brt = "\033[0;101m";// rd
+  public static final String grn_bg_brt = "\033[0;102m";// grn
+  public static final String ylo_bg_brt = "\033[0;103m";// ylo
+  public static final String blu_bg_brt = "\033[0;104m";// blu
+  public static final String prpl_bg_brt = "\033[0;105m"; // prpl
+  public static final String cyan_bg_brt = "\033[0;106m";  // cyan
+  public static final String wht_bg_brt = "\033[0;107m";   // wht
   
 }
