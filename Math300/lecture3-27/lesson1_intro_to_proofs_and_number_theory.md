@@ -166,3 +166,9 @@ End of lecture
 See canvas for homework, due by Thursday is a take home quiz 
 
   
+---
+---
+
+
+Lesson 2: Division and Modularity
+===
