@@ -12,14 +12,14 @@ public class Main {
             for (String[] row : colorArray) {
                 System.out.println();
                 for (String col : row) {
-                    if (col == (ConColor.BLACK_BRIGHT + 1)) System.err.println("we had a 1 value get labled as a 0");
+                    if (col == (ConColor.blk_brt + 1)) System.err.println("we had a 1 value get labled as a 0");
                     System.out.printf("%s ", col);
                 }
             }
         }else {
             for (String[] row : colorArray) {
                 for (String col : row) {
-                    if (col == (ConColor.BLACK_BRIGHT + 1)) System.err.println("we had a 1 value get labled as a 0");
+                    if (col == (ConColor.blk_brt + 1)) System.err.println("we had a 1 value get labled as a 0");
                 }
             }
         }
@@ -41,7 +41,7 @@ public class Main {
             "PURPLE_BOLD_BRIGHT",
             "YELLOW_BOLD_BRIGHT",
             "CYAN_BOLD_BRIGHT",
-            "BLACK_BRIGHT"
+            "blk_brt"
         };
     
         for (int i = 0; i < colors.length; i++) {
@@ -137,9 +137,12 @@ public class Main {
         System.out.println();
         System.out.println(ConColor.RESET + "The number of sections is: " + number_of_sections);
     
-    
-        for(int seed = 1; seed < 11; ++seed) {
+        int number_of_samples = 2;
+        for(int seed = 1; seed < number_of_samples; ++seed) {
             int rows = 20, cols = 20;
+            if (number_of_samples < 3){
+                cols = rows = 75;
+            }
             int[][] y = new int[rows][cols];
             Random rand = new Random(seed);
             for (int row = 0; row < rows; ++row) {
@@ -147,6 +150,12 @@ public class Main {
                     y[row][col] = rand.nextInt(2);
                 }
             }
+
+            // for shits and giggles, we ensure that the top left, and bottom right corners are 0. Lets now try to write
+            // an algorithm that can find the shortest route from top left (start) to bottom right (end), if a path
+            // even exists.
+            y[0][0] = 0;
+            y[cols-1][rows-1] = 0;
             colorArray5 = new String[rows][cols];
             number_of_sections = ContiguousOnes.countContiguous(y, cols, rows, colorArray5, false, false);
             System.out.println();
@@ -171,7 +180,7 @@ public class Main {
                     if (colorArray5[row][col].equals(colorArray5[row][col])) {
                         System.out.printf("%s ", colorArray5[row][col]);
                     } else {
-                        System.out.print(ConColor.WHITE_BACKGROUND_BRIGHT + " " + ConColor.RESET + " ");
+                        System.out.print(ConColor.wht_bg_brt + " " + ConColor.RESET + " ");
                     }
                 }
                 System.out.println();

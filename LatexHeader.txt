@@ -1,0 +1,55 @@
+\documentclass[10pt]{article}
+\usepackage{epsfig}
+\usepackage{float}'
+\usepackage{amsmath}'
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{epsfig}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{float}
+\usepackage{hyperref}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{graphicx}
+%\sepackage{subfig}
+\usepackage{caption}
+\usepackage{subcaption}
+\captionsetup{justification=centering}
+\usepackage{mathrsfs}
+\usepackage{color}
+\usepackage{cancel}
+\def\n{{\mathbb{N}}}
+\def\Z{{\mathbb{Z}}}
+\def\sD{{\sqrt D}}
+\def\C{{\mathbb{C}}}
+\def\R{{\mathbb{R}}}
+\def\Q{{\mathbb{Q}}}
+\def\E{{\mathbb{E}}}
+\def\H{{\mathbb{H}}}
+\def\S{{\mathbb{S}}}
+\pagestyle{headings} \setlength{\textwidth}{6.5in}
+\setlength{\textheight}{9.5in} \setlength{\topmargin}{0in}
+%\setlength{\headheight}{0in}
+%\setlength{\headsep}{0in}
+%\setlength{\topskip}{0in}
+\setlength{\voffset}{-0.5in} \setlength{\oddsidemargin}{-0.25in}
+\setlength{\evensidemargin}{-.5in} \setlength{\unitlength}{1in}
+\pagestyle{headings} \setlength{\textwidth}{6.5in}
+\setlength{\textheight}{9.5in} \setlength{\topmargin}{0in}
+%\setlength{\headheight}{0in}
+%\setlength{\headsep}{0in}
+%\setlength{\topskip}{0in}
+\setlength{\voffset}{-0.5in} \setlength{\oddsidemargin}{-0.25in}
+\setlength{\eensidemargin}{-.5in} \setlength{\unitlength}{1in}
+\begin{document}
+\pagestyle{empty}
+\Large egin{center}STMATH 424, Winter 2017 \hspace{1in} 5.1 Mastery HW\end{center}
+\normalsize
+\vspace{.5in}
+
+
+insert problems here
+
+
+\end{document}
