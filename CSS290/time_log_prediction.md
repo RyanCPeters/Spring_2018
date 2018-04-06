@@ -23,18 +23,30 @@ per day approximate expectations:
 - 
 
 
+I think it may be necessary to preface for this assignment by mentioning that I'm clinically diagnosed with ADD. A few of the natural consequences of this condition include difficulty in task prioritization, time sense, attention span, and gaps in short term memory. All of these attributes combine to make rather simple, long term tasks problematic. 
+
+To be clear, I am not asking for leniency in the grading of my submission; instead I just want it to be known that I did not dismiss this assignment as irrelevant or unimportant, nor do I disregard the time and energy the instructor and my peers have put into this assignment.
 
 1. How did your tracked time match with your expectations? Was there anything surprising?
 
-Unfortunately, I failed very hard at remembering to check in on my time-logger app. I'm pretty bad about being mindful of my phone and messages in the first place, so remembering to update my time-logger was an unsurprising short-coming for me in this assignment. 
+Unfortunately, I had a particularly hard time remembering to check in with the time-logger app. I'm pretty bad about being mindful of my phone and messages in the first place, so remembering to update my time-logger was an unsurprising point of failure for me in this assignment. 
 
-I tried to make sure that I wrote down the activities I did each day, in a spreadsheet, but my time sense has never been very accurate. I don't really know how to explain it, other than to say that I've spent my entire life experiencing the world in a similar fashion to how most people describe the come down from being high. I've always struggled with remembering where I put my wallet or keys, I have no sense of time while I'm focused on tasks that don't naturally translate into tasks that also relate to timed units (like cooking, or hobby activities).
+As a result, it ended up being every other day that I would remember to update my activity log. Meaning, most of the data I recorded was based upon my memory of the previous 24 to 48 hours. As you might expect, the data I recorded was largely similar to my prediction, for no other reason than I have virtually no sense of time when engrossed in homework or exercise, so the beginning and end times for my activities are mostly conjecture based upon the time stamps on messages to my friends and family and what I remember doing around those communications.
 
 2. How balanced is your life between work and other activities?
 
+I realized early on in my college career that I would be inviting disaster if I tried to manage a job along side my academics. I have an excessive tendency to go down the proverbial rabbit hole when I encounter interesting tangents in my assigned studies. While this has allowed me to gain a greater understanding and appreciation of the underlying mechanisms in my physics and programming courses, it has also expanded the workload of those courses far beyond what the instructors intended.
+
+What I found from the activity log strongly confirmed the validity in my decision to remain only a student. Unexpectedly, it has also afforded me some peace of mind about choosing to forgo the added income of a part-time job, as it appears that any time spent not studying is instead spent reading about, or experimenting with related topics to those studies.
 
 3. What is one obstacle/problem area to balancing or managing your time? How do you think you can change it?
 
+The single most significant obstacle to managing time usage is my struggle with tracking it. Even when given convenient tools like the TimeLogger, it would require significant amounts of hardship or discomfort before I could form the prerequisite habits of checking into the app in the first place, thus rendering the app virtually useless in addressing the problem.
 
 4. What is one trick that you’ve used to balance/manage your time that is successful, that maybe you can pass on to your peers?
+
+Unfortunately, I doubt that I will ever be consistently proficient enough at managing my time that I would feel comfortable advising another in how to be successful at it. 
+
+I honestly fight this issue on a daily basis, and it's only through years of negative consequences and hard lessons that I have been able to develop sufficient levels of anxiety about being late or losing my belongings that I am able to perform at a remotely satisfactory level in my college career.
+
 
