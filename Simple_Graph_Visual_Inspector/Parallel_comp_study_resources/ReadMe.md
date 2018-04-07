@@ -7,7 +7,7 @@ A list of some helpful Reference Links
 1. [Using Java with Nvidia GPU's (cuda)](#using-java-with-nvidia-gpus-cuda)
 
 
-
+---
 ---
 ### [Using Java with Nvidia GPU's (cuda)](https://stackoverflow.com/a/22868938/7412747)
 
