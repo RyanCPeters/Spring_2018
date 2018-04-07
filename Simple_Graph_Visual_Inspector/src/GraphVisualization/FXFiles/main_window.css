@@ -1,0 +1,135 @@
+/*
+This file will specify any formatting we wish to do - changing fonts, changing the size and color of text, and so on.
+If we don't like the look of something, we can change it here.
+*/
+
+/*
+.root {
+    -fx-text-fill: rgb(255, 255, 255);
+    -fx-base: rgb(117, 86, 58);
+    -fx-background: rgb(155, 135, 115);
+    -fx-accent: #4083b2;
+}
+*/
+
+.root {
+    -fx-text-fill: rgb(255, 255, 255);
+    -fx-base: rgb(56, 117, 88);         /* kinda a lighter blue thing */
+    -fx-background: rgb(57, 91, 91);    /* slate blue */
+    -fx-accent: #4083b2;
+}
+
+.menu-item .label {
+    -fx-text-fill: #202020;
+}
+
+#scores-title-text {
+    -fx-font-size: 30px;
+    -fx-fill: grey;
+}
+
+#player-text {
+    -fx-font-size: 20px;
+    -fx-fill: lightgrey;
+}
+
+#scores-text {
+    -fx-font-size: 20px;
+    -fx-fill: lightgrey;
+}
+
+#distribution-title-text {
+    -fx-font-size: 24px;
+    -fx-fill: grey;
+}
+
+@font-face {
+    font-family: Themify;
+    src: url('assets/fonts/themify.svg');
+}
+
+#letter-text {
+    -fx-font-size: 24px;
+    -fx-font-family: Themify;
+    -fx-fill: lightgrey;
+}
+
+#letter-freq {
+    -fx-font-size: 18px;
+    -fx-fill: lightgrey;
+}
+
+FXSpace {
+    -fx-skin: "Scribble.JFXView.FXSpaceSkin";
+}
+
+@media (min-width: 992px){
+    .typo-line{
+        padding-left: 140px;
+        margin-bottom: 40px;
+        position: relative;
+    }
+
+    .typo-line .category{
+        transform: translateY(-50%);
+        top: 50%;
+        left: 0px;
+        position: absolute;
+    }
+}
+
+.icon-section {
+    margin: 0 0 3em;
+    clear: both;
+    overflow: hidden;
+}
+.icon-container {
+    width: 240px;
+    padding: .7em 0;
+    float: left;
+    position: relative;
+    text-align: left;
+}
+.icon-container [class^="ti-"],
+.icon-container [class*=" ti-"] {
+    color: #000;
+    position: absolute;
+    margin-top: 3px;
+    transition: .3s;
+}
+.icon-container:hover [class^="ti-"],
+.icon-container:hover [class*=" ti-"] {
+    font-size: 2.2em;
+    margin-top: -5px;
+}
+.icon-container:hover .icon-name {
+    color: #000;
+}
+.icon-name {
+    color: #aaa;
+    margin-left: 35px;
+    font-size: .8em;
+    transition: .3s;
+}
+.icon-container:hover .icon-name {
+    margin-left: 45px;
+}
+
+.places-buttons .btn{
+    margin-bottom: 30px
+}
+.sidebar .nav > li.active-pro{
+    position: absolute;
+    width: 100%;
+    bottom: 10px;
+}
+.sidebar .nav > li.active-pro a{
+    background: rgba(255, 255, 255, 0.14);
+    opacity: 1;
+    color: #FFFFFF;
+}
+
+/*.table-upgrade td:nth-child(2),*/
+/*.table-upgrade td:nth-child(3){*/
+    /*text-align: center;*/
+/*}*/
