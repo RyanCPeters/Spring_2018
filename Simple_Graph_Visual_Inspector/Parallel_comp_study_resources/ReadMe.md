@@ -48,7 +48,9 @@ However, when you have a data-parallel, compute-bound problem to solve, the GPU 
 ---
 
 
-## Some remarks
+## Marco13's Remarks:
+
+-- Marco13 is the username of the person whom provided this answer --
 
 Your specifically asked for CUDA. But I'd strongly recommend you to also have a look at OpenCL. It has several advantages. First of all, it's an vendor-independent, open industry standard, and there are implementations of OpenCL by AMD, Apple, Intel and NVIDIA. Additionally, there is a much broader support for OpenCL in the Java world. The only case where I'd rather settle for CUDA is when you want to use the CUDA runtime libraries, like CUFFT for FFT or CUBLAS for BLAS (Matrix/Vector operations). Although there are approaches for providing similar libraries for OpenCL, they can not directly be used from Java side, unless you create your own JNI bindings for these libraries. 
 
