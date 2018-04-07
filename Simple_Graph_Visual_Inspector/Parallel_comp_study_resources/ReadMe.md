@@ -100,3 +100,6 @@ http://sourceforge.net/projects/jopencl/ : Java bindings for OpenCL. Seem to be 
 http://www.hoopoe-cloud.com/ : Java bindings for CUDA. Seem to be no longer maintained
 
 [Marco13]:https://stackoverflow.com/users/3182664/marco13
+
+---
+---
