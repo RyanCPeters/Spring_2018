@@ -4,12 +4,12 @@ A list of some helpful Reference Links
 ### ToC
 ---
 
-1. [Using Java with Nvidia GPU's (cuda)]
+1. [Using Java with Nvidia GPU's (cuda)](#using-java-with-nvidia-gpus-cuda)
 
 
 
 ---
-# [Using Java with Nvidia GPU's (cuda)](https://stackoverflow.com/a/22868938/7412747)
+### [Using Java with Nvidia GPU's (cuda)](https://stackoverflow.com/a/22868938/7412747)
 
 #### Original Question
 
