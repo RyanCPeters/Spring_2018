@@ -20,9 +20,8 @@ We ordered some cuda gpu's to try it with and since Java is not supported by cud
 I dont have experience in this field and I would like if someone could direct me to something so I can start researching and learning.
 
 
----
-## [Marco13's Answer](https://stackoverflow.com/users/3182664/marco13)
----
+
+## [Top-voted Answer](https://stackoverflow.com/users/3182664/marco13)
 
 First of all, you should be aware of the fact that CUDA will not automagically make computations faster. On the one hand, because GPU programming is an art, and it can be very, very challenging to get it *right*. On the other hand, because GPUs are well-suited only for certain *kinds* of computations.
 
