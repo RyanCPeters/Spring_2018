@@ -1,6 +1,9 @@
 
 # Created by https://www.gitignore.io/api/windows,visualstudio
 
+Simple*/zip*/*
+
+
 ### Windows ###
 # Windows thumbnail cache files
 Thumbs.db

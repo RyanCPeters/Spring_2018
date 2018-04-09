@@ -35,14 +35,13 @@ public class JFXVisuals extends Application {
   
     controller = loader.getController();
   
-    stage.setTitle("Scribble");
+    stage.setTitle("Visual Matrix");
     stage.setResizable(false);
     stage.show();
   
     hasStarted = true;
   
-    stage.setScene(new Scene(root, 1500, 800, Color.BLACK));
-    stage.getScene();
+    stage.setScene(new Scene(root,Color.BLACK));
     
     stage.show();
   }

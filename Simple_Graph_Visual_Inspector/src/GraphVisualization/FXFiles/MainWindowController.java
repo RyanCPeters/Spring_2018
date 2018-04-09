@@ -10,10 +10,16 @@ import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Screen;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.function.Function;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 public class MainWindowController {
   
@@ -34,14 +40,16 @@ public class MainWindowController {
   
   public static final double MAX_WIDTH = Screen.getPrimary().getBounds().getWidth();
   public static final double MAX_HEIGHT = Screen.getPrimary().getBounds().getHeight();
-  public static final int TILE_EDGE_LEN = 10;
+  public static final int TILE_EDGE_LEN = 20;
+  
+  private static ArrayList<FXMatrixElement> boardElements;
   
   
   /** The board is this many tiles accross */
-  private int boardWidth = 15;
+  private int boardWidth = 4;
   
   /** The board is this many tiles high */
-  private int boardHeight = 15;
+  private int boardHeight = 3;
   
   boolean setBoardWidth(int boardWidth) {
     if(boardWidth > 0 && boardWidth < (MAX_WIDTH / TILE_EDGE_LEN)) {
@@ -77,7 +85,6 @@ public class MainWindowController {
    */
   @FXML
   public void resetBoard(ActionEvent event) {
-  
   }
   
   /**
@@ -87,12 +94,11 @@ public class MainWindowController {
   public void initialize() {
     outputCountOfContOnes = new Text("0");
     outputCountOfContOnes.setTextAlignment(TextAlignment.LEFT);
-    outputCountOfContOnes.setFont(new Font(20));
     shortestCompletePathLen = new Text(String.valueOf(boardWidth*boardHeight));
     shortestCompletePathLen.setTextAlignment(TextAlignment.LEFT);
-    shortestCompletePathLen.setFont(new Font(20));
-    board = new GridPane();
-    board.setGridLinesVisible(true);
+    
+    resetBoard = new MenuItem("Reset Matrix");
+    exit = new MenuItem("Quit");
     //Gives the "reset board" menu option the shortcut of ctrl+r
     resetBoard.setAccelerator(new KeyCodeCombination(KeyCode.R,  KeyCombination.CONTROL_DOWN));
     exit.setAccelerator(new KeyCodeCombination(KeyCode.F4, KeyCombination.ALT_DOWN));
@@ -101,11 +107,16 @@ public class MainWindowController {
     setBoardWidth(TheStaticDefaults.get3x4Height());
     for (int row = 0; row < boardWidth; row++) {
       for (int col = 0; col < boardHeight; col++) {
-        FXMatrixElement fxm = new FXMatrixElement(localTestMatrix[row][col]);
-        board.add(fxm,row,col);
+        board.add(new FXMatrixElement(localTestMatrix[row][col]),row,col);
+        
       }
     }
+    boardElements = new ArrayList<>();
+  
+    Function<FXMatrixElement,>
     
+    board.getChildren().stream().parallel().collect(Collectors.toCollection
+        (ele -> boardElements.add(ele)));
     textBoardWidth = new Text();
     textBoardWidth.setText(String.valueOf(boardWidth));
     
@@ -114,12 +125,15 @@ public class MainWindowController {
     
     board.setHgap(1);
     board.setVgap(1);
-    board.setGridLinesVisible(true);
-    board.setMaxWidth(FXMatrixElement.getEdgeLen()* boardWidth);
-    board.setMaxHeight(FXMatrixElement.getEdgeLen() * boardHeight);
+  
     
     board.setBorder(new Border(new BorderStroke(Color.LIGHTGREY,
                                    BorderStrokeStyle.SOLID,
                                    CornerRadii.EMPTY, new BorderWidths(1))));
+  
+    shortestCompletePathLen.setText(String.valueOf(boardHeight*boardWidth));
+    
+    System.out.println("board height is supposed to be: "+board.getHeight());
+    System.out.println("board width is supposed to be:"+board.getWidth());
   }
 }
