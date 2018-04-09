@@ -12,15 +12,20 @@ If we don't like the look of something, we can change it here.
 }
 */
 
+/*     background: rgba(0, 0, 0, 0) linear-gradient(to bottom, #9368e9 0%, #943bea 100%) repeat scroll 0 0 / 150% 150%;     */
 .root {
     -fx-text-fill: rgb(255, 255, 255);
     -fx-base: rgb(56, 117, 88);         /* kinda a lighter blue thing */
-    -fx-background: rgb(57, 91, 91);    /* slate blue */
-    -fx-accent: #4083b2;
+    /*-fx-background:  rgb(  0,  0,  0) linear-gradient(to bottom, #9368e9 0%, #943bea 100%) repeat scroll 0 0 / 150% 150%;*/
+    /*-fx-background: rgb(57, 91, 91);    !* slate blue *!*/
+    -fx-background-color: #4B4453;
+    -fx-accent: #FF8066;/*#845EC2 #4B4453 #B0A8B9 #FF8066*/
+    /*-fx-accent: #B0A8B9;*/
+    /*-fx-accent: #FF8066;*/
 }
 
 .menu-item .label {
-    -fx-text-fill: #202020;
+    -fx-text-fill: #B0A8B9;
 }
 
 #scores-title-text {
@@ -103,7 +108,7 @@ FXSpace {
     margin-top: -5px;
 }
 .icon-container:hover .icon-name {
-    color: #000;
+    color: #B0A8B9;
 }
 .icon-name {
     color: #aaa;
@@ -124,7 +129,7 @@ FXSpace {
     bottom: 10px;
 }
 .sidebar .nav > li.active-pro a{
-    background: rgba(255, 255, 255, 0.14);
+    background: #B0A8B9;
     opacity: 1;
     color: #FFFFFF;
 }

@@ -1,0 +1,51 @@
+{
+  "Dust Palette":["#845EC2","#4B4453","#B0A8B9","#FF8066"],
+
+  "Generic Gradient":["#A14747","#91445F","#76476F","#564B71","#3C4B68","#2F4858"],
+
+  "Matching Gradient":["#A14747","#AC4971","#A0599F","#7671C8","#0089E0","#009DDF"],
+
+  "Spot Palette":["#A14747","#DC7A77","#FFE4E0","#00C2FF"],
+
+  "Twisted Spot Palette":["#A14747","#00C2FF","#C6F8FF","#4C7D93"],
+
+  "Classy Palette":["#A14747","#574240","#BFA5A3","#586A21","#8C9E52"],
+
+  "Cube Palette":["#A14747","#AF7F87","#798897"],
+
+  "Switch Palette":["#A14747","#FFBAB5","#00C2FF","#F3EED9"],
+
+  "Small Switch Palette":["#A14747","#FFECEF","#B2727E"],
+
+  "Skip Gradient":["#A14747","#FFC0FF","#F289C6","#B85390"],
+
+  "Natural Palette":["#A14747","#BD827E","#FFF4F3","#F3EED9"],
+
+  "Matching Palette":["#A14747","#574240","#BFA5A3","#00709D","#00A4D4"],
+
+  "Squash Palette":["#A14747","#007845","#6357AF"],
+
+  "Grey Friends":["#A14747","#574240","#BFA5A3"],
+
+  "Dotting Palette":["#A14747","#BFA5A3","#586A21","#AAAD9B"],
+
+  "Skip Shade Gradient":["#A14747","#D56B7D","#FF93BB","#FFC0FF"],
+
+  "Threedom":["#A14747","#007527","#006BC4"],
+
+  "Highlight Palette":["#A14747","#FF7477","#F3EED9","#798897"],
+
+  "Neighbor Palette":["#A14747","#6A3F48","#AE6876","#C4ABAE"],
+
+  "Discreet Palette":["#A14747","#BD827E","#FFF3F1","#798897"],
+
+  "Dust Palette":["#A14747","#574240","#BFA5A3","#8C9E52"],
+
+  "Collective":["#A14747","#A84419","#506D00"],
+
+  "Friend palette":["#A14747","#F38F8C","#00C2FF","#0059A5"],
+
+  "Pin Palette":["#A14747","#FF7477","#F3EED9","#00C2FF"],
+
+  "Shades":["#A14747","#C36463","#E5837F","#FFA29E","#FFC2BD"]
+}
