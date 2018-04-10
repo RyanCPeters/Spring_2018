@@ -1,3 +1,19 @@
+  public static final Color ContOnesTransition = 
+  {
+    new Color(255,  63,  21),
+    new Color(127,  51,  23),
+    new Color( 85,  42,  25),
+    new Color( 63,  36,  28),
+    new Color( 51,  31,  31),
+    new Color( 42,  28,  36),
+    new Color( 36,  31,  42),
+    new Color( 31,  36,  51),
+    new Color( 28,  42,  63),
+    new Color( 25,  51,  85),
+    new Color( 23,  63, 127),
+    new Color( 21,  85, 255)
+  };
+
 public static final Integer[][] ContOnesTransition = 
 	{
 		{255,  63,  21},

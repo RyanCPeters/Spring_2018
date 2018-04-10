@@ -23,10 +23,10 @@ public class Main {
   public static void main(String[] args) {
 //    System.out.println("\nOops, wrong main for now\n");
 //    JFXVisuals.main(args);
-//    experimentWithContiguousOnesToConsole(true, true);
-    contiguousOnesMatricesToFile(0,null);
-    contiguousOnesMatricesToFile(1,null);
-    contiguousOnesMatricesToFile(2,new int[]{40,60});
+    experimentWithContiguousOnesToConsole(true, true);
+//    contiguousOnesMatricesToFile(0,null);
+//    contiguousOnesMatricesToFile(1,null);
+//    contiguousOnesMatricesToFile(2,new int[]{40,60});
   }
   
   

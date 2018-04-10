@@ -2,32 +2,35 @@ package GraphVisualization.JavaXSwing;
 
 import java.awt.*;
 
+import static GraphVisualization.JavaXSwing.StaticColorPalette.*;
+
 public enum ColorBot {
   
-  EXPLORE(StaticColorPalette.ClassyPalette),
-  MAPPER(StaticColorPalette.DustPalette),
-  INIT(StaticColorPalette.MyCustomChoice);
+  EXPLORER(awtMatchingGradient),
+  MAPPER(awtDustPalette),
+  INIT(awtMyCustomChoice);
   
-  private Color prime;
-  private Color secondary;
+  private Color lightFG;
+  private Color darkFG;
   private Color bground;
-  private Color accent1;
-  private Color accent2;
+  private Color altLighFG;
+  private Color altDarkFG;
+  private static final Color Zeros = awtMyCustomChoice[2];
   
-  ColorBot(int[][] palette) {
-    prime = new Color(palette[2][0],palette[2][1],palette[2][2]);
-    secondary = new Color(palette[1][0],palette[1][1],palette[1][2]);
-    bground = new Color(palette[0][0],palette[0][1],palette[0][2]);
+  ColorBot(Color[] palette) {
+    lightFG = palette[0];
+    darkFG = palette[1];
+    bground = palette[2];
     if(palette.length > 3){
-      accent1 = new Color(palette[3][0],palette[3][1],palette[3][2]);
+      altLighFG = palette[3];
       if(palette.length > 4){
-        accent2 = new Color(palette[4][0],palette[4][1],palette[4][2]);
+        altDarkFG = palette[4];
       }else{
-        accent2 = new Color(palette[0][0],palette[0][1],palette[0][2]);
+        altDarkFG = palette[2];
       }
     }else {
-      accent1 = new Color(palette[0][0],palette[0][1],palette[0][2]);
-      accent2 = new Color(palette[0][0],palette[0][1],palette[0][2]);
+      altLighFG = palette[0];
+      altDarkFG = palette[2];
     }
   }
   
@@ -35,19 +38,19 @@ public enum ColorBot {
     return bground;
   }
   
-  public Color getPrimaryC() {
-    return prime;
+  public Color getLightFG() {
+    return lightFG;
   }
   
-  public Color getSecondaryC() {
-    return secondary;
+  public Color getDarkFG() {
+    return darkFG;
   }
   
-  public Color getAccent1C() {
-    return accent1;
+  public Color getAltLighFG() {
+    return altLighFG;
   }
   
-  public Color getAccent2C() {
-    return accent2;
+  public Color getAltDarkFG() {
+    return altDarkFG;
   }
 }
