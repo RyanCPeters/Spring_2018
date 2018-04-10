@@ -113,10 +113,10 @@ public class MainWindowController {
     }
     boardElements = new ArrayList<>();
   
-    Function<FXMatrixElement,>
+//    Function<FXMatrixElement,>
     
-    board.getChildren().stream().parallel().collect(Collectors.toCollection
-        (ele -> boardElements.add(ele)));
+//    board.getChildren().stream().parallel().collect(Collectors.toCollection
+//        (ele -> boardElements.add(ele)));
     textBoardWidth = new Text();
     textBoardWidth.setText(String.valueOf(boardWidth));
     

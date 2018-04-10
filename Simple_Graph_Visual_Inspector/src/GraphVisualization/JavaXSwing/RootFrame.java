@@ -6,6 +6,7 @@ import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.StrokeBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -15,11 +16,13 @@ import java.util.LinkedList;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-import static GraphVisualization.JavaXSwing.StaticColorPalette.getPaletteAsAWTColor;
+import static GraphVisualization.JavaXSwing.ColorBot.EXPLORER;
+import static GraphVisualization.JavaXSwing.ColorBot.INIT;
+import static GraphVisualization.JavaXSwing.ColorBot.MAPPER;
 
 public class RootFrame extends JFrame {
   
-  enum CellState {DEFAULT,DISCOVERD,MAPPED}
+  enum CellState {DEFAULT, EXPLORED,MAPPED}
   
   public static final String[] KNOWN_FILES = {"readable_Matrix_3x4.json","Readable_Matrix_20x22.json","Readable_Matrix_40x60.json"};
   
@@ -63,11 +66,13 @@ public class RootFrame extends JFrame {
     JPanel content = new JPanel(new BorderLayout(2,2));
     for(int comps = 0; comps < fileName_ForRefMatrix.length; ++comps){
       JPanel tmp = buildMatrixPane(parseFile(fileName_ForRefMatrix[comps]));
-  
+      tmp.setDoubleBuffered(true);
+
       JButton jb = new JButton("Identify Contiguous sets of 1's");
       jb.addActionListener(new ActionListener() {
         public void actionPerformed(ActionEvent e) {
           IDContOnes.countContiguous(masterDataList.get(tPane.getSelectedIndex()),false);
+
         }
       });
       jb.setMinimumSize(new Dimension(100,25));
@@ -81,7 +86,7 @@ public class RootFrame extends JFrame {
           fileName_ForRefMatrix[comps].lastIndexOf('.')),tmp);
     }
     content.add(tPane, BorderLayout.CENTER);
-    content.setBackground(getPaletteAsAWTColor(StaticColorPalette.Shades,2));
+    content.setBackground(StaticColorPalette.awtShades[2]);
     setContentPane(content);
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     pack();
@@ -106,6 +111,7 @@ public class RootFrame extends JFrame {
         CellData<Integer> cd = new CellData<>(templateMatrix[row][col], row,col,masterDataList.get(masterDataList.size
             ()-1));
         MyComp mc = myCellFactory(cd);
+        if(!mc.isOpaque())mc.setOpaque(true);
         masterDataList.get(masterDataList.size()-1)[row][col] = mc;
         contents.add(mc);
       }
@@ -139,18 +145,23 @@ public class RootFrame extends JFrame {
     factoryJCell.setSize(5,5);
   
     // set the details pertaining to the font in the component
-//    factoryJCell.setText(cd.data.toString());
     factoryJCell.setForeground(cd.myPrime);
     
     // Now we apply boarders to this component
-    factoryJCell.setBorder(BorderFactory.createLineBorder(cd.myAcc1));
+//    factoryJCell.setBorder(BorderFactory.createLineBorder(Color.PINK));
     Border linedBorder = factoryJCell.getBorder();
   
     factoryJCell.setBorder(new CompoundBorder(emptyBorder, linedBorder));
     factoryJCell.setOpaque(true);
     return factoryJCell;
   }// EMD myCellFactory(boolean hasEmptyMargin, boolean hasLine, int height, int width)
-  
+
+  /**
+   *
+   * @param fileName
+   * @return
+   * @throws InternalError
+   */
   @SuppressWarnings("all")
   public static Integer[][] parseFile(String fileName)throws InternalError{
     String possible_errMsg;
@@ -218,15 +229,21 @@ public class RootFrame extends JFrame {
         case DEFAULT:
           setForeground(cd.getMyPrime());
           setBackground(cd.getMyBg());
+          Border emptyBorder = new EmptyBorder(1,1,1,1);
+
+          setBorder(BorderFactory.createStrokeBorder(new BasicStroke((float)2.0)));
+          Border linedBorder = getBorder();
+
+          setBorder(new CompoundBorder(emptyBorder, linedBorder));
           
           break;
         case MAPPED:
-          cd.setPallet(ColorBot.MAPPER);
+          cd.setPalette(0);
           setForeground(cd.getMyPrime());
           setBackground(cd.getMyBg());
           break;
-        case DISCOVERD:
-          cd.setPallet(ColorBot.EXPLORE);
+        case EXPLORED:
+          cd.setPalette(1);
           setForeground(cd.getMyPrime());
           setBackground(cd.getMyBg());
           break;
@@ -234,11 +251,10 @@ public class RootFrame extends JFrame {
       }
       
       if(cd.contOnesIdx > -1){
-        setForeground(
-            StaticColorPalette.getPaletteAsAWTColor(
-                StaticColorPalette.ContOnesTransition,cd.contOnesIdx
-            ));
+        setForeground( StaticColorPalette.awtContOnesTransition[cd.contOnesIdx]);
       }
+
+
     }
   
     /**
@@ -248,7 +264,13 @@ public class RootFrame extends JFrame {
     public CellData<Integer> getCd() {
       return cd;
     }
-  
+
+    public void callPapa(){
+      repaint();
+//      getParent().getParent().getParent().getParent().repaint();
+
+      getRootPane().repaint();
+    }
     /**
      *
      * @param state identifies if the cell in the default undescovered state, discovered (but not mapped), or mapped
@@ -260,6 +282,8 @@ public class RootFrame extends JFrame {
     public void update(CellState state, int contOnesIdx){
       cd.state = state;
       cd.contOnesIdx = contOnesIdx;
+      cd.setPalette(1);
+      callPapa();
     }
   
     /**
@@ -269,13 +293,17 @@ public class RootFrame extends JFrame {
      *            path the requires us to remove the fewest 1's as possible in order to satisfy that goal.
      */
     public void update(Integer val){
+
       cd.setData(val);
+      cd.setPalette(-1);
+      callPapa();
     }
   }// end of class MyComp
   
   ///////////////////////////////////////////////////////////////////////////////////
   ///////////   The inner class, CellData<V extends Comparable>, begins bellow
   ///////////////////////////////////////////////////////////////////////////////////
+
   /**
    *
    * @param <V>
@@ -296,7 +324,15 @@ public class RootFrame extends JFrame {
      */
     private int contOnesIdx = -1;
     CellState state = CellState.DEFAULT;
-  
+
+    /**
+     *
+     * @return
+     */
+    public final int getContOnesIdx() {
+      return contOnesIdx;
+    }
+
     // As the matrix is populated, we will fill it from top left to bottom right.
     //
     // The safest logic for creating a linked web of cells is to instruct the cells to
@@ -315,8 +351,6 @@ public class RootFrame extends JFrame {
      */
     CellData(){
       this(null,-1,-1,null);
-//      data = null;
-//      up = down = left = right = null;
     }
   
     /**
@@ -328,11 +362,7 @@ public class RootFrame extends JFrame {
      */
     CellData(V data, int x, int y, MyComp[][] matrix){
       if(x > -1) {
-        myPrime = ColorBot.INIT.getPrimaryC();
-        mySec = ColorBot.INIT.getSecondaryC();
-        myBg = ColorBot.INIT.getBG();
-        myAcc1 = ColorBot.INIT.getAccent1C();
-        myAcc2 = ColorBot.INIT.getAccent2C();
+        setPalette();
         position[0] = x;
         position[1] = y;
         this.data = data;
@@ -407,14 +437,43 @@ public class RootFrame extends JFrame {
   
     /**
      *
-     * @param cb
+     * @param dataValForUsingAcc This lets us handle the task of assigning different text colors based upon
+     *                           the CellState value stored in this CellData object, and the type V val stored
+     *                           here when checked against this specific use case value.
      */
-    public void setPallet(ColorBot cb){
-      myPrime = cb.getPrimaryC();
-      mySec = cb.getSecondaryC();
-      myBg = cb.getBG();
-      myAcc1 = cb.getAccent1C();
-      myAcc2 = cb.getAccent2C();
+    public void setPalette(V dataValForUsingAcc){
+      switch (state){
+        case EXPLORED:
+          mySec =  EXPLORER.getDarkFG();
+          myBg = EXPLORER.getBG();
+          myAcc1 = EXPLORER.getAltLighFG();
+          myAcc2 = EXPLORER.getAltDarkFG();
+          if(data != null && data.equals(dataValForUsingAcc))myPrime = EXPLORER.getAltLighFG();
+          else if(data == null)myPrime = EXPLORER.getAltDarkFG();
+          break;
+        case MAPPED:
+          mySec = MAPPER.getDarkFG();
+          myBg = MAPPER.getBG();
+          myAcc1 = MAPPER.getAltLighFG();
+          myAcc2 = MAPPER.getAltDarkFG();
+          if(data != null && data.equals(dataValForUsingAcc))myPrime = MAPPER.getAltLighFG();;
+          break;
+          default:
+            myPrime = INIT.getDarkFG();
+            mySec = INIT.getDarkFG();
+            myBg = INIT.getBG();
+            myAcc1 = INIT.getAltLighFG();
+            myAcc2 = INIT.getAltDarkFG();
+            break;
+      }
+
+    }
+
+    /**
+     *
+     */
+    public void setPalette(){
+      setPalette(null);
     }
   
     /**
@@ -524,10 +583,11 @@ public class RootFrame extends JFrame {
      * @return
      */
     public CellState getCellState(){return state;}
-    
-    
-    
-    
+
+
+    public void setAcc1() {
+      myAcc1 = StaticColorPalette.awtContOnesTransition[contOnesIdx];
+    }
   }// end of class CellData
 
 }// end of class RootFrame
@@ -537,9 +597,9 @@ public class RootFrame extends JFrame {
 ///////////////////////////////////////////////////////////////////////////////////
 @SuppressWarnings("all")
 class IDContOnes {
-  
   // to make it easier to handle directional checks, use this 2D array of int offsets
   private static final int dirs[][] = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}};
+  private static int placeInList = 0;
   
   /**
    * @param checked
@@ -559,7 +619,7 @@ class IDContOnes {
     // sanity checking the indices for out-of-bounds conditions
     checked[x_][y_] = true;
 //    colorArr[x_][y_] = ConsoleColorEnum.assignColor(false, false, true, String.valueOf(arr[x_][y_]));
-    arr[x_][y_].update(RootFrame.CellState.DISCOVERD, colorNumber);
+    arr[x_][y_].update(RootFrame.CellState.EXPLORED, colorNumber);
     boolean dirsToFollow[] = {false, false, false, false};
     for (int dir = 0; dir < 4; ++dir) {
       int x = x_ + dirs[dir][0], y = y_ + dirs[dir][1];
@@ -596,9 +656,7 @@ class IDContOnes {
     while (!loc_queue.isEmpty()) {
       int loc[] = loc_queue.pollFirst();
       checked[loc[0]][loc[1]] = true;
-//      colorArr[loc[0]][loc[1]] =
-//          ConsoleColorEnum.assignColor(false, false, true, String.valueOf(arr[loc[0]][loc[1]].getCd().getData()));
-      arr[loc[0]][loc[1]].update(RootFrame.CellState.DISCOVERD, colorNumber);
+      arr[loc[0]][loc[1]].update(RootFrame.CellState.EXPLORED, colorNumber); // There's a call to update, so shits getting drawn
       for (int dir[] : dirs) {
         int dx = loc[0] + dir[0], dy = loc[1] + dir[1];
         if (dx >= 0 && dx < cols && dy >= 0 && dy < rows && !checked[dx][dy] && arr[dx][dy].getCd().getData() == 1) {
@@ -609,32 +667,54 @@ class IDContOnes {
   }
   
   @SuppressWarnings("all")
-  public static int countContiguous(RootFrame.MyComp[][] arr, boolean use_recursion)
-  {
-    int cols = arr.length, rows = arr[0].length;
+  public static int countContiguous(RootFrame.MyComp[][] arr, boolean use_recursion) {
+
     int count = 0;
-    ConsoleColorEnum.resetPlaceInList();
-    boolean checkedArr[][] = new boolean[cols][rows];
-    
-    int colorNumber = 0;
-    
-    for (int x = 0; x < cols; ++x) {
-      for (int y = 0; y < rows; ++y) {
-        if (!checkedArr[x][y]) {
-          checkedArr[x][y] = true;
-          if (arr[x][y].getCd().getData() == 1) {
-            ++count;
-            if (use_recursion)
-              recursiveDFS(checkedArr, arr, x, y, rows, cols, colorNumber);
-            else
-              iterativeBFS(checkedArr, arr, x, y, rows, cols,colorNumber);
-          } else {
+    try {
+      int cols = arr.length, rows = arr[0].length;
+      ConsoleColorEnum.resetPlaceInList();
+      boolean checkedArr[][] = new boolean[cols][rows];
+
+      int colorNumber = 0;
+      boolean incColoNum = true;
+      for (int x = 0; x < cols; ++x) {
+        for (int y = 0; y < rows; ++y) {
+
+          Thread.sleep(100);
+          if (!checkedArr[x][y]) {
+            checkedArr[x][y] = true;
+            if (arr[x][y].getCd().getData() == 1) {
+              incColoNum = true;
+              ++count;
+              if (use_recursion)
+                recursiveDFS(checkedArr, arr, x, y, rows, cols, colorNumber);
+              else
+                iterativeBFS(checkedArr, arr, x, y, rows, cols, colorNumber);
+            } else {
+              if (incColoNum) {
+                incColoNum = false;
+                colorNumber = (colorNumber + 1) % StaticColorPalette.awtContOnesTransition.length;
+              }
 //            colorArray[x][y] = ConsoleColorEnum.assignColor(false, false, true, "0");
-            arr[x][y].update(RootFrame.CellState.DISCOVERD,-1);
+              arr[x][y].update(RootFrame.CellState.EXPLORED, -1);
+            }
           }
         }
       }
+    } catch (Throwable t) {
+      System.err.printf("", t.getMessage());
     }
     return count;
   }
-}
+
+  private static Color deriveColor(/*boolean increment,*/ RootFrame.MyComp mc){
+
+      return (mc.getCd().getData() == 1)?
+              StaticColorPalette.awtContOnesTransition[mc.getCd().getContOnesIdx()]:
+              Color.BLACK;
+    }
+
+  public static void resetPlaceInList(){
+    placeInList = 0;
+  }
+} // end of class IDContOnes

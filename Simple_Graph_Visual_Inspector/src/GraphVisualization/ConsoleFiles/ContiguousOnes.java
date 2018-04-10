@@ -64,7 +64,7 @@ public class ContiguousOnes {
           loc_queue.add(new int[]{dx,dy});
         }
       }
-    }
+    } // end of while(!loc_queue.isEmpty())
   }
   
   public static int countContiguous(int[][] arr, int rows, int cols, String[][]
@@ -74,16 +74,16 @@ public class ContiguousOnes {
     boolean  checkedArr[][] = new boolean[cols][rows];
     
     int colorNumber = 0;
-    
-    for(int x = 0; x < cols; ++x) {
-      for (int y = 0; y < rows; ++y) {
+
+    for (int y = 0; y < rows; ++y) {// this is where we are in terms of up and down
+      for(int x = 0; x < cols; ++x) {// this is where we are in terms of left and right
         if (!checkedArr[x][y]) {
           checkedArr[x][y] = true;
           if (arr[x][y] == 1) {
             ++count;
-            if(use_recursion)
-              recursiveDFS(checkedArr, arr, x, y, rows, cols, colorArray, colorNumber);
-            else
+//            if(use_recursion)
+//              recursiveDFS(checkedArr, arr, x, y, rows, cols, colorArray, colorNumber);
+//            else
               iterativeBFS(checkedArr, arr, x, y, rows, cols, colorArray, colorNumber);
           }else {
             colorArray[x][y] = ConsoleColorEnum.assignColor(false,false, true,"0");
@@ -93,4 +93,5 @@ public class ContiguousOnes {
     }
     return count;
   }
-}
+
+}// end of class ContiguousOnes
