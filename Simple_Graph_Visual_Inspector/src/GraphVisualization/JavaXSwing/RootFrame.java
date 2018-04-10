@@ -680,7 +680,7 @@ class IDContOnes {
       for (int x = 0; x < cols; ++x) {
         for (int y = 0; y < rows; ++y) {
 
-          Thread.sleep(100);
+//          Thread.sleep(100);
           if (!checkedArr[x][y]) {
             checkedArr[x][y] = true;
             if (arr[x][y].getCd().getData() == 1) {
