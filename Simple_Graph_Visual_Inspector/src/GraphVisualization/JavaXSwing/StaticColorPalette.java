@@ -61,7 +61,7 @@ public class StaticColorPalette {
     /**
      *
      */
-    public static final Color[] awtContOnesTransition =
+    public static final Color[] bad_awtContOnesTransition =
             {
                     new Color(255,  73,  31),
                     new Color(137,  61,  33),
@@ -76,10 +76,42 @@ public class StaticColorPalette {
                     new Color( 33,  73, 137),
                     new Color( 31,  95, 255)
             };
-    /**
+  public static final Color[] awtContOnesTransition =
+      {
+          new Color(255,  46,  31),
+          new Color(137,  52,  33),
+          new Color( 95,  61,  35),
+          new Color( 73,  73,  38),
+          new Color( 61,  95,  41),
+          new Color( 52, 137,  46),
+          new Color( 46, 255,  52),
+          new Color( 41, 137,  61),
+          new Color( 38,  95,  73),
+          new Color( 35,  73,  95),
+          new Color( 33,  61, 137),
+          new Color( 31,  52, 255)
+      };
+  
+  public static final Integer[][] intContOnesTransition =
+      {
+          {255,  46,  31},
+          {137,  52,  33},
+          { 95,  61,  35},
+          { 73,  73,  38},
+          { 61,  95,  41},
+          { 52, 137,  46},
+          { 46, 255,  52},
+          { 41, 137,  61},
+          { 38,  95,  73},
+          { 35,  73,  95},
+          { 33,  61, 137},
+          { 31,  52, 255}
+      };
+  
+  /**
      *
      */
-    public static final Integer[][] intContOnesTransition =
+    public static final Integer[][] bad_intContOnesTransition =
             {
                     {255,  73,  31},
                     {137,  61,  33},

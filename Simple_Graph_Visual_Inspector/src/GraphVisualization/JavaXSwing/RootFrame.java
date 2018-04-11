@@ -6,13 +6,13 @@ import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
-import javax.swing.border.StrokeBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.Stack;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -20,7 +20,8 @@ import static GraphVisualization.JavaXSwing.ColorBot.EXPLORER;
 import static GraphVisualization.JavaXSwing.ColorBot.INIT;
 import static GraphVisualization.JavaXSwing.ColorBot.MAPPER;
 
-public class RootFrame extends JFrame {
+public class RootFrame {
+  JFrame frame;
   
   enum CellState {DEFAULT, EXPLORED,MAPPED}
   
@@ -59,20 +60,123 @@ public class RootFrame extends JFrame {
    * game's set up.
    */
   public RootFrame(String[] fileName_ForRefMatrix, int x, int y) {
-    super("Visual Matrix Traversals");
+    frame = new JFrame("Visual Matrix Traversals");
+    frame.setLayout(new BorderLayout(1,1));
+  
+    JPanel content = new JPanel(new BorderLayout(2,2));
+    JTabbedPane tPane = generateFrameContents(fileName_ForRefMatrix);
+    
+    content.add(tPane, BorderLayout.CENTER);
+    content.setBackground(StaticColorPalette.awtShades[2]);
+    frame.setContentPane(content);
+    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    frame.pack();
+    frame.validate();
+    frame.setLocationRelativeTo(null);
+    frame.setVisible(true);
+  
+  }// end RootFrame constructor
+  
+  private JTabbedPane generateFrameContents(String[] fileName_ForRefMatrix){
+  
+    JMenuBar menuBar=new JMenuBar();
+    frame.setJMenuBar(menuBar);
+    JMenu file=new JMenu("File");
+    JMenuItem exit=new JMenuItem("Exit");
+    JMenuItem reset=new JMenuItem("Reset");
+    file.add(exit);
+    file.add(reset);
+    menuBar.add(file);
+    exit.addActionListener(new ActionListener(){
+      public void actionPerformed(ActionEvent e){
+        System.exit(0);
+      }
+    });
+  
+    reset.addActionListener(new ActionListener(){//help me
+      public void actionPerformed(ActionEvent e){
+        
+        frame.setVisible(false);
+        
+        frame.getContentPane().removeAll();
+        JTabbedPane tNewPane = new JTabbedPane();
+        for(int comps = 0; comps < fileName_ForRefMatrix.length; ++comps){
+          
+          int x =  masterDataList.get(comps).length, y = masterDataList.get(comps)[0].length;
+          
+          JPanel tmp = new JPanel(new BorderLayout(2, 2));
+          JPanel contents = new JPanel(new GridLayout(x, y));
+          JButton jb = new JButton(1 + comps + ") Identify Contiguous sets of 1s");
+          
+          jb.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+              Explorer actionExplorer = new Explorer("1",
+                  0,
+                  masterDataList.get(tNewPane.getSelectedIndex()).length,
+                  0,
+                  masterDataList.get(tNewPane.getSelectedIndex())[0].length,
+                  tNewPane,
+                  tNewPane.getSelectedIndex());
+      
+              new Thread(actionExplorer).start();
+      
+      
+            }
+          });
+          
+          jb.setMinimumSize(new Dimension(100, 25));
+          JPanel boxer = new JPanel();
+          boxer.setLayout(new BoxLayout(boxer, BoxLayout.X_AXIS));
+          boxer.add(jb);
+          boxer.add(Box.createGlue());
+          boxer.add(new JLabel("Count of sets of contiguous ones found so far: "));
+          boxer.add(new JLabel("0"));
+          boxer.add(Box.createGlue());
+          tmp.add(boxer, BorderLayout.NORTH);
+          
+          for(int row = 0; row < x;++row) {
+            for(int col = 0; col < y; ++col) {
+              
+              contents.add(masterDataList.get(comps)[row][col]);
+  
+              
+            }
+          }
+          tmp.add(contents,BorderLayout.CENTER);
+          tmp.setPreferredSize(new Dimension(y*CELL*2,x*CELL*2));
+          tmp.setMinimumSize(new Dimension(y*CELL*2,x*CELL*2));
+          tNewPane.add(fileName_ForRefMatrix[comps].substring(fileName_ForRefMatrix[comps].lastIndexOf('_') + 1,
+              fileName_ForRefMatrix[comps].lastIndexOf('.')), tmp);
+        }
+        
+        frame.pack();
+        frame.validate();
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
+      }
+    });
+  
+  
     masterDataList = new ArrayList<>(fileName_ForRefMatrix.length);
     JTabbedPane tPane = new JTabbedPane();
-    
-    JPanel content = new JPanel(new BorderLayout(2,2));
+  
     for(int comps = 0; comps < fileName_ForRefMatrix.length; ++comps){
       JPanel tmp = buildMatrixPane(parseFile(fileName_ForRefMatrix[comps]));
-      tmp.setDoubleBuffered(true);
-
-      JButton jb = new JButton("Identify Contiguous sets of 1's");
+      
+      JButton jb = new JButton(1+comps+") Identify Contiguous sets of 1s");
       jb.addActionListener(new ActionListener() {
         public void actionPerformed(ActionEvent e) {
-          IDContOnes.countContiguous(masterDataList.get(tPane.getSelectedIndex()),false);
-
+          Explorer actionExplorer = new Explorer("1",
+              0,
+              masterDataList.get(tPane.getSelectedIndex()).length,
+              0,
+              masterDataList.get(tPane.getSelectedIndex())[0].length,
+              tPane,
+              tPane.getSelectedIndex());
+        
+          new Thread(actionExplorer).start();
+        
+        
         }
       });
       jb.setMinimumSize(new Dimension(100,25));
@@ -80,20 +184,17 @@ public class RootFrame extends JFrame {
       boxer.setLayout(new BoxLayout(boxer, BoxLayout.X_AXIS));
       boxer.add(jb);
       boxer.add(Box.createGlue());
+      boxer.add(new JLabel("Count of sets of contiguous ones found so far: "));
+      boxer.add(new JLabel("0"));
+      boxer.add(Box.createGlue());
       tmp.add(boxer, BorderLayout.NORTH);
-      
+    
       tPane.add(fileName_ForRefMatrix[comps].substring(fileName_ForRefMatrix[comps].lastIndexOf('_')+1,
           fileName_ForRefMatrix[comps].lastIndexOf('.')),tmp);
     }
-    content.add(tPane, BorderLayout.CENTER);
-    content.setBackground(StaticColorPalette.awtShades[2]);
-    setContentPane(content);
-    setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    pack();
-    setLocationRelativeTo(null);
-    setVisible(true);
-  
-  }// end RootFrame constructor
+    
+    return tPane;
+  }
   
   public ArrayList<MyComp[][]> getMasterDataList(){
     return masterDataList;
@@ -200,6 +301,168 @@ public class RootFrame extends JFrame {
     }
     throw new InternalError("\n\n[-] Internal Logic Error inside\n\tpublic static ArrayList<String> parseFile" +
                             "(String fileName)\n"+possible_errMsg);
+  }
+  
+  
+  ///////////////////////////////////////////////////////////////////////////////////
+  ///////////   The inner class,   class Explorer extends Thread , begins bellow
+  ///////////////////////////////////////////////////////////////////////////////////
+  class Explorer implements Runnable {
+    int x_left, x_right, y_top, y_bot,numberOfElements, maxThreads,groupNumber,threadNumber;
+    JTabbedPane pane;
+    IDContOnes logic;
+    String name;
+  
+    /**
+     * @param name a name for this thread, should probably use something meaningful.
+     * @param x_left the left most column this thread should consider when rastering the matrix
+     * @param x_right the right most column this thread should consider when rastering the matrix
+     * @param y_top the top my row this thread should consider when rastering the matrix
+     * @param y_bot the bottom most row this thread should consider when rastering the matrix
+     * @param tPane the JTabbedPane which we will use as the indicator for which index within the masterDataList we
+     * @param groupNumber
+     */
+    public Explorer(String name,
+                    int x_left,
+                    int x_right,
+                    int y_top,
+                    int y_bot,
+                    JTabbedPane tPane,
+                    int groupNumber)
+    {
+      this.x_left = x_left;
+      this.x_right = x_right;
+      this.y_top = y_top;
+      this.y_bot = y_bot;
+      this.pane = tPane;
+      this.numberOfElements = (x_right - x_left)*(y_bot - y_top);
+      this.logic = new IDContOnes(masterDataList.get(pane.getSelectedIndex()), name);
+      this.maxThreads = (numberOfElements/20 > 8)? 8 : numberOfElements/20 < 1 ? 1 : numberOfElements/20;
+      this.threadNumber = 1;
+      this.groupNumber = groupNumber;
+      
+    }
+  
+    /**
+     *  @param name
+     * @param x_left
+     * @param x_right
+     * @param y_top
+     * @param y_bot
+     * @param tPane
+     * @param groupNumber
+     * @param threadNumber
+     * @param maxThreads
+     * @param logic
+     */
+    private Explorer(String name,
+                     int x_left,
+                     int x_right,
+                     int y_top,
+                     int y_bot,
+                     JTabbedPane tPane,
+                     int groupNumber,
+                     int threadNumber,
+                     int maxThreads,
+                     IDContOnes logic)
+    {
+      this.x_left = x_left;
+      this.x_right = x_right;
+      this.y_top = y_top;
+      this.y_bot = y_bot;
+      this.pane = tPane;
+      this.groupNumber = groupNumber;
+      this.threadNumber = threadNumber;
+      this.maxThreads = maxThreads;
+      this.logic = logic;
+    }
+  
+    /**
+     *
+     */
+    @Override
+    public void run() {
+      int newExplorerNums = threadNumber+1;
+      while(--maxThreads > 0){
+        
+        int dx_right = x_right, dy_bott = y_bot;
+        if((x_right -x_left)>=(y_bot-y_top)){
+          dx_right = (x_right+x_left)/2;
+          
+          new Thread(new Explorer(String.valueOf(newExplorerNums++),
+              dx_right,
+              x_right,
+              y_top,
+              y_bot,
+              pane,
+              groupNumber,
+              newExplorerNums++,
+              maxThreads,
+              logic));
+          x_right = dx_right;
+        }else{
+          dy_bott = (y_bot+y_top)/2;
+  
+          new Thread(new Explorer(String.valueOf(newExplorerNums++),
+              dx_right,
+              x_right,
+              dy_bott,
+              y_bot,
+              pane,
+              groupNumber,
+              newExplorerNums++,
+              maxThreads,
+              logic));
+          y_bot = dy_bott;
+        }
+        
+      }
+      logic.countContiguous(new int[]{x_right,y_top},new int[]{x_right,y_bot});
+    }// end of public void run()
+  
+    public String getName() {
+      return name;
+    }
+  
+    public int getX_left() {
+      return x_left;
+    }
+  
+    public int getX_right() {
+      return x_right;
+    }
+  
+    public int getY_top() {
+      return y_top;
+    }
+  
+    public int getY_bot() {
+      return y_bot;
+    }
+  
+    public int getNumberOfElements() {
+      return numberOfElements;
+    }
+  
+    public int getMaxThreads() {
+      return maxThreads;
+    }
+  
+    public int getGroupNumber() {
+      return groupNumber;
+    }
+  
+    public int getThreadNumber() {
+      return threadNumber;
+    }
+  
+    public JTabbedPane getPane() {
+      return pane;
+    }
+  
+    public IDContOnes getLogic() {
+      return logic;
+    }
   }
   
   ///////////////////////////////////////////////////////////////////////////////////
@@ -317,6 +580,8 @@ public class RootFrame extends JFrame {
     private Color myBg;
     private Color myAcc1;
     private Color myAcc2;
+    
+    private String discoveredByThreadName = "-";
   
   
     /**
@@ -466,9 +731,24 @@ public class RootFrame extends JFrame {
             myAcc2 = INIT.getAltDarkFG();
             break;
       }
-
     }
-
+  
+    /**
+     *
+     * @param discoveredByThreadName
+     */
+    protected void setDiscoveredByThreadName(String discoveredByThreadName) {
+      this.discoveredByThreadName = discoveredByThreadName;
+    }
+  
+    /**
+     *
+     * @return
+     */
+    public String getDiscoveredByThreadName() {
+      return discoveredByThreadName;
+    }
+  
     /**
      *
      */
@@ -600,6 +880,14 @@ class IDContOnes {
   // to make it easier to handle directional checks, use this 2D array of int offsets
   private static final int dirs[][] = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}};
   private static int placeInList = 0;
+  private RootFrame.MyComp[][] arr;
+  private static int count = 0;
+  private String threadName;
+  
+  public IDContOnes(RootFrame.MyComp[][] ref, String ThreadName) {
+    this.arr = ref;
+    this.threadName = ThreadName;
+  }
   
   /**
    * @param checked
@@ -613,7 +901,7 @@ class IDContOnes {
    * @return true until the x_ or y_ point beyond the array's bounds.
    */
   @SuppressWarnings("all")
-  private static void recursiveDFS(boolean[][] checked, RootFrame.MyComp[][] arr, int x_, int y_, int rows, int cols,
+  private void recursiveDFS(boolean[][] checked, RootFrame.MyComp[][] arr, int x_, int y_, int rows, int cols,
                                    int colorNumber) {
     
     // sanity checking the indices for out-of-bounds conditions
@@ -632,8 +920,17 @@ class IDContOnes {
     }
   }
   
+  /**
+   *
+   * @param x_
+   * @param y_
+   * @param rows
+   * @param cols
+   * @param checked
+   * @return
+   */
   @SuppressWarnings("all")
-  private static boolean validIndexToCheck(int x_, int y_, int rows, int cols, boolean[][] checked) {
+  private boolean validIndexToCheck(int x_, int y_, int rows, int cols, boolean[][] checked) {
     return (x_ >= 0 && x_ < cols) && (y_ >= 0 && y_ < rows) && !checked[x_][y_];
   }
   
@@ -646,56 +943,70 @@ class IDContOnes {
    * @param cols
    * @param colorArr
    * @param colorNumber
+   * @return if this BFS encounters the edge of it's bounds, it will check if the MyComp object it's currently at has
+   *          a neighbor in that direction that would be considered a contiguous part of this set of 1's. Should the
+   *          neighbor have a 1, then check if the neighbor has already been explored.
+   *
+   *          If any neighbor cell, outside of this thread's search boundaries, would be considered contiguous with
+   *          this set of ones, then after we exhaust all contiguous ones in this set we need to
+   *
    */
   @SuppressWarnings("all")
-  private static void iterativeBFS(boolean[][] checked, RootFrame.MyComp[][] arr, int x_, int y_, int rows, int cols,
+  private boolean iterativeBFS(boolean[][] checked, RootFrame.MyComp[][] arr, int x_, int y_, int rows, int cols,
                                    int colorNumber) {
+    int countOfOnesFounHere = 0;
+    Stack<int[]> foundLocs = new Stack<>();
     LinkedList<int[]> loc_queue = new LinkedList<>();
     loc_queue.add(new int[]{x_, y_});
     
     while (!loc_queue.isEmpty()) {
-      int loc[] = loc_queue.pollFirst();
-      checked[loc[0]][loc[1]] = true;
+      int[] loc = loc_queue.pollFirst();
+      foundLocs.push(loc);
+      ++countOfOnesFounHere;
+      arr[loc[0]][loc[1]].getCd().setDiscoveredByThreadName(threadName);
       arr[loc[0]][loc[1]].update(RootFrame.CellState.EXPLORED, colorNumber); // There's a call to update, so shits getting drawn
       for (int dir[] : dirs) {
         int dx = loc[0] + dir[0], dy = loc[1] + dir[1];
-        if (dx >= 0 && dx < cols && dy >= 0 && dy < rows && !checked[dx][dy] && arr[dx][dy].getCd().getData() == 1) {
-          loc_queue.add(new int[]{dx, dy});
+        
+        if (dx >= 0 && dx < cols && dy >= 0 && dy < rows ) {
+          if(arr[dx][dy].getCd().state == RootFrame.CellState.EXPLORED) {
+            if(!arr[dx][dy].getCd().getDiscoveredByThreadName().equals(threadName)){
+              // TODO: 4/10/2018 using the name of the thread that already discovered this cell, compare who has
+              // found more so far, then the smaller collection hands off it's list of locs
+            }
+          } else if( arr[dx][dy].getCd().getData() == 1 )loc_queue.add(new int[]{dx, dy});
         }
       }
     }
+    return true;
   }
   
+  /**
+   *
+   * @param arr
+   * @param initPos
+   * @param endPos
+   * @return
+   */
   @SuppressWarnings("all")
-  public static int countContiguous(RootFrame.MyComp[][] arr, boolean use_recursion) {
-
-    int count = 0;
+  public int countContiguous(int[] initPos, int[] endPos) {
+//    int count = 0;
     try {
       int cols = arr.length, rows = arr[0].length;
       ConsoleColorEnum.resetPlaceInList();
       boolean checkedArr[][] = new boolean[cols][rows];
-
+    
       int colorNumber = 0;
-      boolean incColoNum = true;
-      for (int x = 0; x < cols; ++x) {
-        for (int y = 0; y < rows; ++y) {
+      for (int x = initPos[0]; x < endPos[0]; ++x) {
+        for (int y = initPos[1]; y < endPos[0]; ++y) {
 
-          Thread.sleep(100);
           if (!checkedArr[x][y]) {
             checkedArr[x][y] = true;
             if (arr[x][y].getCd().getData() == 1) {
-              incColoNum = true;
-              ++count;
-              if (use_recursion)
-                recursiveDFS(checkedArr, arr, x, y, rows, cols, colorNumber);
-              else
-                iterativeBFS(checkedArr, arr, x, y, rows, cols, colorNumber);
-            } else {
-              if (incColoNum) {
-                incColoNum = false;
-                colorNumber = (colorNumber + 1) % StaticColorPalette.awtContOnesTransition.length;
+              if(iterativeBFS(checkedArr, arr, x, y, rows, cols, count%12)) {
+                ++count;
               }
-//            colorArray[x][y] = ConsoleColorEnum.assignColor(false, false, true, "0");
+            } else {
               arr[x][y].update(RootFrame.CellState.EXPLORED, -1);
             }
           }
@@ -706,15 +1017,23 @@ class IDContOnes {
     }
     return count;
   }
-
-  private static Color deriveColor(/*boolean increment,*/ RootFrame.MyComp mc){
-
+  
+  /**
+   *
+   * @param mc
+   * @return
+   */
+  private Color deriveColor(/*boolean increment,*/ RootFrame.MyComp mc){
       return (mc.getCd().getData() == 1)?
               StaticColorPalette.awtContOnesTransition[mc.getCd().getContOnesIdx()]:
               Color.BLACK;
     }
-
-  public static void resetPlaceInList(){
+  
+  /**
+   *
+   */
+  public void resetPlaceInList(){
     placeInList = 0;
   }
+
 } // end of class IDContOnes
