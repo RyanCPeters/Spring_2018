@@ -6,19 +6,50 @@ import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
-import javax.swing.border.StrokeBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.function.Function;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import static GraphVisualization.JavaXSwing.ColorBot.EXPLORER;
 import static GraphVisualization.JavaXSwing.ColorBot.INIT;
 import static GraphVisualization.JavaXSwing.ColorBot.MAPPER;
+
+/*
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        Graphics2D g2d = (Graphics2D) g;
+        g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+        int w = getWidth();
+        int h = getHeight();
+        Color color1 = Color.RED;
+        Color color2 = Color.GREEN;
+        GradientPaint gp = new GradientPaint(0, 0, color1, 0, h, color2);
+        g2d.setPaint(gp);
+        g2d.fillRect(0, 0, w, h);
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                JFrame frame = new JFrame();
+                TestPanel panel = new TestPanel();
+                frame.add(panel);
+                frame.setSize(200, 200);
+                frame.setLocationRelativeTo(null);
+                frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                frame.setVisible(true);
+            }
+        });
+    }
+*/
 
 public class RootFrame extends JFrame {
   
@@ -58,15 +89,25 @@ public class RootFrame extends JFrame {
    * the number of rows and columns that will be used for the instantiation of any particular
    * game's set up.
    */
-  public RootFrame(String[] fileName_ForRefMatrix, int x, int y) {
+  public RootFrame(String[] fileName_ForRefMatrix, int x, int y) throws UnsupportedLookAndFeelException {
     super("Visual Matrix Traversals");
+    try {
+      for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+        if ("Nimbus".equals(info.getName())) {
+          UIManager.setLookAndFeel(info.getClassName());
+          break;
+        }
+      }
+    } catch (Exception e) {
+      // If Nimbus is not available, you can set the GUI to another look and feel.
+    }
+    
     masterDataList = new ArrayList<>(fileName_ForRefMatrix.length);
     JTabbedPane tPane = new JTabbedPane();
-    
     JPanel content = new JPanel(new BorderLayout(2,2));
+    
     for(int comps = 0; comps < fileName_ForRefMatrix.length; ++comps){
       JPanel tmp = buildMatrixPane(parseFile(fileName_ForRefMatrix[comps]));
-      tmp.setDoubleBuffered(true);
 
       JButton jb = new JButton("Identify Contiguous sets of 1's");
       jb.addActionListener(new ActionListener() {
@@ -77,6 +118,8 @@ public class RootFrame extends JFrame {
       });
       jb.setMinimumSize(new Dimension(100,25));
       JPanel boxer = new JPanel();
+      boxer.setBackground(Color.BLACK);
+      boxer.setOpaque(true);
       boxer.setLayout(new BoxLayout(boxer, BoxLayout.X_AXIS));
       boxer.add(jb);
       boxer.add(Box.createGlue());
@@ -87,6 +130,8 @@ public class RootFrame extends JFrame {
     }
     content.add(tPane, BorderLayout.CENTER);
     content.setBackground(StaticColorPalette.awtShades[2]);
+    content.setBackground(Color.BLACK);
+    content.setOpaque(true);
     setContentPane(content);
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     pack();
@@ -103,6 +148,8 @@ public class RootFrame extends JFrame {
     int x = templateMatrix.length, y = templateMatrix[0].length;
     JPanel ret = new JPanel(new BorderLayout(2,2));
     JPanel contents = new JPanel(new GridLayout(x,y));
+    contents.setBackground(Color.BLACK);
+    contents.setOpaque(true);
     MyComp[][] ref = new MyComp[x][y];
     masterDataList.add(ref);
     for(int row = 0; row < x; ++row){
@@ -110,7 +157,7 @@ public class RootFrame extends JFrame {
   
         CellData<Integer> cd = new CellData<>(templateMatrix[row][col], row,col,masterDataList.get(masterDataList.size
             ()-1));
-        MyComp mc = myCellFactory(cd);
+        MyComp mc = new MyComp(cd);
         if(!mc.isOpaque())mc.setOpaque(true);
         masterDataList.get(masterDataList.size()-1)[row][col] = mc;
         contents.add(mc);
@@ -121,40 +168,6 @@ public class RootFrame extends JFrame {
     ret.setMinimumSize(new Dimension(y*CELL*2,x*CELL*2));
     return ret;
   }
-  
-  /**public JComponent myCellFactory( boolean hasEmptyMargin, boolean hasLine, int height, int width, Color c)
-   * <p>
-   * Use this method to create an empty JComponent with one of four border
-   * configurations
-   * <p>
-   * The border options are:
-   * <ul>
-   * 	<li>a basic empty margin border for spacing </li>
-   * 	<li>a basic black line border with an even line around the objects perimeter </li>
-   * 	<li>a combo border which has the empty margin surrounding the black line</li>
-   * 	<li>or, a borderless component </li>
-   * </ul>
-   */
-  private MyComp myCellFactory(CellData<Integer> cd){
-  
-    MyComp factoryJCell = new MyComp(cd);
-    Border emptyBorder = new EmptyBorder(1,1,1,1);
-  
-    factoryJCell.setMinimumSize(new Dimension(5,5));
-    factoryJCell.setPreferredSize(new Dimension(5,5));
-    factoryJCell.setSize(5,5);
-  
-    // set the details pertaining to the font in the component
-    factoryJCell.setForeground(cd.myPrime);
-    
-    // Now we apply boarders to this component
-//    factoryJCell.setBorder(BorderFactory.createLineBorder(Color.PINK));
-    Border linedBorder = factoryJCell.getBorder();
-  
-    factoryJCell.setBorder(new CompoundBorder(emptyBorder, linedBorder));
-    factoryJCell.setOpaque(true);
-    return factoryJCell;
-  }// EMD myCellFactory(boolean hasEmptyMargin, boolean hasLine, int height, int width)
 
   /**
    *
@@ -205,16 +218,23 @@ public class RootFrame extends JFrame {
   ///////////////////////////////////////////////////////////////////////////////////
   ///////////   The inner class,   class MyComp extends JLabel , begins bellow
   ///////////////////////////////////////////////////////////////////////////////////
-  class MyComp extends JLabel {
+  class MyComp extends JPanel {
+    private JLabel label;
     private CellData<Integer> cd;
-  
+    private boolean isDrawn = false;
+    
     /**
      *
      * @param data the CellData object that holds the needed information for building this component
      */
     MyComp(CellData<Integer> data){
-      super(data.data.toString(),SwingConstants.CENTER);
+      super(false);
+      setLayout(new GridLayout(1,1));
+      label = new JLabel(data.data.toString(),SwingConstants.CENTER);
       this.cd = data;
+      label.setText(data.getData().toString());
+      label.setOpaque(false);
+      add(label);
     }
   
     /**
@@ -224,37 +244,109 @@ public class RootFrame extends JFrame {
     @Override
     protected void paintComponent(Graphics g) {
       super.paintComponent(g);
-      switch (cd.getCellState()){
+      Function<Graphics,Graphics2D> circleGradientLambda = new Function<Graphics, Graphics2D>() {
+        @Override
+        public Graphics2D apply(Graphics graphics) {
+          Graphics2D g2d = (Graphics2D) g;
+          g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+          int w = getWidth();
+          int h = getHeight();
+          int radius = (w < h)?((w&1) == 0)?(w/2)-1:w/2:((h&1)==0)?(h/2)-1:h/2;
+          Color c1 = cd.getMyLightFGCompliment();
+          Color c2 = cd.getMyFontColorL();
+          double rdStep = (c2.getRed()-c1.getRed())/(double)radius,
+              grnStep = (c2.getGreen()-c1.getGreen())/(double)radius,
+              bluStep = (c2.getBlue()-c1.getBlue())/(double)radius;
+          Color[] colors = new Color[radius];
+          float[] fractions = new float[radius];
+//        Stream.of(fractions).flatMap((0f,frac) -> frac )
+          float curFrac = 0, fracIncrementer = 1f/radius;
+          for(int i = 0; i < radius; ++i){
+            colors[i] = new Color(c1.getRed()+(int)(rdStep*i), c1.getGreen()+(int)(grnStep*i),c1.getBlue()+(int)(bluStep*i));
+            fractions[i] = curFrac;
+            curFrac+=fracIncrementer;
+          }
+  
+          g2d.setPaint(new RadialGradientPaint(
+              w/2,
+              h/2,
+              radius/*-(radius*0.15f)-2f//*/,
+              fractions,
+              colors));
+          
+          return g2d;
+        }
+      };
+      switch (cd.getState()){
         default:
         case DEFAULT:
-          setForeground(cd.getMyPrime());
-          setBackground(cd.getMyBg());
-          Border emptyBorder = new EmptyBorder(1,1,1,1);
-
-          setBorder(BorderFactory.createStrokeBorder(new BasicStroke((float)2.0)));
-          Border linedBorder = getBorder();
-
-          setBorder(new CompoundBorder(emptyBorder, linedBorder));
-          
+          if(!cd.isDrawn()) {
+            cd.setDrawn( true);
+            cd.setPalette(1);
+  
+            Graphics2D g2 = circleGradientLambda.apply(g);
+            g2.fillRect(0, 0, getWidth(), getHeight());
+            label.setForeground(cd.getMyFontColorL());
+          }
           break;
         case MAPPED:
-          cd.setPalette(0);
-          setForeground(cd.getMyPrime());
-          setBackground(cd.getMyBg());
+          if(!cd.isDrawn()) {
+            cd.setDrawn(true);
+            cd.setPalette(0);
+            Border emptyBorder = new EmptyBorder(1, 1, 1, 1);
+  
+            setBorder(BorderFactory.createStrokeBorder(new BasicStroke((float) 1.0)));
+            Border linedBorder = getBorder();
+            setBorder(new CompoundBorder(emptyBorder, linedBorder));
+            
+            Graphics2D g2 = circleGradientLambda.apply(g);
+            g2.fillRect(0, 0, getWidth(), getHeight());
+            
+            label.setForeground(cd.getMyFontColorL());
+          }
           break;
         case EXPLORED:
-          cd.setPalette(1);
-          setForeground(cd.getMyPrime());
-          setBackground(cd.getMyBg());
+          if(!cd.isDrawn()) {
+            cd.setDrawn(true);
+            cd.setPalette(1);
+            setBackground(cd.getMyBg());
+            Border emptyBorder = new EmptyBorder(1, 1, 1, 1);
+  
+            setBorder(BorderFactory.createStrokeBorder(new BasicStroke((float) 2.0)));
+            Border linedBorder = getBorder();
+            setBorder(new CompoundBorder(emptyBorder, linedBorder));
+  
+            Graphics2D g2 = circleGradientLambda.apply(g);
+            g2.fillRect(0, 0, getWidth(), getHeight());
+  
+            label.setForeground(cd.getMyFontColorL());
+            Font labelFont = label.getFont();
+            String labelText = label.getText();
+  
+            int stringWidth = label.getFontMetrics(labelFont).stringWidth(labelText);
+            int componentWidth = label.getWidth();
+
+// Find out how much the font can grow in width.
+            double widthRatio = (double)componentWidth / (double)stringWidth;
+  
+            int newFontSize = (int)(labelFont.getSize() * widthRatio);
+            int componentHeight = label.getHeight();
+
+// Pick a new font size so it will not be larger than the height of label.
+            int fontSizeToUse = Math.min(newFontSize, componentHeight);
+
+// Set the label's font size to the newly determined size.
+            label.setFont(new Font(labelFont.getName(), Font.PLAIN, fontSizeToUse));
+          }
           break;
-          
       }
       
       if(cd.contOnesIdx > -1){
         setForeground( StaticColorPalette.awtContOnesTransition[cd.contOnesIdx]);
       }
+  
 
-
+      
     }
   
     /**
@@ -265,10 +357,10 @@ public class RootFrame extends JFrame {
       return cd;
     }
 
-    public void callPapa(){
+    public void callPapa(int contOnesIdx){
+      cd.setContOnesIdx(contOnesIdx);
       repaint();
 //      getParent().getParent().getParent().getParent().repaint();
-
       getRootPane().repaint();
     }
     /**
@@ -280,10 +372,10 @@ public class RootFrame extends JFrame {
      * @see CellData#contOnesIdx
      */
     public void update(CellState state, int contOnesIdx){
-      cd.state = state;
+      cd.setState(state);
       cd.contOnesIdx = contOnesIdx;
-      cd.setPalette(1);
-      callPapa();
+//      cd.setPalette(0);
+      callPapa(contOnesIdx);
     }
   
     /**
@@ -296,7 +388,7 @@ public class RootFrame extends JFrame {
 
       cd.setData(val);
       cd.setPalette(-1);
-      callPapa();
+      callPapa(val);
     }
   }// end of class MyComp
   
@@ -312,11 +404,12 @@ public class RootFrame extends JFrame {
     
     private int[] position = new int[2];
     
-    private Color myPrime;
-    private Color mySec;
+    private Color myFontColorL;
+    private Color myFontColorD;
     private Color myBg;
-    private Color myAcc1;
-    private Color myAcc2;
+    private Color myLightFGCompliment;
+    private Color myDarkFGCompliment;
+    private int paletteNumber = 0;
   
   
     /**
@@ -324,7 +417,8 @@ public class RootFrame extends JFrame {
      */
     private int contOnesIdx = -1;
     CellState state = CellState.DEFAULT;
-
+    private boolean isDrawn = false;
+  
     /**
      *
      * @return
@@ -362,7 +456,6 @@ public class RootFrame extends JFrame {
      */
     CellData(V data, int x, int y, MyComp[][] matrix){
       if(x > -1) {
-        setPalette();
         position[0] = x;
         position[1] = y;
         this.data = data;
@@ -371,6 +464,13 @@ public class RootFrame extends JFrame {
         this.data = null;
         up = down = left = right = null;
       }
+  
+  
+      myFontColorL = INIT.getDarkFG();
+      myFontColorD = INIT.getDarkFG();
+      myBg = INIT.getBG();
+      myLightFGCompliment = INIT.getAltLighFG();
+      myDarkFGCompliment = INIT.getAltDarkFG();
     }
   
     /**
@@ -444,26 +544,18 @@ public class RootFrame extends JFrame {
     public void setPalette(V dataValForUsingAcc){
       switch (state){
         case EXPLORED:
-          mySec =  EXPLORER.getDarkFG();
           myBg = EXPLORER.getBG();
-          myAcc1 = EXPLORER.getAltLighFG();
-          myAcc2 = EXPLORER.getAltDarkFG();
-          if(data != null && data.equals(dataValForUsingAcc))myPrime = EXPLORER.getAltLighFG();
-          else if(data == null)myPrime = EXPLORER.getAltDarkFG();
           break;
         case MAPPED:
-          mySec = MAPPER.getDarkFG();
           myBg = MAPPER.getBG();
-          myAcc1 = MAPPER.getAltLighFG();
-          myAcc2 = MAPPER.getAltDarkFG();
-          if(data != null && data.equals(dataValForUsingAcc))myPrime = MAPPER.getAltLighFG();;
+          
           break;
           default:
-            myPrime = INIT.getDarkFG();
-            mySec = INIT.getDarkFG();
+            myFontColorL = INIT.getLightFG();
+            myFontColorD = INIT.getDarkFG();
             myBg = INIT.getBG();
-            myAcc1 = INIT.getAltLighFG();
-            myAcc2 = INIT.getAltDarkFG();
+            myLightFGCompliment = INIT.getAltLighFG();
+            myDarkFGCompliment = INIT.getAltDarkFG();
             break;
       }
 
@@ -494,16 +586,16 @@ public class RootFrame extends JFrame {
      *
      * @return
      */
-    public Color getMyPrime() {
-      return myPrime;
+    public Color getMyFontColorL() {
+      return myFontColorL;
     }
   
     /**
      *
      * @return
      */
-    public Color getMySec() {
-      return mySec;
+    public Color getMyFontColorD() {
+      return myFontColorD;
     }
   
     /**
@@ -518,25 +610,18 @@ public class RootFrame extends JFrame {
      *
      * @return
      */
-    public Color getMyAcc1() {
-      return myAcc1;
+    public Color getMyLightFGCompliment() {
+      return myLightFGCompliment;
     }
   
     /**
      *
      * @return
      */
-    public Color getMyAcc2() {
-      return myAcc2;
+    public Color getMyDarkFGCompliment() {
+      return myDarkFGCompliment;
     }
-  
-    /**
-     *
-     * @return
-     */
-    public CellState getState() {
-      return state;
-    }
+    
   
     /**
      *
@@ -582,12 +667,27 @@ public class RootFrame extends JFrame {
      *
      * @return
      */
-    public CellState getCellState(){return state;}
+    public CellState getState(){return state;}
 
 
-    public void setAcc1() {
-      myAcc1 = StaticColorPalette.awtContOnesTransition[contOnesIdx];
+    public void setLtFGComp() {
+      myLightFGCompliment = StaticColorPalette.awtContOnesTransition[contOnesIdx];
     }
+  
+    public void setDrawn(boolean drawn) {
+      isDrawn = drawn;
+    }
+  
+    public boolean isDrawn() {
+      return isDrawn;
+    }
+  
+    public void setState(CellState state) {
+      this.state = state;
+      this.isDrawn = false;
+    }
+  
+    public void setContOnesIdx(int contOnesIdx) {this.contOnesIdx = contOnesIdx;}
   }// end of class CellData
 
 }// end of class RootFrame

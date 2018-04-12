@@ -1,10 +1,19 @@
 package GraphVisualization.JavaXSwing;
 
+import javax.swing.*;
+
 public class Window_Main {
   
   public static void main(String[] args) {
   
-    RootFrame rf = new RootFrame(RootFrame.KNOWN_FILES, 40 , 82);
+    RootFrame rf;
+  
+    try {
+      rf = new RootFrame(RootFrame.KNOWN_FILES, 40 , 82);
+    } catch (UnsupportedLookAndFeelException e) {
+      e.printStackTrace();
+    }
+
 //    for (String name :
 //        RootFrame.KNOWN_FILES) {
 //       rf = new RootFrame(name, false );
