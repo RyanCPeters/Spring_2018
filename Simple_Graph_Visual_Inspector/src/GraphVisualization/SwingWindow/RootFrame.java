@@ -1,4 +1,4 @@
-package GraphVisualization.JavaXSwing;
+package GraphVisualization.SwingWindow;
 
 import GraphVisualization.ConsoleFiles.ConsoleColorEnum;
 
@@ -9,53 +9,25 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.function.Function;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-import static GraphVisualization.JavaXSwing.ColorBot.EXPLORER;
-import static GraphVisualization.JavaXSwing.ColorBot.INIT;
-import static GraphVisualization.JavaXSwing.ColorBot.MAPPER;
+import static GraphVisualization.SwingWindow.ColorBot.*;
 
-/*
-    @Override
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        Graphics2D g2d = (Graphics2D) g;
-        g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-        int w = getWidth();
-        int h = getHeight();
-        Color color1 = Color.RED;
-        Color color2 = Color.GREEN;
-        GradientPaint gp = new GradientPaint(0, 0, color1, 0, h, color2);
-        g2d.setPaint(gp);
-        g2d.fillRect(0, 0, w, h);
-    }
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                JFrame frame = new JFrame();
-                TestPanel panel = new TestPanel();
-                frame.add(panel);
-                frame.setSize(200, 200);
-                frame.setLocationRelativeTo(null);
-                frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                frame.setVisible(true);
-            }
-        });
-    }
-*/
 
 public class RootFrame extends JFrame {
-  
   enum CellState {DEFAULT, EXPLORED,MAPPED}
   
   public static final String[] KNOWN_FILES = {"readable_Matrix_3x4.json","Readable_Matrix_20x22.json","Readable_Matrix_40x60.json"};
+  
+  public static int contiguousOnesCount = 0;
   
   // SETTING UP NAMED CONSTANTS
   /**private final int CELL = 10;
@@ -67,30 +39,62 @@ public class RootFrame extends JFrame {
    */
   private static final int CELL = 8;
   
-  private int xBound = 0, yBound = 0, boardSize = 0;
-  
-  /**
-   *
-   */
-  public static final Color WHITE = Color.white;
-  
   // TODO: 4/8/2018 define the purpose of the private static ArrayList<CellData<Integer>> binaryDataMatrix; 
   /**
-   * 
+   * private ArrayList<MyComp[][]> masterDataList is acting as the data model for the 1 or more matrices we will be
+   * interacting with inside of our tabbed window gui.
+   * @see MyComp
    */
-  public ArrayList<MyComp[][]> masterDataList;
-
+  private ArrayList<MyComp[][]> masterDataList;
   
-  /**Class RootFrame Constructor
-   * <p>
-   * RootFrame( SudokuBase b ) {
-   * <p>
-   * The RootFrame Constructor requires the SudokuBase object to provide information about
-   * the number of rows and columns that will be used for the instantiation of any particular
-   * game's set up.
+  
+  /**
+   * RootFrame Constructor
+   * This constructor initializes the JFrame for our window, then sets its LookAndFeel properties to use the Oracle
+   * provided "Nimbus" package.
+   *
+   * It then populates our data modeling object, masterDataList, with matrices specified in the data_file_names
+   * parameter.
+   *
+   * It is expected that the matrix data be saved in a text file. There doesn't need to be anything special about it,
+   * so keeping it simple (eg., "File_Contents_Description.txt") is probably best.
+   *
+   * The format of the data inside of the file needs to meet the following criteria:
+   *  * The data should be space delimited (commas are un
+   *
+   *      [1 1 0 1]
+   *      [0 1 0 1]
+   *      [0 1 1 0]
+   *
+   *      The matrices are assumed to be indexed as you would see for the matrices of Augmented Linear Systems (i,j),
+   *      where i corresponds to row number, and j corresponds to column number.
+   *
+   *      ie.,
+   *           j1  j2  j3  j4
+   *      i1  [ 1   3   2   9 ]
+   *      i2  [ 2   2   4   5 ]
+   *      i3  [ 0   0   0  99 ]
+   *
+   *      In the above matrix example, index position of, (1,2), would give you the value at row i1, column j2,
+   *      which is a 3. If instead we were to look at the index position of (1,3), we see that the value is 2. As a
+   *      last example, if we look at the index position of, (3,2), we see that the value is again a 0.
+   *
+   * @param data_file_names This is an array of strings, where EACH element in the array is the unique file name that
+   *                        you want to have read and added to the GUI.
+   *
+   *                        If the array is empty, the program will simply render the GUI with an empty window and no
+   *                        warnings/errors will be thrown.
+   *
+   * @param Files_index_delimiter If your files use
    */
-  public RootFrame(String[] fileName_ForRefMatrix, int x, int y) throws UnsupportedLookAndFeelException {
+  //@see <a href="http://json.org/">The JSON site</a>
+  public RootFrame(String[] data_file_names, String[] Files_index_delimiter) {
     super("Visual Matrix Traversals");
+    
+    boolean weHaveData = data_file_names != null;
+    
+    // The following try/catch block was pulled directly from the oracle documentation on how to
+    // set up the look and feel components of the GUI
     try {
       for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
         if ("Nimbus".equals(info.getName())) {
@@ -102,12 +106,13 @@ public class RootFrame extends JFrame {
       // If Nimbus is not available, you can set the GUI to another look and feel.
     }
     
-    masterDataList = new ArrayList<>(fileName_ForRefMatrix.length);
+    // This master
+    masterDataList = new ArrayList<>(data_file_names.length);
     JTabbedPane tPane = new JTabbedPane();
     JPanel content = new JPanel(new BorderLayout(2,2));
     
-    for(int comps = 0; comps < fileName_ForRefMatrix.length; ++comps){
-      JPanel tmp = buildMatrixPane(parseFile(fileName_ForRefMatrix[comps]));
+    for(int comps = 0; comps < data_file_names.length; ++comps){
+      JPanel tmp = buildMatrixPane(parseFile(data_file_names[comps]));
 
       JButton jb = new JButton("Identify Contiguous sets of 1's");
       jb.addActionListener(new ActionListener() {
@@ -125,8 +130,10 @@ public class RootFrame extends JFrame {
       boxer.add(Box.createGlue());
       tmp.add(boxer, BorderLayout.NORTH);
       
-      tPane.add(fileName_ForRefMatrix[comps].substring(fileName_ForRefMatrix[comps].lastIndexOf('_')+1,
-          fileName_ForRefMatrix[comps].lastIndexOf('.')),tmp);
+      tPane.add
+      
+      tPane.add(data_file_names[comps].substring(data_file_names[comps].lastIndexOf('_')+1,
+          data_file_names[comps].lastIndexOf('.')),tmp);
     }
     content.add(tPane, BorderLayout.CENTER);
     content.setBackground(StaticColorPalette.awtShades[2]);
@@ -259,21 +266,18 @@ public class RootFrame extends JFrame {
               bluStep = (c2.getBlue()-c1.getBlue())/(double)radius;
           Color[] colors = new Color[radius];
           float[] fractions = new float[radius];
-//        Stream.of(fractions).flatMap((0f,frac) -> frac )
           float curFrac = 0, fracIncrementer = 1f/radius;
           for(int i = 0; i < radius; ++i){
             colors[i] = new Color(c1.getRed()+(int)(rdStep*i), c1.getGreen()+(int)(grnStep*i),c1.getBlue()+(int)(bluStep*i));
             fractions[i] = curFrac;
             curFrac+=fracIncrementer;
           }
-  
           g2d.setPaint(new RadialGradientPaint(
               w/2,
               h/2,
               radius/*-(radius*0.15f)-2f//*/,
               fractions,
               colors));
-          
           return g2d;
         }
       };
@@ -282,7 +286,7 @@ public class RootFrame extends JFrame {
         case DEFAULT:
           if(!cd.isDrawn()) {
             cd.setDrawn( true);
-            cd.setPalette(1);
+            cd.setPalette();
   
             Graphics2D g2 = circleGradientLambda.apply(g);
             g2.fillRect(0, 0, getWidth(), getHeight());
@@ -292,7 +296,7 @@ public class RootFrame extends JFrame {
         case MAPPED:
           if(!cd.isDrawn()) {
             cd.setDrawn(true);
-            cd.setPalette(0);
+            cd.setPalette();
             Border emptyBorder = new EmptyBorder(1, 1, 1, 1);
   
             setBorder(BorderFactory.createStrokeBorder(new BasicStroke((float) 1.0)));
@@ -308,7 +312,7 @@ public class RootFrame extends JFrame {
         case EXPLORED:
           if(!cd.isDrawn()) {
             cd.setDrawn(true);
-            cd.setPalette(1);
+            cd.setPalette();
             setBackground(cd.getMyBg());
             Border emptyBorder = new EmptyBorder(1, 1, 1, 1);
   
@@ -341,9 +345,9 @@ public class RootFrame extends JFrame {
           break;
       }
       
-      if(cd.contOnesIdx > -1){
-        setForeground( StaticColorPalette.awtContOnesTransition[cd.contOnesIdx]);
-      }
+//      if(cd.contOnesIdx > -1){
+//        setForeground( ColorBot.getContrastingColor(cd.contOnesIdx));
+//      }
   
 
       
@@ -387,7 +391,7 @@ public class RootFrame extends JFrame {
     public void update(Integer val){
 
       cd.setData(val);
-      cd.setPalette(-1);
+      cd.setPalette();
       callPapa(val);
     }
   }// end of class MyComp
@@ -409,7 +413,7 @@ public class RootFrame extends JFrame {
     private Color myBg;
     private Color myLightFGCompliment;
     private Color myDarkFGCompliment;
-    private int paletteNumber = 0;
+    private int paletteNumber = -1;
   
   
     /**
@@ -478,6 +482,7 @@ public class RootFrame extends JFrame {
      * @param matrix the relational mapping of all the cells according to their index values, (x,y)
      */
     private void notifyLeftAndUp(MyComp[][] matrix){
+      
       // precondition checking for if there is a neighbor ino the left direction;
       if(position[0] > 0){
         left = matrix[position[0]-1][position[1]].cd;
@@ -506,15 +511,74 @@ public class RootFrame extends JFrame {
   
     /**
      *
-     * @param data the value to be graphically shown in this cell
-     * @param x the index position with a row for this cell
-     * @param y the index position with a column for this cell.
-     * @param matrix the relational mapping of all the cells according to their index values, (x,y)
+     * @param sourceDir
+     * @param threadBirthTime If this cell is a part of a contiguous cluster of 1's, then this parameter represents
+     *                        the initiation timestamp for the thread responsible for procuring and distributing the
+     *                        cluster's color assignment.
+     * @return
      */
-    public void setPlaceInMatrix(V data, int x, int y, MyComp[][] matrix){
-      this.data = data;
-      setPlaceInMatrix(x,y,matrix);
+    private void synCall(int sourceDir, double threadBirthTime, LinkedList<int[]> cluster){
+      if(data.equals(0))paletteNumber = -2;
+      if(data.equals(1)){
+        // should paletteNumber be -1, it means that this cell's data is a 1, but it hasn't been synchronized yet
+        // with its neighbors yet.
+        
+//        boolean competition =
+        
+        /*
+         * note that the 0'th index of callDirAndPaletteNumber indicates the direction the call came from.
+         *     (callDirAndPaletteNumber[0] == 1) means it came from the "up" neighbor
+         *     (callDirAndPaletteNumber[0] == 2) means it came from the "right" neighbor
+         *     (callDirAndPaletteNumber[0] == 3) means it came from the "down" neighbor
+         *     (callDirAndPaletteNumber[0] == 4) means it came from the "left" neighbor
+         * */
+        switch (sourceDir){
+          case 1:// call came from "up" neighbor, so pass it on down
+            getDown().synCall(1,threadBirthTime,cluster);
+            getRight().synCall(4,threadBirthTime,cluster);
+            getLeft().synCall(2,threadBirthTime,cluster);
+            
+            break;
+          case 2:
+//            getLeft().synCall(callDirAndPaletteNumber);
+            break;
+          case 3:
+//            getUp().synCall(callDirAndPaletteNumber);
+            break;
+          case 4:
+//            getRight().synCall(callDirAndPaletteNumber);
+            break;
+        }
+      
+      }else if(paletteNumber == -2){
+      
+      }
     }
+  
+    /**
+     *
+     */
+    private void initNewCluster(){
+    
+    }
+  
+    /**
+     *
+     */
+    private void synAck(){
+    
+    }
+//    /**
+//     *
+//     * @param data the value to be graphically shown in this cell
+//     * @param x the index position with a row for this cell
+//     * @param y the index position with a column for this cell.
+//     * @param matrix the relational mapping of all the cells according to their index values, (x,y)
+//     */
+//    public void setPlaceInMatrix(V data, int x, int y, MyComp[][] matrix){
+//      this.data = data;
+//      setPlaceInMatrix(x,y,matrix);
+//    }
     
     /**
      *
@@ -537,11 +601,8 @@ public class RootFrame extends JFrame {
   
     /**
      *
-     * @param dataValForUsingAcc This lets us handle the task of assigning different text colors based upon
-     *                           the CellState value stored in this CellData object, and the type V val stored
-     *                           here when checked against this specific use case value.
      */
-    public void setPalette(V dataValForUsingAcc){
+    public void setPalette(){
       switch (state){
         case EXPLORED:
           myBg = EXPLORER.getBG();
@@ -559,13 +620,6 @@ public class RootFrame extends JFrame {
             break;
       }
 
-    }
-
-    /**
-     *
-     */
-    public void setPalette(){
-      setPalette(null);
     }
   
     /**
@@ -671,7 +725,7 @@ public class RootFrame extends JFrame {
 
 
     public void setLtFGComp() {
-      myLightFGCompliment = StaticColorPalette.awtContOnesTransition[contOnesIdx];
+//      myLightFGCompliment = StaticColorPalette.awtContOnesTransition[contOnesIdx];
     }
   
     public void setDrawn(boolean drawn) {
@@ -793,7 +847,7 @@ class IDContOnes {
             } else {
               if (incColoNum) {
                 incColoNum = false;
-                colorNumber = (colorNumber + 1) % StaticColorPalette.awtContOnesTransition.length;
+                colorNumber = (colorNumber + 1) % ColorBot.getColorWheelLen();
               }
 //            colorArray[x][y] = ConsoleColorEnum.assignColor(false, false, true, "0");
               arr[x][y].update(RootFrame.CellState.EXPLORED, -1);
@@ -807,12 +861,13 @@ class IDContOnes {
     return count;
   }
 
-  private static Color deriveColor(/*boolean increment,*/ RootFrame.MyComp mc){
-
-      return (mc.getCd().getData() == 1)?
-              StaticColorPalette.awtContOnesTransition[mc.getCd().getContOnesIdx()]:
-              Color.BLACK;
-    }
+//  private static Color deriveColor(/*boolean increment,*/ RootFrame.MyComp mc){
+//
+//      return (mc.getCd().getData() == 1)?
+//              StaticColorPalette.awtContOnesTransition[mc.getCd().getContOnesIdx()]:
+//              Color.BLACK;
+//
+//    }
 
   public static void resetPlaceInList(){
     placeInList = 0;

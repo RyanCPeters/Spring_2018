@@ -1,17 +1,8 @@
-package GraphVisualization.JavaXSwing;
+package GraphVisualization.SwingWindow;
 
-import java.awt.Color;
+import java.awt.*;
 
 public class StaticColorPalette {
-    /**
-     *
-     * @param palette
-     * @param colorIDX
-     * @return
-     */
-    public static Color getPaletteAsAWTColor(int[][] palette, int colorIDX){
-        return new Color(palette[colorIDX][0],palette[colorIDX][1],palette[colorIDX][2]);
-    }
 
     /**
      *
@@ -24,17 +15,17 @@ public class StaticColorPalette {
                     {186, 178, 195},
                     {255, 138, 112}
             };
-    /**
-     *
-     */
-    public static final Color[] awtDustPalette =
-            {
-                    new Color(255,  73,  31),
-                    new Color(142, 104, 204),
-                    new Color( 85,  78,  93),
-                    new Color(186, 178, 195),
-                    new Color(255, 138, 112)
-            };
+//    /**
+//     *
+//     */
+//    public static final Color[] awtDustPalette =
+//            {
+//                    new Color(255,  73,  31),
+//                    new Color(142, 104, 204),
+//                    new Color( 85,  78,  93),
+//                    new Color(186, 178, 195),
+//                    new Color(255, 138, 112)
+//            };
 
     /**
      *
@@ -47,39 +38,39 @@ public class StaticColorPalette {
                     {177, 197, 246},
                     {122, 103,  96}
             };
+//    /**
+//     *
+//     */
+//    public static final Color[] awtMyCustomChoice =
+//            {
+//                    new Color(122, 103,  96),
+//                    new Color( 90,  69,  59),
+//                    new Color(177, 197, 246),
+//                    new Color(100, 122, 202),
+//                    new Color( 12,  12,  12)
+//            };
     /**
      *
      */
-    public static final Color[] awtMyCustomChoice =
-            {
-                    new Color(122, 103,  96),
-                    new Color( 90,  69,  59),
-                    new Color(177, 197, 246),
-                    new Color(100, 122, 202),
-                    new Color( 12,  12,  12)
-            };
+//    public static final Color[] alt_awtContOnesTransition =
+//            {
+//                new Color(255,  73,  31),
+//                new Color( 31,  95, 255),
+//                new Color( 95,  52,  35),
+//                new Color( 33,  73, 137),
+//                new Color( 61,  41,  41),
+//                new Color( 38,  52,  73),
+//                new Color( 46,  41,  52),
+//                new Color( 52,  38,  46),
+//                new Color( 41,  46,  61),
+//                new Color( 73,  46,  38),
+//                new Color( 35,  61,  95),
+//                new Color(137,  61,  33)
+//            };
     /**
      *
      */
-    public static final Color[] awtContOnesTransition =
-            {
-                    new Color(255,  73,  31),
-                    new Color(137,  61,  33),
-                    new Color( 95,  52,  35),
-                    new Color( 73,  46,  38),
-                    new Color( 61,  41,  41),
-                    new Color( 52,  38,  46),
-                    new Color( 46,  41,  52),
-                    new Color( 41,  46,  61),
-                    new Color( 38,  52,  73),
-                    new Color( 35,  61,  95),
-                    new Color( 33,  73, 137),
-                    new Color( 31,  95, 255)
-            };
-    /**
-     *
-     */
-    public static final Integer[][] intContOnesTransition =
+    public static final Integer[][] alt_intContOnesTransition =
             {
                     {255,  73,  31},
                     {137,  61,  33},
@@ -94,6 +85,38 @@ public class StaticColorPalette {
                     { 33,  73, 137},
                     { 31,  95, 255}
             };
+  
+//  public static final Color[] awtContOnesTransition =
+//      {
+//          new Color(255,  41,  31),
+//          new Color( 31,  61, 255),
+//          new Color( 95,  52,  35),
+//          new Color( 35,  95,  95),
+//          new Color( 61,  73,  41),
+//          new Color( 41, 255,  61),
+//          new Color( 46, 137,  52),
+//          new Color( 52,  95,  46),
+//          new Color( 38, 137,  73),
+//          new Color( 73,  61,  38),
+//          new Color( 33,  73, 137),
+//          new Color(137,  46,  33)
+//      };
+  
+  public static final Integer[][] arrContOnesTransition =
+      {
+          {255,  73,  31},
+          { 95,  52,  35},
+          { 61,  41,  41},
+          { 46,  41,  52},
+          { 38,  52,  73},
+          { 31,  95, 255},
+          { 35,  61,  95},
+          { 41,  46,  61},
+          { 52,  38,  46},
+          { 73,  46,  38},
+          {137,  61,  33},
+          { 10,  10,  10}
+      };
     /**
      *
      */
@@ -106,19 +129,19 @@ public class StaticColorPalette {
                     {  0, 137, 224},
                     {  0, 157, 223}
             };
-    /**
-     *
-     */
-    public static final Color[] awtMatchingGradient =
-            {
-                    new Color(118, 113, 200),
-                    new Color(160,  89, 159),
-                    new Color( 12,  12,  12),
-                    new Color(  0, 157, 223),
-                    new Color(172,  73, 113),
-                    new Color(161,  71,  71),
-                    new Color(  0, 137, 224)
-            };
+//    /**
+//     *
+//     */
+//    public static final Color[] awtMatchingGradient =
+//            {
+//                    new Color(118, 113, 200),
+//                    new Color(160,  89, 159),
+//                    new Color( 12,  12,  12),
+//                    new Color(  0, 157, 223),
+//                    new Color(172,  73, 113),
+//                    new Color(161,  71,  71),
+//                    new Color(  0, 137, 224)
+//            };
     /**
      *
      */

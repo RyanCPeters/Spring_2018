@@ -1,22 +1,22 @@
 import java.io.*;
-import java.lang.invoke.SwitchPoint;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.LinkedHashMap;
-import java.util.function.Function;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
-import GraphVisualization.ConsoleFiles.ConsolColor;
 
 /**
  *
  */
 public class JavaHexColorParser {
-  public static final String FILENAME = "src/machine_readable_color_options.json";
-
-
+  public static final String FILENAME = "src/machine_readable_color_options.json",
+                             COLORS_IN_JAVA_FORMAT_FILE_NAME= "JAVA_color_options";
+  
+  private static ArrayList<String[]> colorStrArrList = new ArrayList<>();
+  private static LinkedHashMap<String,Integer[][]> map = new LinkedHashMap<>();
+  
+  enum FileFormat {
+    CPP, JAVA, JSON,TXT
+  }
 
   /**
    *
@@ -25,15 +25,17 @@ public class JavaHexColorParser {
   public static void main(String[] args) {
     ArrayList<String> colorStringList = parseFile(FILENAME);
 
-    ArrayList<String[]> colorStrArrList = colorStringList.stream().parallel().map(str -> str.split(",")).collect
-            (Collectors.toCollection(ArrayList::new));
+    colorStrArrList.addAll(colorStringList.stream().parallel().map(str -> str.split(",")).collect
+            (Collectors.toCollection(ArrayList::new)));
+    hexToDecConverter(map);
 
-    LinkedHashMap<String,Integer[][]> map = new LinkedHashMap<>();
-
-    System.out.println();
-
-
-
+//    testPrintToConsole(map, colorStrArrList);
+    writeToFileSimplified(writeableStreamOutput(map,colorStrArrList,COLORS_IN_JAVA_FORMAT_FILE_NAME,FileFormat.JAVA),
+        COLORS_IN_JAVA_FORMAT_FILE_NAME, FileFormat.JAVA);
+    
+  }
+  
+  private static void hexToDecConverter(LinkedHashMap<String, Integer[][]> map) {
     for(int rows = 0; rows < colorStrArrList.size(); ++rows){
       Integer[][] iRow = new Integer[colorStrArrList.get(rows).length-1][];
       String[] row = colorStrArrList.get(rows);
@@ -46,110 +48,175 @@ public class JavaHexColorParser {
         map.put(row[0], iRow);
       }
     }
-    String hexDecJSonFileName = "color_options_hex_and_dec.json", decJSonFileName = "color_options_dec.json",
-            decCSSFileName = "css_color_options_dec.txt";
-
-//    specialColorTransitionGenerator();
-//    testPrintToConsole(map, colorStrArrList);
-    writeToFileSimplified(map,colorStrArrList,decCSSFileName);
-//    writeToFileInJsonFormat(map,colorStrArrList,hexDecJSonFileName);
-//    writeToFileInJsonFormat(map, colorStrArrList, decJSonFileName);
   }
-
-
+  
+  
   /**
-   *
-   * @param map
-   * @param colorStrArrList
-   * @param fileName
+   *  @param sb the string builder object that has the pertinent file contents
+   * @param fileName a useful bit of information that
+   * @param FTypeForSuffix
    */
-  private static void writeToFileSimplified(LinkedHashMap<String,Integer[][]> map,
-                                            ArrayList<String[]> colorStrArrList, String fileName){
-    String possible_errMsg = "";
-    try(FileWriter fw = new FileWriter(fileName); BufferedWriter bw = new BufferedWriter(fw)) {
-    String[] relevantNames = {"DustPalette","ClassyPalette","MyCustomChoice"};
-
-//      int keyCount = 0, keyCountMax = map.keySet().size();
-      Integer[][] iRow;
-      for(String[] key : colorStrArrList) {
-        String objName = Character.toUpperCase(key[0].trim().charAt(0)) +
-                key[0].trim().substring(1);
-
-        iRow = map.get(key[0]);
-        boolean writeThisEntry = false;
-        for (int entryNum = 0; entryNum < relevantNames.length && !writeThisEntry; ++entryNum) {
-          writeThisEntry = ((objName).equals(relevantNames[entryNum]));
-        }
-        if (writeThisEntry) {
-          bw.write("  public static final Integer[][] arr" + objName + " = \n  {");
-          int posInRow = 0;
-          for (Integer[] val : iRow) {
-            bw.write(String.format("" +
-                    "\n    {%3d, %3d, %3d}%s", (val[0]+10 <= 255)?(val[0]+10):255,(val[1]+10 <= 255)?(val[1]+10):255, (val[2]+10 <= 255)?(val[2]+10):255, (posInRow++ < iRow.length - 1) ? "," : ""));
-          }
-          bw.write("\n  };\n\n");
-          bw.flush();
-
-          bw.write("  public static final Color[] awt" + objName + " = \n  {");
-          posInRow = 0;
-          for (Integer[] val : iRow) {
-            bw.write(String.format("" +
-                    "\n    new Color(%3d, %3d, %3d)%s", (val[0]+10 <= 255)?(val[0]+10):255,(val[1]+10 <= 255)?(val[1]+10):255, (val[2]+10 <= 255)?(val[2]+10):255, (posInRow++ < iRow.length - 1) ? "," : ""));
-          }
-          bw.write("\n  };\n\n");
-          bw.flush();
-        }
-      }
-      int redDiv = 1, grnDiv = 4, bluDiv = 12;
-      double[] rgb = {255/redDiv, 255/grnDiv, 255/bluDiv};
-      double[][] contigOClrPalette = new double[12][3];
-      boolean addToGrnDiv = true;
-
-      // generating an array of colors that maintain approximately the same intensity, but will transition from a
-      // red'ish hue to a blue'ish hue.
-      for(int count = 0; count < 12; ++count){
-        if(addToGrnDiv && grnDiv > 8)addToGrnDiv = false;
-        contigOClrPalette[count] = new double[]{255/(redDiv++),255/((addToGrnDiv)?grnDiv++:grnDiv--),255/(bluDiv--)};
-      }
-
-      bw.write("  public static final Color[] awtContOnesTransition = \n  {");
-      int posInArr = 0;
-      for(double[] val : contigOClrPalette) {
-        bw.write(String.format("\n    new Color(%3d, %3d, %3d)%s", (((int)val[0])+10 <= 255)?((int)val[0])+10 :255, (((int)val[1])+10 <= 255)?((int)val[1])+10 :255, (((int)val[2])+10 <= 255)?((int)val[2])+10 :255,
-                (posInArr++ < contigOClrPalette.length - 1) ?"," + "" : ""));
-      }
-      bw.write("\n  };\n\n");
+  private static void writeToFileSimplified(StringBuilder sb, String fileName, FileFormat FTypeForSuffix){
+    String possible_errMsg = "", suffix = "";
+    switch (FTypeForSuffix){
+      case CPP:
+        suffix = ".h";
+        break;
+      case JAVA:
+        suffix = ".java";
+        break;
+      case JSON:
+        suffix = ".json";
+        break;
+      case TXT:
+        suffix = ".txt";
+        break;
+      default:break;
+    }
+    try(FileWriter fw = new FileWriter(fileName+suffix); BufferedWriter bw = new BufferedWriter(fw)) {
+      bw.write(sb.toString());
       bw.flush();
-
-      bw.write("  public static final Integer[][] intContOnesTransition = \n  {");
-      posInArr = 0;
-      for(double[] val : contigOClrPalette) {
-        bw.write(String.format("\n    {%3d, %3d, %3d}%s", (((int)val[0])+10 <= 255)?((int)val[0])+10 :255, (((int)val[1])+10 <= 255)?((int)val[1])+10 :255, (((int)val[2])+10 <= 255)?((int)val[2])+10 :255,
-                (posInArr++ < contigOClrPalette.length - 1) ?"," + "" : ""));
-      }
-      bw.write("\n  };\n\n");
-      bw.flush();
-
-
       bw.close();
       fw.close();
       return;
     } catch (FileNotFoundException fnfe) {
       possible_errMsg = "|\n -> [-] FileNotFoundException caused in\n\t\t" +
-              "JavaHexColorParser.writeToFileInJsonFormat(LinkedHashMap<String,Integer[][]> map, ArrayList<String[]> " +
-              "colorStrArrList, String fileName\n\n" +
+              "JavaHexColorParser.writeToFileSimplified(StringBuilder sb, String fileName)\n\n" +
               fnfe.getMessage();
     } catch (IOException ioe){
       possible_errMsg = "|\n -> [-] IOException caused in\n\t\t" +
-              "JavaHexColorParser.writeToFileInJsonFormat(LinkedHashMap<String,Integer[][]> map, ArrayList<String[]> " +
-              "colorStrArrList, String fileName\n\n" +
+              "JavaHexColorParser.writeToFileSimplified(StringBuilder sb, String fileName)\n\n" +
               ioe.getMessage();
     }
-    throw new InternalError("\n\n[-] Internal Logic Error inside\n\tprivate static void writeToFileInJsonFormat" +
-            "(LinkedHashMap<String,Integer[][]> map, ArrayList<String[]> colorStrArrList, String fileName)" +
+    throw new InternalError("\n\n[-] Internal Logic Error inside\n\tprivate static void writeToFileSimplified(StringBuilder sb, String fileName)" +
             "\n"+possible_errMsg);
+  }// end of method writeToFileSimplified(StringBuilder sb, String fileName, FileFormat FTypeForSuffix)
+  
+  /**
+   *
+   * @param map
+   * @param colorStrArrList
+   * @param fileName This should give specific details about what this file is for. (Do not include the dot file type
+   *                in this string.
+   * @param dotFileType Use the enum FileFormat in order to get the stream to output the file in the correct format
+   *                    for your desired file type.
+   * @return
+   */
+  private static StringBuilder writeableStreamOutput(LinkedHashMap<String, Integer[][]> map,
+                                                      ArrayList<String[]> colorStrArrList, String fileName,
+                                                      FileFormat dotFileType){
+    StringBuilder sb = new StringBuilder();
+    String intVarDeclaration;
+    String colorVarDeclaration;
+    fileName = fileName.trim();
+    
+    // this switch block is for creating the file type appropriate header
+    switch (dotFileType){
+      case CPP:
+        colorVarDeclaration = "  static const Color[] awt";
+        intVarDeclaration = "  public static final Integer[][] arr";
+        // implements the color arrays as member variables of a header file named according to the parameter "fileName"
+        String headerGuard = fileName.trim().toUpperCase()+"_H";
+        sb.append("\n#ifndef ")
+            .append(headerGuard)
+            .append("\n#define ").append(headerGuard).append("\n\n#include <string>\n\n");
+        break;
+      case JAVA:
+        colorVarDeclaration = "  public static final Color[] awt";
+        intVarDeclaration   = "  public static final Integer[][] arr";
+        sb.append("import java.awt.*;\n" +
+                  "\n" +
+                  "public class ").append(fileName).append(" {");
+        break;
+      case JSON:
+        colorVarDeclaration = "";
+        intVarDeclaration = "";
+        sb.append("{\n  ");
+        break;
+      case TXT:
+        default:
+          colorVarDeclaration = "";
+          intVarDeclaration = "";
+          break;
+    }
+    
+    Integer[][] iRow;
+    for(String[] key : colorStrArrList) {
+      String objName = Character.toUpperCase(key[0].trim().charAt(0)) +
+                       key[0].trim().substring(1);
+    
+      iRow = map.get(key[0]);
+      sb.append(intVarDeclaration).append(objName).append(" = \n  {");
+      int posInRow = 0;
+      for (Integer[] val : iRow) {
+        sb.append(String.format("" +
+                               "\n    {%3d, %3d, %3d}%s", (val[0]+10 <= 255)?(val[0]+10):255,(val[1]+10 <= 255)?(val[1]+10):255, (val[2]+10 <= 255)?(val[2]+10):255, (posInRow++ < iRow.length - 1) ? "," : ""));
+      }
+      sb.append("\n  };\n\n");
+  
+      sb.append(colorVarDeclaration).append(objName).append(" = \n  {");
+      posInRow = 0;
+      for (Integer[] val : iRow) {
+        sb.append(String.format("" +
+                               "\n    new Color(%3d, %3d, %3d)%s", (val[0]+10 <= 255)?(val[0]+10):255,(val[1]+10 <= 255)?(val[1]+10):255, (val[2]+10 <= 255)?(val[2]+10):255, (posInRow++ < iRow.length - 1) ? "," : ""));
+      }
+      sb.append("\n  };\n\n");
+      
+    }
+    int redDiv = 1, grnDiv = 8, bluDiv = 12;
+    int[][] contigOClrPalette = new int[12][3];
+    boolean addToGrnDiv = true;
+  
+    // generating an array of colors that maintain approximately the same intensity, but will transition from a
+    // red'ish hue to a blue'ish hue.
+    for(int count = 0; count < 12; ++count){
+      if(addToGrnDiv && grnDiv < 2)addToGrnDiv = false;
+      contigOClrPalette[count] =
+          new int[]{255/(redDiv++),255/((addToGrnDiv)?grnDiv--:grnDiv++),255/(bluDiv--)};
+    }
+    
+    for(int front = 0, back = contigOClrPalette.length; front < back; ++front,--back){
+      if(front%2 == 1){
+        int[] tmp = contigOClrPalette[front];
+        contigOClrPalette[front] = contigOClrPalette[back];
+        contigOClrPalette[back] = tmp;
+      }
+    }
+    
+    sb.append(colorVarDeclaration).append("CountOnesTransition = \n  {");
+    int posInArr = 0;
+    for(int[] val : contigOClrPalette) {
+      sb.append(String.format("\n    new Color(%3d, %3d, %3d)%s", (val[0] + 10 <= 255) ? val[0] + 10 : 255, (val[1] + 10 <= 255) ? val[1] + 10 : 255, (val[2] + 10 <= 255) ? val[2] + 10 : 255,
+          (posInArr++ < contigOClrPalette.length - 1) ?"," + "" : ""));
+    }
+    sb.append("\n  };\n\n");
+  
+    sb.append(intVarDeclaration).append("CountOnesTransition = \n  {");
+    posInArr = 0;
+    for(int[] val : contigOClrPalette) {
+      sb.append(String.format("\n    {%3d, %3d, %3d}%s", (val[0] + 10 <= 255) ? val[0] + 10 : 255, (val[1] + 10 <= 255) ? val[1] + 10 : 255, (val[2] + 10 <= 255) ? val[2] + 10 : 255,
+          (posInArr++ < contigOClrPalette.length - 1) ?"," + "" : ""));
+    }
+    sb.append("\n  };\n\n");
+    
+    switch (dotFileType){
+      case CPP:
+        String headerGuard = fileName.trim().toUpperCase()+"_H";
+        sb.append("#endif // ").append(headerGuard);
+        break;
+      case JAVA:
+        sb.append("} // end of class ").append(fileName);
+        break;
+      case JSON:
+        break;
+      case TXT:
+        break;
+        default:break;
+    }
+    
+    return sb;
+    
   }
-
   
   /**
    *
@@ -254,157 +321,6 @@ public class JavaHexColorParser {
       System.out.println((keyCount++ < keyCountMax) ? "," : "");
     }
     System.out.println("}");
-  }
-  
-  /**
-   *
-   * @param map
-   * @param colorStrArrList
-   * @param fileName
-   */
-  private static void writeToFileInJsonFormat(LinkedHashMap<String,Integer[][]> map,
-                                              ArrayList<String[]> colorStrArrList, String fileName){
-    String possible_errMsg = "";
-    try(FileWriter fw = new FileWriter(fileName); BufferedWriter bw = new BufferedWriter(fw)) {
-      
-      
-      bw.write("{\n");
-      int keyCount = 0, keyCountMax = map.keySet().size();
-      for(String[] key : colorStrArrList){
-        Integer[][] iRow = map.get(key[0]);
-        bw.write("\t\""+key[0]+"\":\n\t[\n");
-        int posInRow = 1;
-        for(Integer[] val : iRow){
-          bw.write(String.format("\t\t{\"%s\":{\"%s\": %d, \"%s\": %d, \"%s\": %d}},\n",
-              key[posInRow],
-              "red",   val[0],
-              "green", val[1],
-              "blue",  val[2]));
-          ++posInRow;
-        }
-        bw.write("\t]");
-        bw.write((keyCount++ < keyCountMax)?",":"");
-      }
-      bw.write("}\n");
-      bw.close();
-      fw.close();
-      return;
-    } catch (FileNotFoundException fnfe) {
-      possible_errMsg = "|\n -> [-] FileNotFoundException caused in\n\t\t" +
-                        "JavaHexColorParser.writeToFileInJsonFormat(LinkedHashMap<String,Integer[][]> map, ArrayList<String[]> " +
-                        "colorStrArrList, String fileName\n\n" +
-                        fnfe.getMessage();
-    } catch (IOException ioe){
-      possible_errMsg = "|\n -> [-] IOException caused in\n\t\t" +
-                        "JavaHexColorParser.writeToFileInJsonFormat(LinkedHashMap<String,Integer[][]> map, ArrayList<String[]> " +
-                        "colorStrArrList, String fileName\n\n" +
-                        ioe.getMessage();
-    }
-    throw new InternalError("\n\n[-] Internal Logic Error inside\n\tprivate static void writeToFileInJsonFormat" +
-                            "(LinkedHashMap<String,Integer[][]> map, ArrayList<String[]> colorStrArrList, String fileName)" +
-                            "\n"+possible_errMsg);
-  }
-
-  /**
-   *
-   * @param map
-   * @param colorStrArrList
-   * @param fileName
-   */
-  private static void writeToFileInCSSFormat(LinkedHashMap<String,Integer[][]> map,
-                                              ArrayList<String[]> colorStrArrList, String fileName){
-    String possible_errMsg = "";
-    try(FileWriter fw = new FileWriter(fileName); BufferedWriter bw = new BufferedWriter(fw)) {
-      
-      
-      bw.write("{\n");
-      int keyCount = 0, keyCountMax = map.keySet().size();
-      for(String[] key : colorStrArrList){
-        Integer[][] iRow = map.get(key[0]);
-        bw.write("\t\""+key[0]+"\":\n\t[\n");
-        for(Integer[] val : iRow){
-          bw.write(String.format("\t\t{\"rgb\":[ %3d, %3d, %3d]},\n",  val[0], val[1], val[2]));
-        }
-        bw.write("\t]");
-        bw.write((keyCount++ < keyCountMax)?",":"");
-      }
-      bw.write("}\n");
-      bw.close();
-      fw.close();
-      return;
-    } catch (FileNotFoundException fnfe) {
-      possible_errMsg = "|\n -> [-] FileNotFoundException caused in\n\t\t" +
-                        "JavaHexColorParser.writeToFileInJsonFormat(LinkedHashMap<String,Integer[][]> map, ArrayList<String[]> " +
-                        "colorStrArrList, String fileName\n\n" +
-                        fnfe.getMessage();
-    } catch (IOException ioe){
-      possible_errMsg = "|\n -> [-] IOException caused in\n\t\t" +
-                        "JavaHexColorParser.writeToFileInJsonFormat(LinkedHashMap<String,Integer[][]> map, ArrayList<String[]> " +
-                        "colorStrArrList, String fileName\n\n" +
-                        ioe.getMessage();
-    }
-    throw new InternalError("\n\n[-] Internal Logic Error inside\n\tprivate static void writeToFileInJsonFormat" +
-                            "(LinkedHashMap<String,Integer[][]> map, ArrayList<String[]> colorStrArrList, String fileName)" +
-                            "\n"+possible_errMsg);
-  }
-
-  
-  /**
-   *
-   */
-  public static void specialColorTransitionGenerator(){
-    String possible_errMsg = "";
-    try(FileWriter fw = new FileWriter("Color_Transition_Array.txt"); BufferedWriter bw = new BufferedWriter(fw)) {
-      int redDiv = 1, grnDiv = 4, bluDiv = 12;
-      double[] rgb = {255/redDiv, 255/grnDiv, 255/bluDiv};
-      double[][] contigOClrPalette = new double[12][3];
-      boolean addToGrnDiv = true;
-      
-      // generating an array of colors that maintain approximately the same intensity, but will transition from a
-      // red'ish hue to a blue'ish hue.
-      for(int count = 0; count < 12; ++count){
-        if(addToGrnDiv && grnDiv > 8)addToGrnDiv = false;
-        contigOClrPalette[count] = new double[]{255/(redDiv++),255/((addToGrnDiv)?grnDiv++:grnDiv--),255/(bluDiv--)};
-        
- 
-      }
-
-      bw.write("  public static final Color ContOnesTransition = \n  {");
-      int posInArr = 0;
-      for(double[] val : contigOClrPalette) {
-        bw.write(String.format("\n    new Color(%3d, %3d, %3d)%s", ((int) val[0]), ((int) val[1]), ((int) val[2]),
-                (posInArr++ < contigOClrPalette.length - 1) ?"," + "" : ""));
-      }
-      bw.write("\n  };\n\n");
-      bw.flush();
-
-      bw.write("public static final Integer[][] ContOnesTransition = \n\t{");
-      posInArr = 0;
-      for(double[] val : contigOClrPalette) {
-        bw.write(String.format("\n\t\t{%3d, %3d, %3d}%s", ((int) val[0]), ((int) val[1]), ((int) val[2]),
-            (posInArr++ < contigOClrPalette.length - 1) ?"," + "" : ""));
-      }
-      bw.write("\n};\n\n");
-      bw.flush();
-      
-      
-      bw.close();
-      fw.close();
-      return;
-    } catch (FileNotFoundException fnfe) {
-      possible_errMsg = "|\n -> [-] FileNotFoundException caused in\n\t\t" +
-                        "JavaHexColorParser.writeToFileInJsonFormat(LinkedHashMap<String,Integer[][]> map, ArrayList<String[]> " +
-                        "colorStrArrList, String fileName\n\n" +
-                        fnfe.getMessage();
-    } catch (IOException ioe){
-      possible_errMsg = "|\n -> [-] IOException caused in\n\t\t" +
-                        "JavaHexColorParser.writeToFileInJsonFormat(LinkedHashMap<String,Integer[][]> map, ArrayList<String[]> " +
-                        "colorStrArrList, String fileName\n\n" +
-                        ioe.getMessage();
-    }
-    throw new InternalError("\n\n[-] Internal Logic Error inside\n\tprivate static void writeToFileInJsonFormat" +
-                            "(LinkedHashMap<String,Integer[][]> map, ArrayList<String[]> colorStrArrList, String fileName)" +
-                            "\n"+possible_errMsg);
   }
 
 }
