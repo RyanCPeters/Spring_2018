@@ -1,20 +1,30 @@
 Class: STMath 300, Foundations in Mathematics
 Total students: 25 
-Apparent gender ratio (Female/Male): 13/12
-Questions asked ratio (Q's by F / Q's by M): 15/4
+Apparent gender ratio (Female count and Male count ratio): 13:12
+Questions asked ratio (Q's by F and Q's by M ratio): 15:4
+
+
 Class: STMath 308, Matrix Algebra (aka Linear Algebra)
 Total students: 40
-Apparent gender ratio (Female/Male): 26/14
-Questions asked ratio (Q's by F / Q's by M): 0/10+
+Apparent gender ratio (Female count and Male count ratio): 14:26
+Questions asked ratio (Q's by F : Q's by M ratio): 0:10+
 
-
+ 
 
 Did your numbers surprise you? Why or why not? Were they higher or lower than expected?
 
-I am not as surprised by the number of questions being asked as I am by the gender ratios of the two classes. Specifically, I'm surprised at how uneven the STMath 308 course is as compared to the STMath 300 course. 
+I am not as surprised by the number of questions being asked as I am by the gender ratios of the two classes. 
 
 Was there a difference in your different STEM classes if you're taking more than one?
 
+Yes, there was a difference; I'm surprised at how uneven the gender ratio is for the STMath 308 course as compared to STMath 300's nearly 50/50 split.
+
 Was there a particular person or group of people who primarily asked or answered questions? Where do they sit? Which gender do they present as?
 
+There are a couple of women in the STMath 300 course that ask a majority of the questions, and they are generally very relevant and to the point for the subject material. These students sit in the middle of the classroom, both relative to the front/back axis of the room and the left/right axis.
+
+That said, the STMath 308 course is mostly male, and the only people that seem to be asking questions in that course are a couple of young men that, based upon their behavior and their questions' lack of course-relevance, appear to be on the spectrum for Aspergers syndrome. These individuals are distributed across the room, with one in front left corner, one in the center, and another in the back right corner of the room.  
+
 Did your instructor(s) use techniques that required different students to ask or answer questions? If so, do you think they were successful? What evidence do you have to support your answer?
+
+My STMath 300 instructor used a random draw system to call on students for answering quiz or exercise questions in class. This ensures that no one student feels singled out, and because the class's gender ratio is more or less even, the system results in an equal distribution of gender responses.
