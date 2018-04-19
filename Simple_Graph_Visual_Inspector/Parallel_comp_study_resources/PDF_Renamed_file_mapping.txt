@@ -1,6 +1,0 @@
-- [Applications of GPU computing] Shane Cook - CUDA programming_ A developer's guide to parallel computing with GPUs (2012, Morgan Kaufmann)
-  + CUDA programming A developer's guide to parallel comp with GPUs
-- [Chapman & Hall_CRC the R series (CRC Press)] Matloff, Norman S. - Parallel computing for data science _ with examples in R, C++ and CUDA (2016, CRC Press)
-  + Parallel computing for data science _ with examples in R, C++ and CUDA 
-- Nicholas Wilt - The CUDA Handbook_ A Comprehensive Guide to GPU Programming (2013, Addison-Wesley Professional)
-  + The CUDA Handbook A Comprehensive Guide to GPU Programming2

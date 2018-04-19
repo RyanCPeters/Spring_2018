@@ -68,8 +68,7 @@ public class JavaHexColorParser {
     String possible_errMsg = "";
     try(FileWriter fw = new FileWriter(fileName); BufferedWriter bw = new BufferedWriter(fw)) {
     String[] relevantNames = {"DustPalette","ClassyPalette","MyCustomChoice"};
-
-//      int keyCount = 0, keyCountMax = map.keySet().size();
+    
       Integer[][] iRow;
       for(String[] key : colorStrArrList) {
         String objName = Character.toUpperCase(key[0].trim().charAt(0)) +
@@ -100,22 +99,22 @@ public class JavaHexColorParser {
           bw.flush();
         }
       }
-      int redDiv = 1, grnDiv = 4, bluDiv = 12;
-      double[] rgb = {255/redDiv, 255/grnDiv, 255/bluDiv};
-      double[][] contigOClrPalette = new double[12][3];
-      boolean addToGrnDiv = true;
+      int redDiv = 1, grnDiv = 6, bluDiv = 12;
+      int[][] contigOClrPalette = new int[12][3];
+      boolean subtractFromGrnDiv = true;
 
       // generating an array of colors that maintain approximately the same intensity, but will transition from a
       // red'ish hue to a blue'ish hue.
       for(int count = 0; count < 12; ++count){
-        if(addToGrnDiv && grnDiv > 8)addToGrnDiv = false;
-        contigOClrPalette[count] = new double[]{255/(redDiv++),255/((addToGrnDiv)?grnDiv++:grnDiv--),255/(bluDiv--)};
+        contigOClrPalette[count] = new int[]{255/(redDiv++),255/((subtractFromGrnDiv)?grnDiv--:grnDiv++),255/
+                                                                                                         (bluDiv--)};
+        if(subtractFromGrnDiv && grnDiv < 2)subtractFromGrnDiv = false;
       }
 
       bw.write("  public static final Color[] awtContOnesTransition = \n  {");
       int posInArr = 0;
-      for(double[] val : contigOClrPalette) {
-        bw.write(String.format("\n    new Color(%3d, %3d, %3d)%s", (((int)val[0])+10 <= 255)?((int)val[0])+10 :255, (((int)val[1])+10 <= 255)?((int)val[1])+10 :255, (((int)val[2])+10 <= 255)?((int)val[2])+10 :255,
+      for(int[] val : contigOClrPalette) {
+        bw.write(String.format("\n    new Color(%3d, %3d, %3d)%s", (val[0] + 10 <= 255) ? val[0] + 10 : 255, (val[1] + 10 <= 255) ? val[1] + 10 : 255, (val[2] + 10 <= 255) ? val[2] + 10 : 255,
                 (posInArr++ < contigOClrPalette.length - 1) ?"," + "" : ""));
       }
       bw.write("\n  };\n\n");
@@ -123,8 +122,8 @@ public class JavaHexColorParser {
 
       bw.write("  public static final Integer[][] intContOnesTransition = \n  {");
       posInArr = 0;
-      for(double[] val : contigOClrPalette) {
-        bw.write(String.format("\n    {%3d, %3d, %3d}%s", (((int)val[0])+10 <= 255)?((int)val[0])+10 :255, (((int)val[1])+10 <= 255)?((int)val[1])+10 :255, (((int)val[2])+10 <= 255)?((int)val[2])+10 :255,
+      for(int[] val : contigOClrPalette) {
+        bw.write(String.format("\n    {%3d, %3d, %3d}%s", (val[0] + 10 <= 255) ? val[0] + 10 : 255, (val[1] + 10 <= 255) ? val[1] + 10 : 255, (val[2] + 10 <= 255) ? val[2] + 10 : 255,
                 (posInArr++ < contigOClrPalette.length - 1) ?"," + "" : ""));
       }
       bw.write("\n  };\n\n");
@@ -355,23 +354,23 @@ public class JavaHexColorParser {
   public static void specialColorTransitionGenerator(){
     String possible_errMsg = "";
     try(FileWriter fw = new FileWriter("Color_Transition_Array.txt"); BufferedWriter bw = new BufferedWriter(fw)) {
-      int redDiv = 1, grnDiv = 4, bluDiv = 12;
-      double[] rgb = {255/redDiv, 255/grnDiv, 255/bluDiv};
-      double[][] contigOClrPalette = new double[12][3];
-      boolean addToGrnDiv = true;
+      // setting up the divisor values to be used in calculating the rgb vals across n steps
+      int redDiv = 1, grnDiv = 7, bluDiv = 12;
+      int[][] contigOClrPalette = new int[12][3];
+      boolean subtractFromGrnDiv = true;
       
       // generating an array of colors that maintain approximately the same intensity, but will transition from a
       // red'ish hue to a blue'ish hue.
       for(int count = 0; count < 12; ++count){
-        if(addToGrnDiv && grnDiv > 8)addToGrnDiv = false;
-        contigOClrPalette[count] = new double[]{255/(redDiv++),255/((addToGrnDiv)?grnDiv++:grnDiv--),255/(bluDiv--)};
+        if(subtractFromGrnDiv && grnDiv > 0)subtractFromGrnDiv = false;
+        contigOClrPalette[count] = new int[]{255/(redDiv++),255/((subtractFromGrnDiv)?grnDiv--:grnDiv++),255/(bluDiv--)};
         
  
       }
 
       bw.write("  public static final Color ContOnesTransition = \n  {");
       int posInArr = 0;
-      for(double[] val : contigOClrPalette) {
+      for(int[] val : contigOClrPalette) {
         bw.write(String.format("\n    new Color(%3d, %3d, %3d)%s", ((int) val[0]), ((int) val[1]), ((int) val[2]),
                 (posInArr++ < contigOClrPalette.length - 1) ?"," + "" : ""));
       }
@@ -380,7 +379,7 @@ public class JavaHexColorParser {
 
       bw.write("public static final Integer[][] ContOnesTransition = \n\t{");
       posInArr = 0;
-      for(double[] val : contigOClrPalette) {
+      for(int[] val : contigOClrPalette) {
         bw.write(String.format("\n\t\t{%3d, %3d, %3d}%s", ((int) val[0]), ((int) val[1]), ((int) val[2]),
             (posInArr++ < contigOClrPalette.length - 1) ?"," + "" : ""));
       }
