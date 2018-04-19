@@ -7,6 +7,63 @@ import java.util.function.Function;
 public class Assig3 {
   private enum PropositionType {SINGLE,BICON}
   
+  /*
+  * cheat sheet for getting operators from ansi code:
+  * prefix the alpha-numeric codes for your chosen symbol with
+  * \u****, that is to say, if we wanted to write
+  * the Logican AND symbol, we would type:
+  *     \u2227
+  *     eg., (pAND~q) becomes (p\u2227~q) which will later be interpreted into the
+  *     ∧ by the console's text parcer.
+ 
+¬ 00AC not sign
+∧ 2227 Logical AND
+∨ 2228 Logical OR
+∎ 220E, END OF PROOF
+∴ 2234, THEREFORE , there4, therefore, Therefore
+∵ 2235, BECAUSE , becaus, because, Because
+∀ 2200, FOR ALL , forall, ForAll
+∃ 2203, THERE EXISTS , exist, Exists
+∄ 2204, THERE DOES NOT EXIST , nexist, NotExists, nexists
+
+
+∝ 221D prop, propto, Proportional, vprop, varpropto, proportional to
+∣ 2223 divides
+∤ 2224 does not divide
+≃ 2243 asymptotically equal to
+≄ 2244 not asymptotically equal to
+≅ 2245 approximately equal to
+≆ 2246 approximately but not actually equal to
+≇ 2247 neither approximately nor actually equal to
+≈ 2248 almost equal to
+≉ 2249 not almost equal to
+≜ 225C trie, triangleq, delta equal to
+≝ 225D equal to by definition
+≟ 225F equest, checked equal to
+≠ 2260 ne, NotEqual, not equal to
+≡ 2261 equiv, Congruent, equivalent to
+≤ 2264 less-than or equal to
+≥ 2265 greater-than or equal to
+≪ 226A much less than
+≫ 226B much greater than
+
+⊂ 2282 subset, included in, proper subset
+⊃ 2283 superset, includes, proper superset
+⊆ 2286 subset of or equal to
+⊇ 2287 superset or equal to
+⊄ 2284 notin set
+∩ 2229 intersection
+∪ 222A union
+∈ 2208 isin, isinv, Element, in, element of (large symbol)
+∊ 220A element of (small symbol)
+∉ 2209 notin, NotElement, notinva, not element of
+∋ 220B niv, ReverseElement, ni, SuchThat, contains as member (large symbol)
+∍ 220D contains as member (small symbol)
+∌ 220C notni, notniva, NotReverseElement, does not contain as member
+∅ 2205 empty, emptyset, emptyv, varnothing, empty set
+
+  * */
+  
 //  private static void truthTableLogicTree(HashMap<Integer[],Boolean[]> map, String[] labels, PropositionType pt){
 //
 //  }
@@ -148,11 +205,11 @@ public class Assig3 {
         "v",
         "3|t",
         "3|u",
-        "p:\u2200t,u,v;tt+uu=vv",
-        "q:\u2203t,u;(3|t\u22283|u)",
-        "~q:\u2200t,u;(3\u2224t\u22273\u2224u)",
+        "p:∀t,u,v;tt+uu=vv",
+        "q:∃t,u;(3|t∨3|u)",
+        "~q:∀t,u;(3∤t∧3∤u)",
         "p->q",
-        "p\u2227~q"};
+        "p∧~q"};
     for(int v = 20; v >-1;--v){
       int t = 0,u = v-1;
   
@@ -227,8 +284,8 @@ public class Assig3 {
         "v:d|b",
         "s:d|(a+b)",
         "t:d|(a-b)",
-        "p:\u2200d,a,b;(u\u2227b)",
-        "q:\u2203d,a,b;(s\u2227t)",
+        "p:∀d,a,b;(u∧b)",
+        "q:∃d,a,b;(s∧t)",
         "p->q",
         "q->p",
         "p<->q"
