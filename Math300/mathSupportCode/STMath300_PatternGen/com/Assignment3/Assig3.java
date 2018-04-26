@@ -1,7 +1,6 @@
-package src.com.Assignment3;
+package com.Assignment3;
 
-import STMath.Statics.StaticTTablePrinter;
-import STMath.Statics.StaticTTablePrinter.PropositionType;
+import Statics.StaticTTablePrinter;
 
 import javax.swing.text.BadLocationException;
 import javax.swing.text.StyledDocument;
@@ -10,8 +9,8 @@ import java.util.LinkedHashMap;
 import java.util.TreeSet;
 import java.util.function.Function;
 
-import static STMath.Statics.StaticTTablePrinter.INIT_STYLES;
-import static STMath.Statics.StaticTTablePrinter.generateTruthTable;
+import static Statics.StaticTTablePrinter.*;
+
 
 public class Assig3
 {
@@ -108,7 +107,8 @@ public class Assig3
       
       System.out.println( "\n\nProblem #1 truth table\n" +
                           "Prove or disprove: For all integers n, if [3|(2n + 2)], then [n\u22613" +
-                          " 2]." ); generateTruthTable( truthTableCollection, new String[]{
+                          " 2]." );
+      generateTruthTable( truthTableCollection, new String[]{
           nthrow, pLabel, qLabel, contra, propLabel
       }, PropositionType.SINGLE, 1 );
     }
@@ -136,7 +136,7 @@ public class Assig3
 //    for(int test = -10; test < 11; ++test) System.out.println(test+" "+(test%5));
     
     
-    for( int a = - 100; a < 101; ++ a ) {
+    for( int a = - 15; a < 16; ++ a ) {
       
       int sign = ( a >= 0 )? 1 : - 1; trutTableCollection.put( new Integer[]{ a }, new Boolean[]{
           ( ( a * sign ) % 5 == 2 ), ( ( a * a ) % 5 == 4 ),
@@ -150,23 +150,19 @@ public class Assig3
     
     System.out.println( "\n\nProblem #2 truth table" ); System.out.println(
         "Prove or disprove: For all integers n, [(n*n)\u22615 4] if and only" +
-        " if [n\u22615 2]." ); generateTruthTable( trutTableCollection, new String[]{
+        " if [n\u22615 2]." );
+    generateTruthTable( trutTableCollection, new String[]{
         nthrow, pLabel, qLabel, biconLabel
     }, PropositionType.BICON, 2 );
     
   } // ends problem2()
   
   public static void problem3() {
-    // This problem doesn't require the evaluation of possible number values that could
-    // influence how we choose to solve the problem.
+    /*
+     This problem doesn't require the evaluation of possible number values that could
+     influence how we choose to solve the problem.
+    */
   } // ends problem3()
-  
-  private static LinkedHashMap<Integer,Boolean[]> problem4Helper( LinkedHashMap<Integer,
-      Boolean[]> map ) {
-//    HashMap<Integer,Boolean[]> sortable = new HashMap<>(map);
-//    Map
-    return map;
-  }
   
   public static void problem4() {
 
@@ -178,7 +174,7 @@ public class Assig3
     // verification of this proof will require a truth table that shows if u or t can be
     // divided evenly by 3 when those numbers are integer roots of a third sum
     // v, which is again an integer.
-    HashMap<Integer[],Boolean[]> tTableCollection = new HashMap<>( 100 );
+    LinkedHashMap<Integer[],Boolean[]> tTableCollection = new LinkedHashMap<>( 100 );
     TreeSet<String> setOfVTU = new TreeSet<>();
     
     String[] labels = new String[]{
@@ -190,32 +186,36 @@ public class Assig3
     
     // iterate v from 20 to 0; for each iteration of v, we
     // then look for t, and u integers such that t^2 + u^2 = v^2;
-    for( int v = 20; v > 1; -- v ) {
-      for( int t = - v * 5; t < v * 5 + 1; ++ t ) {
-        if( t == 0 ) { continue; } for( int u = 10 * v; u > t; -- u ) {
-          if( u == 0 ) { continue; } int vSquared = v * v, tSquared = t * t, uSquared = u * u;
+    for( int v = 20; v > 1; --v ) {
+      for( int t = -v * 5; t < v * 5 + 1; ++t ) {
+        if( t == 0 ) { continue; }
+        for( int u = -t; u > t-1; --u ) {
+          
+          if( u == 0 ) continue;
+          int vSquared = v * v, tSquared = t * t, uSquared = u * u;
           
           boolean tbool = Math.abs( t ) % 3 == 0,//3|t
-              ubool = Math.abs( u ) % 3 == 0;//3|u
+              ubool = Math.abs( u ) % 3 == 0,//3|u
+              p = vSquared == ( tSquared + uSquared ),//p
+              q = ( tbool || ubool ),//q
+              noQ = ( ! tbool && ! ubool ),//!q
+              pAndNoQ = ( ! tbool && ! ubool ),//p !q
+              pAndQ = ( tbool || ubool );//p->q
           if( setOfVTU.add( v + " " + t + " " + u ) && setOfVTU.add( v + " " + u + " " + t ) ) {
-            if( ( ( tSquared + uSquared ) == ( vSquared ) || ( ! tbool && ! ubool ) ) ) {
-//            if( printJustification ) System.out.printf( "u = %4d; t = %4d; v = %4d;\n", u, t, v );
-              tTableCollection.put( new Integer[]{ v, t, u }, new Boolean[]{
-                  tbool,//3|t
-                  ubool,//3|u
-                  true,//p
-                  ( tbool || ubool ),//q
-                  ( ! tbool && ! ubool ),//!q
-                  ( ! tbool && ! ubool ),//p !q
-                  ( tbool || ubool )//p->q
-              } );
+            if( ( p) ) {
+              if(q) {
+                tTableCollection.put( new Integer[]{ v, t, u }, new Boolean[]{
+                    tbool,//3|t
+                    ubool,//3|u
+                    p, q, noQ, pAndNoQ, pAndQ } );
+              }
             }
           }
         }
       }
     } System.out.println(
-        "\n\nProblem #4 truth table\nLet t, u and v be integers such that t^2 + u^2 = v^2. Prove " +
-        "that at least one of t or u is divisible by 3.\n" + "(Hint: use contradiction)." );
+        "\n\nProblem #4 truth table\nLet t, u and v be integers such that t^2 + u^2 = v^2.\n" +
+        "Prove that at least one of t or u is divisible by 3.\n" + "(Hint: use contradiction)." );
     
     generateTruthTable( tTableCollection, labels, PropositionType.SINGLE, 4 );
     
@@ -252,7 +252,7 @@ public class Assig3
       System.out.printf( ConsolColor.prpl_bld_brt +
                          "[%11s;%11s;]->%11s;\n[%11s;%11s;]->%11s;\n%11s;\n%11s;\n%11s;" +
                          "\n" + ConsolColor.RESET,
-                         s[ 0 ],s[ 1 ],s[ 4 ],s[ 2 ],s[ 3 ],s[ 5 ],s[ 6 ],s[ 7 ],s[ 8 ] );
+                         s[ 0 ], s[ 1 ], s[ 4 ], s[ 2 ], s[ 3 ], s[ 5 ], s[ 6 ], s[ 7 ], s[ 8 ] );
       
     }
     
@@ -264,7 +264,7 @@ public class Assig3
   public static void problem5() {
     LinkedHashMap<Integer[],Boolean[]> tTableCollection = new LinkedHashMap<>();
     TreeSet<String> setOfDAB = new TreeSet<>();
-    
+    TreeSet<String> altFilter = new TreeSet<>();
     String[] labels = new String[] {
         "d", "a", "b", "u:d|a", "v:d|b", "s:d|(a+b)",
         "t:d|(a-b)", "p:d,a,b;(u∧b)", "q:d,a,b;(s∧t)",
@@ -272,39 +272,40 @@ public class Assig3
     };
     
     Function<Integer[],Boolean> u_of_da = new Function<Integer[],Boolean>() {
-      @Override public Boolean apply( Integer[] d_ab ) {
-        return ( d_ab[ 1 ] ) % d_ab[ 0 ] == 0;
+      @Override public Boolean apply( Integer[] dab ) {
+        return ( dab[ 1 ] ) % dab[ 0 ] == 0;
       }
     };
     
     Function<Integer[],Boolean> v_of_db = new Function<Integer[],Boolean>() {
-      @Override public Boolean apply( Integer[] d_ab ) {
-        return ( d_ab[ 2 ] ) % d_ab[ 0 ] == 0;
+      @Override public Boolean apply( Integer[] dab ) {
+        return ( dab[ 2 ] ) % dab[ 0 ] == 0;
       }
     };
     
     Function<Integer[],Boolean> s_of_dab = new Function<Integer[],Boolean>() {
-      @Override public Boolean apply( Integer[] d_ab ) {
-        return ( d_ab[ 1 ] + d_ab[ 2 ] ) % d_ab[ 0 ] == 0;
+      @Override public Boolean apply( Integer[] dab ) {
+        return ( dab[ 1 ] + dab[ 2 ] ) % dab[ 0 ] == 0;
       }
     };
     
     Function<Integer[],Boolean> t_of_dab = new Function<Integer[],Boolean>() {
-      @Override public Boolean apply( Integer[] d_ab ) {
-        return ( d_ab[ 1 ] - d_ab[ 2 ] ) % d_ab[ 0 ] == 0;
+      @Override public Boolean apply( Integer[] dab ) {
+        return ( dab[ 1 ] - dab[ 2 ] ) % dab[ 0 ] == 0;
       }
     };
     
     Function<Integer[],Boolean> p_of_dab = new Function<Integer[],Boolean>() {
-      @Override public Boolean apply( Integer[] d_a_b ) {
-        return d_a_b[ 1 ] % d_a_b[ 0 ] == 0 && d_a_b[ 2 ] % d_a_b[ 0 ] == 0;
+      @Override public Boolean apply( Integer[] dab ) {
+        return dab[ 1 ] % dab[ 0 ] == 0 && dab[ 2 ] % dab[ 0 ] == 0;
       }
     };
     
     Function<Integer[],Boolean> q_of_dab = new Function<Integer[],Boolean>() {
-      @Override public Boolean apply( Integer[] d_a_b ) {
-        return ( d_a_b[ 1 ] + d_a_b[ 2 ] ) % d_a_b[ 0 ] == 0 &&
-               ( d_a_b[ 1 ] - d_a_b[ 2 ] ) % d_a_b[ 0 ] == 0;
+      @Override public Boolean apply( Integer[] dab ) {
+        
+        return ( dab[ 1 ] + dab[ 2 ] ) % dab[ 0 ] == 0 &&
+               ( dab[ 1 ] - dab[ 2 ] ) % dab[ 0 ] == 0;
       }
     };
     
@@ -313,17 +314,26 @@ public class Assig3
           false, false, false, false, false, false, false, false, false
       };
       
-      for( int a = - 20; a < 21; ++ a ) {
-        for( int b = - 20; b < 21; ++ b ) {
-          Integer[] dab = new Integer[]{ d, a, b }; truthRow[ 0 ] = u_of_da.apply( dab );
-          truthRow[ 1 ] = v_of_db.apply( dab ); truthRow[ 2 ] = s_of_dab.apply( dab );
-          truthRow[ 3 ] = t_of_dab.apply( dab ); truthRow[ 4 ] = p_of_dab.apply( dab );
-          truthRow[ 5 ] = q_of_dab.apply( dab ); truthRow[ 6 ] = truthRow[ 0 ] && truthRow[ 1 ];
-          truthRow[ 7 ] = truthRow[ 2 ] && truthRow[ 3 ];
-          truthRow[ 8 ] = truthRow[ 6 ] && truthRow[ 7 ];
+      for( int a = 20; a > -21; --a ) {
+//        if(a == 0)continue;
+        for( int b = 20; b > -21; --b ) {
+//          if(b == 0)continue;
+          Integer[] dab = new Integer[]{ d, a, b };
+          
+          truthRow[ 0 ] = u_of_da.apply( dab );// u: d|a
+          truthRow[ 1 ] = v_of_db.apply( dab );// v: d|b
+          truthRow[ 2 ] = s_of_dab.apply( dab );// s: d|(a+b)
+          truthRow[ 3 ] = t_of_dab.apply( dab );// t: d|(a-b)
+          truthRow[ 4 ] = p_of_dab.apply( dab );// p: u AND v
+          truthRow[ 5 ] = q_of_dab.apply( dab );// q: s AND t
+          truthRow[ 6 ] = (truthRow[ 4 ])? truthRow[ 5 ] : true;// p->q
+          truthRow[ 7 ] = ( truthRow[ 5 ] )? truthRow[ 4 ] : true;//q->p
+          truthRow[ 8 ] = truthRow[ 5 ] && truthRow[ 4 ];// p<->q
           
           if( setOfDAB.add( d + " " + a + " " + b ) && setOfDAB.add( d + " " + b + " " + a ) ) {
-            if( ( truthRow[ 6 ] && ! truthRow[ 7 ] ) || ( truthRow[ 7 ] && ! truthRow[ 6 ] ) ) {
+//            if( (truthRow[6] && !truthRow[7]) || ( truthRow[ 7 ] && !truthRow[ 6 ] )) {
+            if(truthRow[4] || truthRow[5]){
+              if(truthRow[6] != truthRow[7]){
               /*
                 "d",
                 0"d|a",
@@ -336,9 +346,11 @@ public class Assig3
                 7"q->p",
                 8"p<->q"
               */
-              tTableCollection.put( new Integer[]{ d, a, b }, truthRow );
-              
-              truthRow = new Boolean[]{ false, false, false, false, false, false, false, false, false };
+                tTableCollection.put( new Integer[]{ d, a, b }, truthRow );
+    
+                truthRow =
+                    new Boolean[]{ false, false, false, false, false, false, false, false, false };
+              }
             }
           }
         }
@@ -346,8 +358,8 @@ public class Assig3
     }
     
     System.out.println(
-        "\n\nProblem #5\nLet a and b be integers, and let d be odd. Prove that [d|a\u2227d|b] <->" +
-        " [d|(a + b)\u2227d|(a - b)]." );
+        "\n\nProblem #5\nLet a and b be integers, and let d be odd.\n" +
+        "Prove that [d|a\u2227d|b] <-> [d|(a + b)\u2227d|(a - b)]." );
     
     generateTruthTable( tTableCollection, labels, PropositionType.SINGLE, 5 );
   }

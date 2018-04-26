@@ -1,6 +1,6 @@
-package STMath.Statics;
+package Statics;
 
-import src.com.Assignment3.ConsolColor;
+import com.Assignment3.ConsolColor;
 
 import javax.swing.text.*;
 import java.util.HashMap;
@@ -77,10 +77,11 @@ class StaticTTablePrinter
     System.out.println( horizontal_dashed_line.toString().replace( "-", "=" ) );
     
     horizontal_dashed_line.toString().replace( "=", "-" );
-    
-    
+  
+  
+    int stopAt = ( map.size() > 30 )? 30 : map.size();
     int pos = 0;
-    int end = map.values().size();
+    int end = stopAt;
     
     for( Map.Entry ent : map.entrySet() ) {
       Boolean[] boolForI = (Boolean[])ent.getValue();
@@ -114,7 +115,7 @@ class StaticTTablePrinter
                               ( pos < end - 1 )?
                               horizontal_dashed_line.toString() :
                               tableHorizontalLines ) );
-      ++ pos;
+      if(++pos > end) break;
     }
   }
   
@@ -203,7 +204,7 @@ class StaticTTablePrinter
                               ( pos < end - 1 )? horizontal_dashed_line.toString() :
                               tableHorizontalLines ),
                           doc.getStyle( INIT_STYLES[ 0 ] ) );
-        ++ pos;
+        ++pos;
       }
       
     }catch( BadLocationException ble ) {
