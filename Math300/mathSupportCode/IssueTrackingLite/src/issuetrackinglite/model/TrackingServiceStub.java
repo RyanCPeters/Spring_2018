@@ -1,5 +1,9 @@
 /*
+<<<<<<< HEAD
  * Copyright (c) 2012 Oracle and/or its affiliates.
+=======
+ * Copyright (c) 2012, 2014, Oracle and/or its affiliates.
+>>>>>>> 97275aa2c15639016899a278296b08b5ce1a4a8d
  * All rights reserved. Use is subject to license terms.
  *
  * This file is available and licensed under the following license:
@@ -13,7 +17,11 @@
  *  - Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in
  *    the documentation and/or other materials provided with the distribution.
+<<<<<<< HEAD
  *  - Neither the name of Oracle nor the names of its
+=======
+ *  - Neither the name of Oracle Corporation nor the names of its
+>>>>>>> 97275aa2c15639016899a278296b08b5ce1a4a8d
  *    contributors may be used to endorse or promote products derived
  *    from this software without specific prior written permission.
  *
@@ -52,7 +60,11 @@ public class TrackingServiceStub implements TrackingService {
     // of issue IDs in the projects Map.
     final ObservableMap<String, ObservableList<String>> projectsMap;
     {
+<<<<<<< HEAD
         final Map<String, ObservableList<String>> map = new TreeMap<String, ObservableList<String>>();
+=======
+        final Map<String, ObservableList<String>> map = new TreeMap<>();
+>>>>>>> 97275aa2c15639016899a278296b08b5ce1a4a8d
         projectsMap = FXCollections.observableMap(map);
         for (String s : newList("Project1", "Project2", "Project3", "Project4")) {
             projectsMap.put(s, FXCollections.<String>observableArrayList());
@@ -82,7 +94,11 @@ public class TrackingServiceStub implements TrackingService {
         private final SimpleStringProperty title;
         private final SimpleStringProperty description;
         private final SimpleObjectProperty<IssueStatus> status =
+<<<<<<< HEAD
                 new SimpleObjectProperty<IssueStatus>(IssueStatus.NEW);
+=======
+                new SimpleObjectProperty<>(IssueStatus.NEW);
+>>>>>>> 97275aa2c15639016899a278296b08b5ce1a4a8d
 
         IssueStub(String projectName, String id) {
             this(projectName, id, null);
@@ -181,7 +197,11 @@ public class TrackingServiceStub implements TrackingService {
     final AtomicInteger issueCounter = new AtomicInteger(0);
     final ObservableMap<String, IssueStub> issuesMap;
     {
+<<<<<<< HEAD
         final Map<String, IssueStub> map = new TreeMap<String, IssueStub>();
+=======
+        final Map<String, IssueStub> map = new TreeMap<>();
+>>>>>>> 97275aa2c15639016899a278296b08b5ce1a4a8d
         issuesMap = FXCollections.observableMap(map);
         issuesMap.addListener(issuesMapChangeListener);
         IssueStub ts;

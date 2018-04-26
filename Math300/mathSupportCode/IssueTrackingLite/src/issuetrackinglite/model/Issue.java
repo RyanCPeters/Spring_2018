@@ -1,5 +1,9 @@
 /*
+<<<<<<< HEAD
  * Copyright (c) 2012 Oracle and/or its affiliates.
+=======
+ * Copyright (c) 2012, 2014, Oracle and/or its affiliates.
+>>>>>>> 97275aa2c15639016899a278296b08b5ce1a4a8d
  * All rights reserved. Use is subject to license terms.
  *
  * This file is available and licensed under the following license:
@@ -13,7 +17,11 @@
  *  - Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in
  *    the documentation and/or other materials provided with the distribution.
+<<<<<<< HEAD
  *  - Neither the name of Oracle nor the names of its
+=======
+ *  - Neither the name of Oracle Corporation nor the names of its
+>>>>>>> 97275aa2c15639016899a278296b08b5ce1a4a8d
  *    contributors may be used to endorse or promote products derived
  *    from this software without specific prior written permission.
  *
@@ -31,6 +39,21 @@
  */
 package issuetrackinglite.model;
 
+<<<<<<< HEAD
+=======
+
+/**
+ public interface Issue <br>
+ An interface that provides method signatures for:
+ <pre>
+     public String getId();
+     public String getProjectName();
+     public IssueStatus getStatus();
+     public String getSynopsis();
+     public String getDescription();
+ </pre>
+ */
+>>>>>>> 97275aa2c15639016899a278296b08b5ce1a4a8d
 public interface Issue {
 
     public static enum IssueStatus {

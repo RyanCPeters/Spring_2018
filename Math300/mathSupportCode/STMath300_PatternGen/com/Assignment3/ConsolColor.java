@@ -1,4 +1,4 @@
-package src.com.Assignment3;
+package com.Assignment3;
 
 /**
  * I borrowed the idea and some of the syntax for this class from:

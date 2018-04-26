@@ -1,5 +1,9 @@
 /*
+<<<<<<< HEAD
  * Copyright (c) 2012, 2013 Oracle and/or its affiliates.
+=======
+ * Copyright (c) 2012, 2014, Oracle and/or its affiliates.
+>>>>>>> 97275aa2c15639016899a278296b08b5ce1a4a8d
  * All rights reserved. Use is subject to license terms.
  *
  * This file is available and licensed under the following license:
@@ -13,7 +17,11 @@
  *  - Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in
  *    the documentation and/or other materials provided with the distribution.
+<<<<<<< HEAD
  *  - Neither the name of Oracle nor the names of its
+=======
+ *  - Neither the name of Oracle Corporation nor the names of its
+>>>>>>> 97275aa2c15639016899a278296b08b5ce1a4a8d
  *    contributors may be used to endorse or promote products derived
  *    from this software without specific prior written permission.
  *
@@ -29,45 +37,77 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+<<<<<<< HEAD
  
 .theme {
     master-color: grey;
     -fx-background-color: derive(master-color, 70%);
+=======
+
+.theme {
+    -fx-background-color: derive(grey, 70%);
+>>>>>>> 97275aa2c15639016899a278296b08b5ce1a4a8d
     -fx-font-size: 14px;
 }
 
 .split-pane {
     -fx-padding: 0;
     -fx-border-width: 0;
+<<<<<<< HEAD
     -fx-background-color: derive(master-color, 100%);
+=======
+    -fx-background-color: derive(grey, 100%);
+>>>>>>> 97275aa2c15639016899a278296b08b5ce1a4a8d
 }
 
 .button {
     -fx-background-color:
         linear-gradient(
+<<<<<<< HEAD
             derive(master-color, 120%), 
             derive(master-color, 90%)
+=======
+            derive(grey, 120%), 
+            derive(grey, 90%)
+>>>>>>> 97275aa2c15639016899a278296b08b5ce1a4a8d
         ),
         radial-gradient(
             center 50% -40%, 
             radius 180%, 
+<<<<<<< HEAD
             derive(master-color, 95%) 55%, 
             derive(master-color, 75%) 55%
+=======
+            derive(grey, 95%) 55%, 
+            derive(grey, 75%) 55%
+>>>>>>> 97275aa2c15639016899a278296b08b5ce1a4a8d
         );
     -fx-background-radius: 4, 3;
     -fx-background-insets: 0, 1;
     -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.55) , 5, 0.0 , 0 , 1 );
+<<<<<<< HEAD
     -fx-text-fill: derive(master-color, -60%);
+=======
+    -fx-text-fill: derive(grey, -60%);
+>>>>>>> 97275aa2c15639016899a278296b08b5ce1a4a8d
     -fx-padding: 3 11 3 11;
 }
 
 .darkList {
+<<<<<<< HEAD
     -fx-background-color: derive(master-color, -60%);
+=======
+    -fx-background-color: derive(grey, -60%);
+>>>>>>> 97275aa2c15639016899a278296b08b5ce1a4a8d
 }
 
 .darkList .list-cell {
     -fx-padding: 6 0 0 13;
+<<<<<<< HEAD
     -fx-background-color: derive(master-color, -60%);
+=======
+    -fx-background-color: derive(grey, -60%);
+>>>>>>> 97275aa2c15639016899a278296b08b5ce1a4a8d
     -fx-text-fill: lightgrey;
 }
 
@@ -94,6 +134,10 @@
 }
 
 .label {
+<<<<<<< HEAD
     -fx-text-fill: derive(master-color, -20%);
+=======
+    -fx-text-fill: derive(grey, -20%);
+>>>>>>> 97275aa2c15639016899a278296b08b5ce1a4a8d
     -fx-font-size: 12px;
 }
