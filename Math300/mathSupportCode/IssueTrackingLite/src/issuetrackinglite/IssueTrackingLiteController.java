@@ -374,51 +374,53 @@ public class IssueTrackingLiteController {
   private ObservableList<String> displayedTautologyTemplates;
   
 /**
-   <pre>
-   -------------------------------------------------------------------------------
-   Declaration statement:
-   private ObservableList<String> tableHeaderIDs;
- 
-   -------------------------------------------------------------------------------
-   Description:
- 
- 
-   -------------------------------------------------------------------------------
-   Expected behavior:
- 
-   - The guiList of Issue IDs relevant to the selected project.
-   - Can be null if no project is selected.
-   - This guiList is obtained from the model.
-   - This is a live guiList, and we will react to its changes by removing and adding
-   Issue objects to/from our table widget.
-   </pre>
-   */
+  <pre>
+  -------------------------------------------------------------------------------
+  Declaration statement:
   private ObservableList<String> tableHeaderIDs;
+  
+  -------------------------------------------------------------------------------
+  Description:
+  
+  
+  -------------------------------------------------------------------------------
+  Expected behavior:
+  
+  - The column headers for our table
+  - Can be null if no propositional statement is selected.
+  - This list is obtained from the model.
+  - This is a live list, and we will react to its changes by removing and adding Issue
+    objects to/from our table widget.
+  </pre>
+  */
+  private ObservableList<String> tableHeaderIDs;
+  
   /**
-   <pre>
-   -------------------------------------------------------------------------------
-   Declaration statement:
-   private final
-   ListChangeListener<String> tautologyTemplateListener = new ListChangeListener<String>() { ...
-   
-   
-   This listener will listen to changes in the displayedTautologyTemplates guiList,
-   and update our guiList widget in consequence.
-   
-   {@code
+  <pre>
+  -------------------------------------------------------------------------------
+  Declaration statement:
+  private final
+  ListChangeListener<String> tautologyTemplateListener = new ListChangeListener<String>() { ...
   
   
-  @ Override public void onChanged(Change<? extends String> c) {
-  if (projectsView == null) return;
+  This listener will listen to changes in the displayedTautologyTemplates guiList,
+  and update our guiList widget in consequence.
   
-  while (c.next()) {
-  if (c.wasAdded() || c.wasReplaced())projectsView.addAll( c.getAddedSubList() );
-  if (c.wasRemoved() || c.wasReplaced()) projectsView.removeAll( c.getRemoved() );
+  {@code
+  
+  @literal @Override
+  public void onChanged(Change<? extends String> c) {
+    if (projectsView == null) return;
+    
+    while (c.next()) {
+      if (c.wasAdded() || c.wasReplaced())projectsView.addAll( c.getAddedSubList() );
+      if (c.wasRemoved() || c.wasReplaced()) projectsView.removeAll( c.getRemoved() );
+    }
+    FXCollections.sort(projectsView);
   }
-  FXCollections.sort(projectsView);
   }
-  }</pre>
-   
+  
+  </pre>
    */
   private final ListChangeListener<String> tautologyTemplateListener = new ListChangeListener<String>() {
     
@@ -480,10 +482,10 @@ public class IssueTrackingLiteController {
       }     // ends if (c.wasRemoved() || c.wasReplaced()) block
     }       // ends while (c.next()) loop
   }         // ends onChanged(Change<? extends String> c) method
-  
+  }
   </pre>
   */
-  private final ListChangeListener<String> projectIssuesListener = new ListChangeListener<String>()
+  private final ListChangeListener<String> projectIssuesListener = new ListChangeListener<>()
   {
     
     @Override
@@ -533,24 +535,30 @@ public class IssueTrackingLiteController {
   
   // This listener listen to changes in the table widget selection and
   // update the DeleteIssue button state accordingly.
+  @SuppressWarnings("Convert2Lambda")
   private final ListChangeListener<ObservableIssue> tableSelectionChanged =
-    new ListChangeListener<ObservableIssue>() {
-      
+    new ListChangeListener<>() {
       @Override
-      public void onChanged(Change<? extends ObservableIssue> c) {
+      public
+      void onChanged( Change<? extends ObservableIssue> c ) {
         updateDeleteIssueButtonState();
         updateBugDetails();
         updateSaveIssueButtonState();
       }
     };
   
+  /**
+   
+   @param s
+   @return
+   */
   private static String nonNull(String s) {
     return s == null ? "" : s;
   }
   
   private void updateBugDetails() {
     final ObservableIssue selectedIssue = getSelectedIssue();
-    if (details != null && selectedIssue != null) {
+    if ( ( details != null ) && ( selectedIssue != null ) ) {
       if (displayedIssueLabel != null) {
         displayedBugId = selectedIssue.getId();
         displayedBugProject = selectedIssue.getProjectName();
@@ -577,6 +585,11 @@ public class IssueTrackingLiteController {
     }
   }
   
+  /**
+   
+   @param o
+   @return
+   */
   private boolean isVoid(Object o) {
     if (o instanceof String) {
       return isEmpty((String) o);
@@ -585,10 +598,21 @@ public class IssueTrackingLiteController {
     }
   }
   
+  /**
+   
+   @param s
+   @return
+   */
   private boolean isEmpty(String s) {
     return s == null || s.trim().isEmpty();
   }
   
+  /**
+   
+   @param o1
+   @param o2
+   @return
+   */
   private boolean equal(Object o1, Object o2) {
     if (isVoid(o1)) {
       return isVoid(o2);
@@ -596,53 +620,13 @@ public class IssueTrackingLiteController {
     return o1.equals(o2);
   }
   
-  private static enum SaveState {
+  /**
+    {@code
     
-    INVALID, UNSAVED, UNCHANGED
-  }
-  
-  private final class DetailsData implements Issue {
-    
-    @Override
-    public String getId() {
-      if (displayedBugId == null || isEmpty(displayedIssueLabel.getText())) {
-        return null;
-      }
-      return displayedBugId;
+    private enum SaveState { INVALID, UNSAVED, UNCHANGED }
     }
-    
-    @Override
-    public IssueStatus getStatus() {
-      if (statusValue == null || isEmpty(statusValue.getText())) {
-        return null;
-      }
-      return IssueStatus.valueOf(statusValue.getText().trim());
-    }
-    
-    @Override
-    public String getProjectName() {
-      if (displayedBugProject == null || isEmpty(displayedIssueLabel.getText())) {
-        return null;
-      }
-      return displayedBugProject;
-    }
-    
-    @Override
-    public String getSynopsis() {
-      if (synopsis == null || isEmpty(synopsis.getText())) {
-        return "";
-      }
-      return synopsis.getText();
-    }
-    
-    @Override
-    public String getDescription() {
-      if (descriptionValue == null || isEmpty(descriptionValue.getText())) {
-        return "";
-      }
-      return descriptionValue.getText();
-    }
-  }
+  */
+  private enum SaveState { INVALID, UNSAVED, UNCHANGED }
   
   private SaveState computeSaveState(Issue edited, Issue issue) {
     try {
@@ -817,6 +801,67 @@ public class IssueTrackingLiteController {
           }
         }
       });
+    }
+  }
+  
+  
+  ////////////////////////////////////////////////////////////////////////////////
+////////      Beginning of nested inner class DetailsData     //////////////////
+////////////////////////////////////////////////////////////////////////////////
+  private final
+  class DetailsData
+    implements Issue
+  {
+    
+    
+    @Override
+    public
+    String getId() {
+  
+      if( displayedBugId == null || isEmpty( displayedIssueLabel.getText() ) ) {
+        return null;
+      }
+      return displayedBugId;
+    }
+    
+    @Override
+    public
+    IssueStatus getStatus() {
+  
+      if( statusValue == null || isEmpty( statusValue.getText() ) ) {
+        return null;
+      }
+      return IssueStatus.valueOf( statusValue.getText().trim() );
+    }
+    
+    @Override
+    public
+    String getProjectName() {
+  
+      if( displayedBugProject == null || isEmpty( displayedIssueLabel.getText() ) ) {
+        return null;
+      }
+      return displayedBugProject;
+    }
+    
+    @Override
+    public
+    String getSynopsis() {
+  
+      if( ( synopsis == null ) || isEmpty( synopsis.getText() ) ) {
+        return "";
+      }
+      return synopsis.getText();
+    }
+    
+    @Override
+    public
+    String getDescription() {
+  
+      if( descriptionValue == null || isEmpty( descriptionValue.getText() ) ) {
+        return "";
+      }
+      return descriptionValue.getText();
     }
   }
 }
