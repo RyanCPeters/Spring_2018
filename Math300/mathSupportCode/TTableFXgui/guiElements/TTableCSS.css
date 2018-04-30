@@ -1,0 +1,43 @@
+.theme {
+
+    -fx-background-color: radial-gradient(center 50% +10%, radius 180%, derive(gray, 55%) 20%, derive(orange, -10%) 55%);
+}
+
+#btn{
+
+    -fx-background-color: radial-gradient(center 50% -40%, radius 180%, derive(gray, -10%) 20%, derive(orange, 55%) 55%);
+}
+
+
+.text-area {
+    /*-fx-background-color: rgba(53, 89, 119, 0.4);*/
+
+    -fx-background-color: empty;
+}
+
+.text-area .scroll-pane {
+    -fx-background-color: transparent;
+}
+
+.text-area .scroll-pane .viewport {
+    -fx-background-color: transparent;
+}
+
+.text-area .scroll-pane .content {
+    -fx-background-color: transparent;
+}
+
+.transparentBGs {
+    -fx-background-color: transparent;
+}
+
+.tree-cell {
+
+    -fx-font: 12px Tahoma;
+    -fx-background-color: transparent;
+}
+
+.tree-view {
+    -fx-border-style: ;
+}
+
