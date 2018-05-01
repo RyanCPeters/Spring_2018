@@ -11,7 +11,7 @@
 <AnchorPane id="basePane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="10.0" nodeOrientation="LEFT_TO_RIGHT" styleClass="theme" stylesheets="@TTableCSS.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="guiElements.TTableFXController">
 
    <children>
-      <HBox fx:id="baseLevelHBox" alignment="CENTER" layoutX="4.0" layoutY="4.0" spacing="2.0" styleClass="transparentBGs" AnchorPane.bottomAnchor="4.0" AnchorPane.leftAnchor="4.0" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="4.0">
+      <HBox fx:id="baseLevelHBox" alignment="CENTER" layoutX="4.0" layoutY="4.0" spacing="2.0" styleClass="transparentBGs" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <AnchorPane id="toolPane" blendMode="SRC_OVER" minWidth="10.0" styleClass="transparentBGs" HBox.hgrow="NEVER">
                <children>
@@ -39,38 +39,38 @@
                   </ToolBar>
                </children>
                <HBox.margin>
-                  <Insets bottom="1.0" />
+                  <Insets />
                </HBox.margin>
             </AnchorPane>
             <AnchorPane id="treePane" fx:id="statementBuildingAnchor" blendMode="SRC_OVER" minWidth="10.0" styleClass="transparentBGs" HBox.hgrow="SOMETIMES">
-               <children>
-                  <HBox prefHeight="100.0" prefWidth="200.0" styleClass="transparentBGs" AnchorPane.leftAnchor="2.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="2.0">
-                     <children>
+                  <children>
+                     <HBox prefHeight="100.0" prefWidth="200.0" styleClass="transparentBGs" AnchorPane.leftAnchor="2.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="2.0">
+                        <children>
 
-                        <Label id="label" fx:id="computableStatementLabel" blendMode="SRC_OVER" minHeight="25.0" minWidth="10.0" text="Statement to Compute : " underline="true" />
+                           <Label id="label" fx:id="computableStatementLabel" blendMode="SRC_OVER" minHeight="25.0" minWidth="10.0" text="Statement to Compute : " underline="true" />
 
-                              <Label id="label" fx:id="computedStatementDemoLabel" blendMode="SRC_OVER" minHeight="25.0" minWidth="10.0" text="( p -&gt; q  )" />
-                     </children>
-                  </HBox>
+                                 <Label id="label" fx:id="computedStatementDemoLabel" blendMode="SRC_OVER" minHeight="25.0" minWidth="10.0" text="( p -&gt; q  )" />
+                        </children>
+                     </HBox>
 
-                  <AnchorPane id="treeViewPane" fx:id="treeAnchorPane" blendMode="SRC_OVER" layoutX="14.0" layoutY="51.0" minWidth="300.0" styleClass="transparentBGs" AnchorPane.bottomAnchor="31.0" AnchorPane.leftAnchor="2.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="30.0">
+                     <AnchorPane id="treeViewPane" fx:id="treeAnchorPane" blendMode="SRC_OVER" layoutX="14.0" layoutY="51.0" minWidth="300.0" styleClass="transparentBGs" AnchorPane.bottomAnchor="31.0" AnchorPane.leftAnchor="2.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="30.0">
 
-                     <children>
-                        <TreeView id="treeViewControllerNodeID" fx:id="treeViewController" cache="true" cacheHint="SPEED" depthTest="ENABLE" editable="true" fixedCellSize="25.0" maxHeight="-Infinity" style="-fx-background-color: transparent;" styleClass="transparentBGs" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                           <opaqueInsets>
-                              <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
-                           </opaqueInsets>
-                        </TreeView>
-                     </children>
-                  </AnchorPane>
-                  <Button id="btn" fx:id="computeToTable" alignment="CENTER" defaultButton="true" layoutX="296.0" layoutY="624.0" maxHeight="25.0" minHeight="25.0" minWidth="10.0" mnemonicParsing="false" prefHeight="25.0" text="Compute Table" AnchorPane.bottomAnchor="2.0" AnchorPane.rightAnchor="2.0">
-                     <cursor>
-                        <Cursor fx:constant="HAND" />
-                     </cursor></Button>
-               </children>
-               <HBox.margin>
-                  <Insets />
-               </HBox.margin>
+                        <children>
+                           <TreeView id="treeViewControllerNodeID" fx:id="treeViewController" cache="true" cacheHint="SPEED" depthTest="ENABLE" editable="true" fixedCellSize="25.0" maxHeight="-Infinity" style="-fx-background-color: transparent;" styleClass="transparentBGs" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                              <opaqueInsets>
+                                 <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
+                              </opaqueInsets>
+                           </TreeView>
+                        </children>
+                     </AnchorPane>
+                     <Button id="btn" fx:id="computeToTable" alignment="CENTER" defaultButton="true" layoutX="296.0" layoutY="624.0" maxHeight="25.0" minHeight="25.0" minWidth="10.0" mnemonicParsing="false" prefHeight="25.0" text="Compute Table" AnchorPane.bottomAnchor="2.0" AnchorPane.rightAnchor="2.0">
+                        <cursor>
+                           <Cursor fx:constant="HAND" />
+                        </cursor></Button>
+                  </children>
+                  <HBox.margin>
+                     <Insets />
+                  </HBox.margin>
             </AnchorPane>
             <AnchorPane id="tablePane" fx:id="tableBaseAnchorPane" minWidth="10.0" styleClass="transparentBGs" HBox.hgrow="ALWAYS">
                <children>
@@ -83,7 +83,7 @@
                   </TableView>
                </children>
                <HBox.margin>
-                  <Insets bottom="1.0" />
+                  <Insets />
                </HBox.margin>
             </AnchorPane>
          </children>
