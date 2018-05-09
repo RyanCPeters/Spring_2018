@@ -1,10 +1,10 @@
 package com.Assignment3;
 
 import Statics.StaticTTablePrinter;
+import com.ConsolColor;
 
 import javax.swing.text.BadLocationException;
 import javax.swing.text.StyledDocument;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.TreeSet;
 import java.util.function.Function;
