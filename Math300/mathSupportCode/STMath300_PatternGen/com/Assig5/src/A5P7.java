@@ -126,9 +126,9 @@ class A5P7
           
           sbSpaced.append( ConsolColor.RESET );
         } else {
-          sbPacked.append( ". " );
-          if(a == -1)sbSpaced.append( String.format( "%-" + ( width-1 ) + "s", "." ) );
-          else sbSpaced.append( String.format( "%-"+( width )+"s", "." ) );
+          sbPacked.append( ": " );
+          if(a == -1)sbSpaced.append( String.format( "%-" + ( width-1 ) + "s", ":" ) );
+          else sbSpaced.append( String.format( "%-"+( width )+"s", ":" ) );
         }
       }
       sbSpaced.append( ConsolColor.RESET ).append( "\n" );
