@@ -69,13 +69,13 @@ class A5P6
 //        else if( a < 0 ) locSymbol = "2";
 //        else locSymbol = "1";
         
-        boolean A = false, B = false;
+        boolean AbyB = false, BbyA = false;
         if( b != 0 && a != 0 ) {
-          A = Math.abs(a/b) >0 && a % b == 0;
-          B = Math.abs(b/a) >0 && b % a == 0;
+          AbyB = Math.abs(a/b) >0 && a % b == 0;
+          BbyA = Math.abs(b/a) >0 && b % a == 0;
         }
       
-        if( A && B ) {
+        if( AbyB && BbyA ) {
           sbPacked.append( winStr )
                   .append( locSymbol )
                   .append( " " )
@@ -86,7 +86,7 @@ class A5P6
             .append( ConsolColor.RESET );
         }
         else
-          if( A ) {
+          if( AbyB ) {
           
             sbPacked.append( B_DIVS_A )
                     .append( locSymbol )
@@ -98,7 +98,7 @@ class A5P6
                     .append( ConsolColor.RESET );
           }
           else
-            if( B ) {
+            if( BbyA ) {
             
               sbPacked.append( A_DIVS_B )
                       .append( locSymbol )
@@ -135,9 +135,10 @@ class A5P6
                     String.format( "%-" + ( width ) + "s", " 0" ) );
                 }
                 else {
-                  sbPacked.append( ((a == -1)?" ":"  ") );
-                  sbSpaced.append(
-                    String.format( "%-" + ( width ) + "s", " " ) );
+                  sbPacked.append(FAIL).append( ((a == -1)?".":". ") ).append( ConsolColor.RESET );
+                  sbSpaced.append( FAIL )
+                          .append(String.format( "%-" + ( width ) + "s", "." ) )
+                          .append( ConsolColor.RESET );
                 }
       
       }
