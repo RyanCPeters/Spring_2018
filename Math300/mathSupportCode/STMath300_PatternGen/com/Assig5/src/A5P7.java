@@ -83,24 +83,18 @@ class A5P7
       if(b!=0)sbSpaced.append( String.format( "%1s","" ) );
       for( int a = aLo; a <= aHi; ++a ) {
         String locSymbol = "H";
-//        String locSymbol = "1";
-//
-//        if( a < 0 && b < 0 ) locSymbol = "3";
-//        else if( a < 0 ) locSymbol = "4";
-//        else if( b < 0 ) locSymbol = "2";
 
-//        boolean a2b = does3Divide( a, b ), b2a = does3Divide( a, b );
         boolean a2b = does3Divide( b,a );
         
         sbPacked.append( ( (b == 0 && a == 0)?FAIL:
-                           ( a2b /*&& b2a*/ )?
+                           ( a2b )?
                            ( (b < a)? A2B:( b == a )? winStr: B2A) :
-                           ( /*( a2b )? A2B : */ /*( b2a )? B2A :*/ FAIL ) ) );
+                           ( FAIL ) ) );
         
         sbSpaced.append( ( ( b == 0 && a == 0 )? "" :
-                           ( a2b /*&& b2a*/ )?
+                           ( a2b )?
                            ( ( b < a )? A2B : ( b == a )? winStr : B2A ) :
-                           ( /*( a2b )? A2B :*/ /*( b2a )? B2A :*/ FAIL ) ) );
+                           ( FAIL ) ) );
         
         if(b == 0 && a == 0){
           sbPacked.append( ConsolColor.RESET )
@@ -123,7 +117,7 @@ class A5P7
           sbPacked.append( ( ( b == 0 )? "--" : "| " ) )
                   .append( ConsolColor.RESET );
     
-        }else if( a2b /*&& b2a*/ ) {
+        } else if( a2b ) {
           sbPacked.append( locSymbol )
                   .append( " " )
                   .append( ConsolColor.RESET );
@@ -131,12 +125,11 @@ class A5P7
           else sbSpaced.append( String.format( "%-"+( width )+"s", locSymbol ) );
           
           sbSpaced.append( ConsolColor.RESET );
-        }else {
+        } else {
           sbPacked.append( ". " );
           if(a == -1)sbSpaced.append( String.format( "%-" + ( width-1 ) + "s", "." ) );
           else sbSpaced.append( String.format( "%-"+( width )+"s", "." ) );
         }
-      
       }
       sbSpaced.append( ConsolColor.RESET ).append( "\n" );
       sbPacked.append(ConsolColor.RESET).append( "\n" );
