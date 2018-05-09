@@ -60,6 +60,7 @@ class A5P6
     // let j represent the column number in the matrix, and map the
     // b values on the given low to hi bounds.
     for( int b = bHi; b >= bLo; --b ) {
+      if(b != 0)sbSpaced.append( " " );
       for( int a = aLo; a <= aHi; ++a ) {
         String locSymbol = "H";
         
@@ -81,7 +82,7 @@ class A5P6
                   .append( ConsolColor.RESET );
           sbSpaced
             .append( winStr )
-            .append(String.format( "%-" + ( width  ) + "s", locSymbol ) )
+            .append(String.format( "%-"+( ( ( a == -1 )? width-1 : width ) )+"s", locSymbol ) )
             .append( ConsolColor.RESET );
         }
         else
@@ -93,7 +94,7 @@ class A5P6
                     .append( ConsolColor.RESET );
             
             sbSpaced.append( B_DIVS_A )
-                    .append( String.format( "%-" + ( width ) + "s", locSymbol ) )
+                    .append( String.format( "%-"+( ( ( a == -1 )? width-1 : width ))+"s", locSymbol ) )
                     .append( ConsolColor.RESET );
           }
           else
@@ -105,14 +106,14 @@ class A5P6
                       .append( ConsolColor.RESET );
               
               sbSpaced.append(A_DIVS_B )
-                      .append( String.format( "%-" + ( width ) + "s", locSymbol ) )
+                      .append( String.format( "%-" + ( ((a == -1)?width-1:width) ) + "s", locSymbol ) )
                       .append( ConsolColor.RESET );
             }
             else
               if( b == 0 ^ a == 0 ) {
                 String nonZeroVal = String.format(
                   "%-" + ( width  ) + "s",
-                  b != 0? String.valueOf( b ) : String.valueOf( a ) );
+                  b != 0? (((b > 0)? " ":"")+String.valueOf( b )) : String.valueOf( a ) );
                 sbSpaced
                   .append( FAIL )
                   .append(  nonZeroVal )
@@ -131,10 +132,10 @@ class A5P6
                           .append( ConsolColor.RESET );
                 
                   sbSpaced.append(
-                    String.format( "%-" + ( width ) + "s", "0" ) );
+                    String.format( "%-" + ( width ) + "s", " 0" ) );
                 }
                 else {
-                  sbPacked.append( "  " );
+                  sbPacked.append( ((a == -1)?" ":"  ") );
                   sbSpaced.append(
                     String.format( "%-" + ( width ) + "s", " " ) );
                 }
