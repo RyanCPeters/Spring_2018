@@ -21,7 +21,7 @@ class A5Driver
     System.out.println( "Assignment 5, problem 6");
     System.out.println();
 
-    new A5P6(-20,20,-20,20);
+    new A5P6(-40,40,-40,40);
 
     System.out.println();
     System.out.println( String.format( "%90s", "" ).replace( " ", "-" ) );

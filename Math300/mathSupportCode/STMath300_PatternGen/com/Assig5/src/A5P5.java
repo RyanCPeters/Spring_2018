@@ -44,16 +44,19 @@ class A5P5
     sbSpaced.append(
       "\n"+ConsolColor.cyan_brt+"denotes where a^2 ≡3 b^2 ≡3 0 "+ConsolColor.RESET+
       "\n"+ConsolColor.rd_brt+"denotes where a^2 ≡3 b^2  ≡3 1"+ConsolColor.RESET+
-      "\n"+ConsolColor.grn_brt+"denotes where a^2 ≡3 b^2 and a == b\n\n"+ConsolColor.RESET )
+      "\n"+ConsolColor.grn_brt+"denotes where a^2 ≡3 b^2 and a == b"+ConsolColor.RESET+
+      "\n"+ConsolColor.blk_bld_brt+"denotes where a^2 and b^2 are NOT congruent mod 3\n\n"+ConsolColor.RESET)
             .append( aAxisBounds )
             .append( bAxisBounds )
             .append( "Figure 5.1: Stretched version of graph showing (a,b) values on the axis."+
                      "\nWhere a is the horizontal-axis, and b is the vertical-axis.\n" );
     
     sbPacked.append(
-      "\n"+ConsolColor.cyan_brt+"denotes where a^2 ≡3 b^2 and a < b"+ConsolColor.RESET+
-      "\n"+ConsolColor.rd_brt+"denotes where a^2 ≡3 b^2 and a > b"+ConsolColor.RESET+
-      "\n"+ConsolColor.grn_brt+"denotes where a^2 ≡3 b^2 and a == b\n\n"+ConsolColor.RESET )
+      "\n"+ConsolColor.cyan_brt+"denotes where a^2 ≡3 b^2 ≡3 0 "+ConsolColor.RESET+
+      "\n"+ConsolColor.rd_brt+"denotes where a^2 ≡3 b^2  ≡3 1"+ConsolColor.RESET+
+      "\n"+ConsolColor.grn_brt+"denotes where a^2 ≡3 b^2 and a == b"+ConsolColor.RESET+
+      "\n"+ConsolColor.blk_bld_brt+"denotes where a^2 and b^2 are NOT congruent mod 3\n\n"+
+      ConsolColor.RESET )
             .append( aAxisBounds )
             .append( bAxisBounds )
             .append( "Figure 5.2: Square graph for better visual understanding of ratios.\n" );
