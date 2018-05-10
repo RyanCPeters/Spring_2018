@@ -1,3 +1,5 @@
+package problemFiles;
+
 import com.ConsolColor;
 
 public
@@ -30,7 +32,7 @@ class A5P5
     
     width = Math.max( String.valueOf( width ).length(), String.valueOf( yLo ).length() );
     
-    width = Math.max( String.valueOf( width ).length(), String.valueOf( yHi ).length() )+( ( yLo < 0 )? 2 : 1 );
+    width = Math.max( String.valueOf( width ).length(), String.valueOf( yHi ).length()  )+1;
     
     StringBuilder sbSpaced = new StringBuilder();
     StringBuilder sbPacked = new StringBuilder();
@@ -74,7 +76,8 @@ class A5P5
       if( b != 0 && xLo < 0 ) sbSpaced.append( String.format( "%2s", "" ) );
       for( int a = xLo; a <= xHi; ++a ) {
         String locSymbol = "H";
-        String aStr = String.valueOf(a);
+        String aStr = String.valueOf(Math.abs(a)),
+          bStr = String.valueOf( Math.abs( b ) );
         boolean a2b = checkCongruence( b, a, 3 );
         
         sbPacked.append( (
@@ -100,7 +103,7 @@ class A5P5
         }else
           if( b == 0 ^ a == 0 ) {
             String nonZeroVal = ( b != 0 )?
-                                ( String.valueOf( b ) ) :
+                                ( bStr ) :
                                 aStr;
             if( a == 0 ) {
               if( b > 0 ) sbSpaced.append( String.format( "%-"+width+"s", ( nonZeroVal ) ) );
@@ -109,13 +112,14 @@ class A5P5
               
               if( a == 9 ) {
                 sbSpaced.append( String.format( "%-"+( width-1 )+"s", ( nonZeroVal ) ) );
-              }else
-                if( a == -10 ) {
-                  
-                  sbSpaced.append( String.format( "%-"+( width+1 )+"s", ( nonZeroVal ) ) );
-                }else {
-                  sbSpaced.append( String.format( "%-"+width+"s", ( nonZeroVal ) ) );
-                }
+              }else if( a == -10 ) {
+                
+                sbSpaced.append( String.format( "%-"+( width+ 1 )+"s", ( nonZeroVal ) ) );
+              }else if(a == xLo){
+                sbSpaced.append( String.format( "%-"+( width+1 )+"s", (" "+ nonZeroVal ) ) );
+              }else {
+                sbSpaced.append( String.format( "%-"+width+"s", ( nonZeroVal ) ) );
+              }
               
             }
             
@@ -298,7 +302,7 @@ class A5P5
           }else {
             sbPacked.append( "| " );
           }
-  
+          
         }else if( a2b && x == a ) {
           // inside this if block, we handle the task of assigning spacing and formatting the points
           // on the graph where the relation tests to true.

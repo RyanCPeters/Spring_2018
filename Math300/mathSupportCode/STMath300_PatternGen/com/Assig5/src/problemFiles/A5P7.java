@@ -1,3 +1,5 @@
+package problemFiles;
+
 import com.ConsolColor;
 
 /**
@@ -46,7 +48,8 @@ class A5P7
     this(-20,20,-20,20);
   }
   
-  A5P7(int aLo, int aHi, int bLo, int bHi){
+  public
+  A5P7( int aLo, int aHi, int bLo, int bHi ){
   
     int width = Math.max( String.valueOf( aLo ).length(), String.valueOf( aHi ).length() );
   
@@ -151,6 +154,7 @@ class A5P7
     System.out.println( sbPacked.toString() );
   }
   
+  public
   A5P7( int aLo, int aHi, int bLo, int bHi, int n ) {
     
     int width = Math.max( String.valueOf( aLo ).length(), String.valueOf( aHi ).length() );
@@ -264,7 +268,8 @@ class A5P7
   }
   
   
-  A5P7( int aLo, int aHi, int bLo, int bHi, int n,int m ) {
+  public
+  A5P7( int aLo, int aHi, int bLo, int bHi, int n, int m ) {
     
     int width = Math.max( String.valueOf( aLo ).length(), String.valueOf( aHi ).length() );
     

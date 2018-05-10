@@ -1,7 +1,10 @@
-import com.ConsolColor;
+package problemFiles;
 
-import java.util.Arrays;
-import java.util.stream.IntStream;
+import com.ConsolColor;
+//import jcdp.bw.Printer.Types;
+//import jcdp.color.ColoredPrinter;
+//import jcdp.color.api.Ansi.BColor;
+//import jcdp.color.api.Ansi.FColor;
 
 public
 class A5P6
@@ -15,15 +18,18 @@ class A5P6
   private String winStr = ConsolColor.grn_brt;
   
   
-  A5P6(int aLo, int aHi, int bLo, int bHi){
-    
+  public
+  A5P6( int aLo, int aHi, int bLo, int bHi ){
+//    jcdp.color.ColoredPrinter cp = new ColoredPrinter.Builder( 1, false )
+//                                     .foreground( FColor.WHITE )
+//                                     .background( BColor.BLUE )   //setting format
+//                                     .build();
     int width = Math.max( String.valueOf( aLo ).length(), String.valueOf( aHi ).length() );
     
     width = Math.max( String.valueOf( width ).length(), String.valueOf( bLo ).length() );
     
     width = Math.max( String.valueOf( width ).length(), String.valueOf( bHi ).length() ) +
             ( ( bLo < 0 )? 2 : 1 );
-    int packedWidth = width - ( ( bLo < 0 )? 2 : 1 );
     
     StringBuilder sbSpaced = new StringBuilder();
     StringBuilder sbPacked = new StringBuilder();
@@ -59,45 +65,48 @@ class A5P6
     //
     // let j represent the column number in the matrix, and map the
     // b values on the given low to hi bounds.
-    for( int b = bHi; b >= bLo; --b ) {
+    for( int b = bHi; b >= bLo; --b ) {// b represnts the values along the "y-axis"
       if(b != 0)sbSpaced.append( " " );
-      for( int a = aLo; a <= aHi; ++a ) {
+      for( int a = aLo; a <= aHi; ++a ) {// a represents the values along the "x-axis"
         String locSymbol = "H";
         
-        boolean AbyB = b!=0 && a%b == 0;
-        boolean BbyA = a!=0 && b % a == 0;
+        boolean BdivsA; // BdivsA will be our T/F record for if b divides a
+        boolean AdivsB; // AdivsB will be our T/F record for if a divides b
+        BdivsA = b != 0 && a%b == 0;
+        AdivsB = a!=0 && b % a == 0;
         
-        sbPacked.append( ((AbyB && BbyA)?winStr:(AbyB?B_DIVS_A:(BbyA?A_DIVS_B:FAIL))) );
+        sbPacked.append( ((a == 0 && b == 0)?winStr:((BdivsA && AdivsB)?winStr:(BdivsA?B_DIVS_A:(AdivsB?A_DIVS_B:FAIL)))) );
+        sbSpaced.append( ((a == 0 && b == 0)?winStr:((BdivsA && AdivsB)?winStr:(BdivsA?B_DIVS_A:(AdivsB?A_DIVS_B:FAIL)))) );
         
-        if( AbyB && BbyA) {
+        if( BdivsA && AdivsB) {
           sbPacked.append( locSymbol )
                   .append( " " );
           
           sbSpaced.append(String.format( "%-"+( ( ( a == -1 )? width-1 : width ) )+"s", locSymbol ) );
-        }else if( AbyB ) {
+        }else if( ( b == 0 ) ^ ( a == 0 ) ) {
+          String nonZeroVal = String.format(
+            "%-"+( width )+"s",
+            b != 0? ( ( ( b>0 )? " " : "" )+String.valueOf( b ) ) : String.valueOf( a ) );
+          sbSpaced.append( nonZeroVal );
+          
+          sbPacked.append( ( ( b == 0 )? "--" : "| " ) );
+          
+        }else if( BdivsA ) {
           
           sbPacked.append( locSymbol )
                   .append( " " );
           
           sbSpaced.append( String.format( "%-"+( ( ( a == -1 )? width-1 : width ))+"s", locSymbol ) );
-        }else if( BbyA ) {
+        }else if( AdivsB ) {
           
           sbPacked.append( locSymbol )
                   .append( " " );
           
           sbSpaced.append( String.format( "%-" + ( ((a == -1)?width-1:width) ) + "s", locSymbol ) );
           
-        }else if( b == 0 ^ a == 0 ) {
-          String nonZeroVal = String.format(
-            "%-" + ( width  ) + "s",
-            b != 0? (((b > 0)? " ":"")+String.valueOf( b )) : String.valueOf( a ) );
-          sbSpaced.append(  nonZeroVal );
-          
-          sbPacked.append( ( ( b == 0 )? "--" : "| " ) );
-          
         }else if( b == 0 ) {
           // implicitly, both a and b must be 0 if either is zero at this point in the if block
-          sbPacked.append( "0-" );
+          sbPacked.append( "0" );
           
           sbSpaced.append(
             String.format( "%-" + ( width ) + "s", " 0" ) );
