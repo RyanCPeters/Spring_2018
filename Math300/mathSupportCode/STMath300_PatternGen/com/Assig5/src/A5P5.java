@@ -4,9 +4,9 @@ public
 class A5P5
 {
   
-  private String B2A = ConsolColor.cyan_brt;
+  private String MOD0 = ConsolColor.cyan_brt;
   
-  private String A2B = ConsolColor.rd_brt;
+  private String MOD1 = ConsolColor.rd_brt;
   
   private String FAIL = ConsolColor.blk_bld_brt;
   
@@ -42,8 +42,8 @@ class A5P5
         "\na is represented by the horizontal axis, in the range of ["+xLo+","+xHi+"]";
     
     sbSpaced.append(
-      "\n"+ConsolColor.cyan_brt+"denotes where a^2 ≡3 b^2 and a < b"+ConsolColor.RESET+
-      "\n"+ConsolColor.rd_brt+"denotes where a^2 ≡3 b^2 and a > b"+ConsolColor.RESET+
+      "\n"+ConsolColor.cyan_brt+"denotes where a^2 ≡3 b^2 ≡3 0 "+ConsolColor.RESET+
+      "\n"+ConsolColor.rd_brt+"denotes where a^2 ≡3 b^2  ≡3 1"+ConsolColor.RESET+
       "\n"+ConsolColor.grn_brt+"denotes where a^2 ≡3 b^2 and a == b\n\n"+ConsolColor.RESET )
             .append( aAxisBounds )
             .append( bAxisBounds )
@@ -75,15 +75,14 @@ class A5P5
         boolean a2b = checkCongruence( b, a, 3 );
         
         sbPacked.append( (
-                           ( b == 0 && a == 0 )? FAIL :
                            ( a2b )?
-                           ( ( b < a )? A2B : ( b == a )? winStr : B2A ) :
+                           (
+                             ( ( a*a )%3 == 1 )? MOD1 : ( b == a )? winStr : ( ( a*a )%3 == 0 )? MOD0 : FAIL ) :
                            ( FAIL ) ) );
         
         sbSpaced.append( (
-                           ( b == 0 && a == 0 )? "" :
                            ( a2b )?
-                           ( ( b < a )? A2B : ( b == a )? winStr : B2A ) :
+                           ( ( (a*a)%3==1 )? MOD1 : ( b == a )? winStr :((a*a)%3==0)? MOD0:FAIL ) :
                            ( FAIL ) ) );
         
         if( b == 0 && a == 0 ) {
@@ -214,14 +213,15 @@ class A5P5
                            ( x == a && y == 0 )? ConsolColor.prpl_brt :
                            ( y == 0 && x == 0 )? FAIL :
                            ( a2b )?
-                           ( ( y < x && x == a)? B2A : ( y == x && a == x )? winStr : (x == a)?A2B:FAIL ) :
+                           ( ( y < x && x == a)?
+                             MOD0 : ( y == x && a == x )? winStr : ( x == a)? MOD1 : FAIL ) :
                            ( FAIL ) ) );
         
         sbSpaced.append( (
                            (x == a && y == 0)? ConsolColor.ylo_brt:
                            ( y == 0 && x == 0 )? "" :
                            ( a2b )?
-                           ( ( y < x )? B2A : ( y == x )? winStr : A2B ) :
+                           ( ( y < x )? MOD0 : ( y == x )? winStr : MOD1 ) :
                            ( FAIL ) ) );
         
         if( y == 0 && x == 0 ) {
