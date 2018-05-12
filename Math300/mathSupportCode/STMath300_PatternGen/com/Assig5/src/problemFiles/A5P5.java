@@ -75,19 +75,20 @@ class A5P5
     for( int b = yHi; b >= yLo; --b ) {
       if( b != 0 && xLo < 0 ) sbSpaced.append( String.format( "%2s", "" ) );
       for( int a = xLo; a <= xHi; ++a ) {
-        String locSymbol = "H";
-        String aStr = String.valueOf(Math.abs(a)),
+        String
+          locSymbol = "H",
+          aStr = String.valueOf(Math.abs(a)),
           bStr = String.valueOf( Math.abs( b ) );
-        boolean a2b = checkCongruence( b, a, 3 );
+        
+        boolean abCongruent = checkCongruence( b, a, 3 );
         
         sbPacked.append( (
-                           ( a2b )?
-                           (
-                             ( ( a*a )%3 == 1 )? MOD1 : ( b == a )? winStr : ( ( a*a )%3 == 0 )? MOD0 : FAIL ) :
+                           ( abCongruent )?
+                           ( ( ( a*a )%3 == 1 )? MOD1 : ( b == a )? winStr : ( ( a*a )%3 == 0 )? MOD0 : FAIL ) :
                            ( FAIL ) ) );
         
         sbSpaced.append( (
-                           ( a2b )?
+                           ( abCongruent )?
                            ( ( (a*a)%3==1 )? MOD1 : ( b == a )? winStr :((a*a)%3==0)? MOD0:FAIL ) :
                            ( FAIL ) ) );
         
@@ -106,8 +107,7 @@ class A5P5
                                 ( bStr ) :
                                 aStr;
             if( a == 0 ) {
-              if( b > 0 ) sbSpaced.append( String.format( "%-"+width+"s", ( nonZeroVal ) ) );
-              else sbSpaced.append( String.format( "%-"+( width+1 )+"s", ( nonZeroVal ) ) );
+              sbSpaced.append( String.format( "%-"+width+"s", ( nonZeroVal ) ) );
             }else {
               
               if( a == 9 ) {
@@ -117,6 +117,8 @@ class A5P5
                 sbSpaced.append( String.format( "%-"+( width+ 1 )+"s", ( nonZeroVal ) ) );
               }else if(a == xLo){
                 sbSpaced.append( String.format( "%-"+( width+1 )+"s", (" "+ nonZeroVal ) ) );
+              }else if(a == -1){
+                sbSpaced.append( String.format( "%-"+( width-1 )+"s", ( nonZeroVal ) ) );
               }else {
                 sbSpaced.append( String.format( "%-"+width+"s", ( nonZeroVal ) ) );
               }
@@ -125,25 +127,20 @@ class A5P5
             
             sbSpaced.append( ConsolColor.RESET );
             
-            sbPacked.append( ( ( b == 0 )? "--" : "| " ) )
-                    .append( ConsolColor.RESET );
+            sbPacked.append( ( ( b == 0 )? "--" : "| " ) );
             
           }else
-            if( a2b ) {
+            if( abCongruent ) {
               sbPacked.append( locSymbol )
-                      .append( " " )
-                      .append( ConsolColor.RESET );
+                      .append( " " );
               if( a == -1 ) {
-                if( b < 0 ) sbSpaced.append( String.format( "%-"+( width-2 )+"s", locSymbol ) );
-                else sbSpaced.append( String.format( "%-"+( width-1 )+"s", locSymbol ) );
+                sbSpaced.append( String.format( "%-"+( width-1 )+"s", locSymbol ) );
               }else sbSpaced.append( String.format( "%-"+( width )+"s", locSymbol ) );
               
-              sbSpaced.append( ConsolColor.RESET );
             }else {
               sbPacked.append( ": " );
               if( a == -1 ) {
-                if( b > 0 ) sbSpaced.append( String.format( "%-"+( width-1 )+"s", ":" ) );
-                else sbSpaced.append( String.format( "%-"+( width-2 )+"s", ":" ) );
+                sbSpaced.append( String.format( "%-"+( width-1 )+"s", ":" ) );
               }else sbSpaced.append( String.format( "%-"+( width )+"s", ":" ) );
             }
       }

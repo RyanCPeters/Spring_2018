@@ -27,7 +27,7 @@ class A5Driver
     System.out.println( "Assignment 5, problem 6");
     System.out.println();
 
-    new A5P6( -40, 40, -40, 40);
+    new A5P6( -20, 20, -20, 20);
 
     System.out.println();
     System.out.println( String.format( "%90s", "" ).replace( " ", "-" ) );
@@ -43,11 +43,11 @@ class A5Driver
     System.out.println( String.format( "%90s", "" ).replace( " ", "-" ) );
     System.out.println();
 
-//    new A5P7( -9, 9, -9, 9, 5, 9);
-//
-//    System.out.println();
-//    System.out.println( String.format( "%90s", "" ).replace( " ", "-" ) );
-//    System.out.println( String.format( "%90s", "" ).replace( " ", "-" ) );
-//    System.out.println();
+    new A5P7( -34, 34, -34, 34, 17, 11);
+
+    System.out.println();
+    System.out.println( String.format( "%90s", "" ).replace( " ", "-" ) );
+    System.out.println( String.format( "%90s", "" ).replace( " ", "-" ) );
+    System.out.println();
   }
 }
