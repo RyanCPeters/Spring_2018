@@ -1,6 +1,7 @@
-import problemFiles.A5P5;
-import problemFiles.A5P6;
-import problemFiles.A5P7;
+package Assig5;
+import Assig5.problemFiles.A5P5;
+import Assig5.problemFiles.A5P6;
+import Assig5.problemFiles.A5P7;
 
 
 
@@ -43,7 +44,7 @@ class A5Driver
     System.out.println( String.format( "%90s", "" ).replace( " ", "-" ) );
     System.out.println();
 
-    new A5P7( -34, 34, -34, 34, 17, 11);
+    new A5P7( -20, 20, -20, 20, 17, 11);
 
     System.out.println();
     System.out.println( String.format( "%90s", "" ).replace( " ", "-" ) );

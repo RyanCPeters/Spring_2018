@@ -1,4 +1,4 @@
-package com.Assignment3;
+package Assig3;
 
 import Statics.StaticTTablePrinter;
 import com.ConsolColor;

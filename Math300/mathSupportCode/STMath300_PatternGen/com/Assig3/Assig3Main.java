@@ -1,8 +1,4 @@
-package com.Assignment3;
-
-import com.Assignment3.Assig3;
-
-import java.io.CharArrayReader;
+package Assig3;
 
 public class Assig3Main
 {

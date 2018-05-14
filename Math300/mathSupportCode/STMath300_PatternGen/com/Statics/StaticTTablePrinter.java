@@ -1,6 +1,6 @@
 package Statics;
 
-import com.Assignment3.ConsolColor;
+import com.ConsolColor;
 
 import javax.swing.text.*;
 import java.util.HashMap;
